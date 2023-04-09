@@ -27,7 +27,8 @@ class Extractor {
           int actual = (DateTime.now().weekday);
 
           if (iweekday < actual) {
-            dif = 7 - actual + actual - iweekday;
+            dif = 7 - actual + iweekday;
+            print("entra aqui");
           }
           if (actual < iweekday) {
             dif = iweekday - actual;
