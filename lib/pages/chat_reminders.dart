@@ -1,3 +1,4 @@
+import 'package:chat_app/controllers/saved_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import '../widgets/message.dart';
@@ -18,15 +19,23 @@ class _ChatState extends State<Chat> {
   late String prediction = "";
   late String intentPrediction = "";
   List<Message> messages = [];
+  SavedMessage saveMessageController = SavedMessage();
+  late var savedMessages = [];
 
   @override
   void initState() {
     super.initState();
     _intentClassifier = IntentClassifier();
     _entityClassifier = Classifier();
+    getMessages();
+  }
+
+  void getMessages() {
+    //savedMessages = saveMessageController.getItems();
   }
 
   void sendMessage() {
+    messages.clear();
     if (messageController.text.isNotEmpty) {
       intentPrediction = _intentClassifier.classify(messageController.text);
       print(intentPrediction);
@@ -37,6 +46,8 @@ class _ChatState extends State<Chat> {
         prediction = "";
       }
       messages.add(Message("", true, messageController.text));
+      saveMessageController.createItem(messageController.text, 1);
+
       Future.delayed(Duration(milliseconds: 0), () {
         setState(() {
           if (intentPrediction[intentPrediction.length - 1] == "1") {
@@ -54,6 +65,7 @@ class _ChatState extends State<Chat> {
               messageController.text,
             ));
           }
+          saveMessageController.createItem(intentPrediction, 0);
         });
         messageController.clear();
         // Asegura que el ListView se actualice antes de hacer el desplazamiento
@@ -85,6 +97,19 @@ class _ChatState extends State<Chat> {
         ),
         body: Column(
           children: [
+            Expanded(
+              child: /*Column(children: [
+                Message("message 1", true),
+                Message("message 2", false)
+              ]),*/
+
+                  ListView.builder(
+                      controller: _scrollController,
+                      itemCount: savedMessages.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return savedMessages[index];
+                      }),
+            ),
             Expanded(
               child: /*Column(children: [
                 Message("message 1", true),

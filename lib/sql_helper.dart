@@ -2,22 +2,96 @@ import 'package:sqflite/sqflite.dart';
 import 'package:flutter/foundation.dart';
 
 class SQLHelper {
-  static Future<void> createTable(Database database) async {
+  static Future<void> createTables(Database database) async {
     await database.execute("""CREATE TABLE reminders(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       description TEXT,
       date DATETIME,
       repeat BIT,
       sound BIT,
-      days JSON,
-      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-    )""");
+      days JSON
+    );""");
+    await database.execute("""CREATE TABLE messages_rem(
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      message TEXT,
+      user BIT
+    );""");
   }
 
   static Future<Database> db() async {
     return openDatabase('dbchat.db', version: 1,
         onCreate: (Database database, int version) async {
-      await createTable(database);
+      await createTables(database);
     });
+  }
+
+  static Future<void> deleteDatabase(String path) => databaseFactory
+      .deleteDatabase("/data/user/0/com.example.chat_app/databases/dbchat.db");
+
+  static Future<String> getPath() => getDatabasesPath();
+
+  static Future<int> createReminder(String? description, DateTime? date,
+      int? repeat, int? sound, String? days) async {
+    final db = await SQLHelper.db();
+    final data = {
+      'description': description,
+      'date': date,
+      'repeat': repeat,
+      'sound': sound,
+      'days': days
+    };
+    final id = await db.insert('reminders', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    //print(id);
+    return id;
+  }
+
+  static Future<int> createMessage(String message, int user) async {
+    final db = await SQLHelper.db();
+    final data = {'message': message, 'user': user};
+    final id = await db.insert('messages_rem', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+
+  static Future<List<Map<String, dynamic>>> getMessages() async {
+    final db = await SQLHelper.db();
+    return db.query('messages_rem', orderBy: 'id');
+  }
+
+  static Future<List<Map<String, dynamic>>> getReminders() async {
+    final db = await SQLHelper.db();
+    return db.query('reminders', orderBy: 'id');
+  }
+
+  static Future<List<Map<String, dynamic>>> getReminder(int id) async {
+    final db = await SQLHelper.db();
+    return db.query('reminders', where: 'id=?', whereArgs: [id], limit: 1);
+  }
+
+  static Future<int> updateReminder(int id, String? description, DateTime? date,
+      int? repeat, int? sound, String? days) async {
+    final db = await SQLHelper.db();
+
+    final data = {
+      'description': description,
+      'date': date,
+      'repeat': repeat,
+      'sound': sound,
+      'days': days
+    };
+
+    final result =
+        await db.update('reminders', data, where: "id=?", whereArgs: [id]);
+    return result;
+  }
+
+  static Future<void> deleteReminder(int id) async {
+    final db = await SQLHelper.db();
+    try {
+      await db.delete('reminders', where: 'id=?', whereArgs: [id]);
+    } catch (err) {
+      debugPrint("Something went wrong when deleting an item: $err");
+    }
   }
 }

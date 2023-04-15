@@ -1,5 +1,5 @@
-import 'package:chat_app/widgets/extractor.dart';
-import 'package:chat_app/widgets/reminder.dart';
+import 'package:chat_app/utils/extractor.dart';
+import 'package:chat_app/controllers/reminder.dart';
 import 'package:flutter/material.dart';
 
 class Message extends StatefulWidget {
@@ -20,11 +20,17 @@ class _MessageState extends State<Message> {
     super.initState();
   }
 
-  String checkIntent() {
+  Future<String> checkIntent() async {
     String ret = "";
     if (widget.intentPrediction == "REMINDER1") {
       ret = (Extractor(widget.entities).fecha()).toString();
-      Reminder r;
+      Reminder reminder = Reminder();
+      reminder.createItem(ret);
+      //reminder.delete();
+      //print(path);
+      final alldata = await reminder.getItems();
+
+      print(alldata);
     }
     return ret;
   }
@@ -50,7 +56,18 @@ class _MessageState extends State<Message> {
                   : Column(
                       children: [
                         Text("${widget.intentPrediction}"),
-                        Text(checkIntent()) //Text("${widget.entities} "),
+                        FutureBuilder(
+                            future: checkIntent(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(snapshot.data!);
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                return CircularProgressIndicator();
+                              }
+                            }),
+                        //Text(checkIntent()) //Text("${widget.entities} "),
                       ],
                     ),
             )),
