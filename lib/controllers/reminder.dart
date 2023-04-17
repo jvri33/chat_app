@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 
 class Reminder {
   Future<String> createItem(String s) async {
-    print("Create: $s");
+    //print("Create: $s");
     await SQLHelper.createReminder(s, null, 0, 0, "");
     return ("Created succesfully");
   }
@@ -17,12 +17,12 @@ class Reminder {
 
   void delete() async {
     final appDir = await getApplicationDocumentsDirectory();
-
+    //print("entra");
     final dirList =
         Directory("/data/user/0/com.example.chat_app/databases").listSync();
     for (var item in dirList) {
-      print(item.path);
+      //print(item.path);
     }
-    SQLHelper.deleteDatabase("${appDir.path}/databases/dbchat.db");
+    //SQLHelper.deleteDatabase("${appDir.path}/databases/dbchat.db");
   }
 }

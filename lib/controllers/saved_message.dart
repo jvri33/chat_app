@@ -8,7 +8,11 @@ class SavedMessage {
   }
 
   dynamic getItems() async {
-    //final data = await SQLHelper.getMessages();
-    return ("data");
+    final data = await SQLHelper.getMessages();
+    //print("type ${data.asMap().runtimeType}");
+    var keys = data.asMap().keys.toList();
+    print("keys: ${keys}");
+    //print(data[keys[0]]);
+    return (data);
   }
 }

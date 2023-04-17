@@ -22,21 +22,25 @@ class _MessageState extends State<Message> {
 
   Future<String> checkIntent() async {
     String ret = "";
+    //print("check");
     if (widget.intentPrediction == "REMINDER1") {
-      ret = (Extractor(widget.entities).fecha()).toString();
+      //  ret = Extractor(widget.entities).fecha()
+      List<String> str =
+          (Extractor(widget.entities).fecha()).toString().split(" ");
+      ret = "${str[0]} ";
+      ret += (Extractor(widget.entities).hora().toString());
       Reminder reminder = Reminder();
       reminder.createItem(ret);
-      //reminder.delete();
+      reminder.delete();
       //print(path);
       final alldata = await reminder.getItems();
-
-      print(alldata);
     }
     return ret;
   }
 
   @override
   Widget build(BuildContext context) {
+    //print("etst");
     return Padding(
       padding: const EdgeInsets.only(
         top: 4,
