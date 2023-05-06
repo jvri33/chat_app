@@ -71,7 +71,6 @@ create_reminder = [
     "añadir tarea",
 
 ]
-
 calendar = [
     "quiero ver el calendario",
     "calendario",
@@ -96,7 +95,6 @@ calendar = [
     "todas las tareas",
     "tareas calendario",
 ]
-
 function = ["que eres capaz de hacer",
 "que haces",
 "que puedes hacer",
@@ -126,7 +124,138 @@ function = ["que eres capaz de hacer",
 "ayudame",
 "tutorial",
 "dime que haces"]
-
+edit01 = ["editar recordatorio",
+"quiero editar un recordatorio",
+"editar alarma",
+"editar aviso",
+"editar tarea",
+"quiero cambiar una tarea",
+"cambiar un recordatorio",
+"cambiar el recordatorio del dia 15",
+"editar recordatorio 5 de mayo",
+"modificar tarea",
+"modificar recordatorio",
+"cambiar tarea del 3 de marzo",
+"editar la tarea del miercoles",
+"como cambio un recordatorio",
+"edicion tarea",
+"edicion recordatorio",
+"edicion aviso",
+"edicion alarma",
+"editar recordatorio dia 15",
+"cambiar alarma del martes",
+"quiero cambiar la alarma de mañana",
+"ayudame a cambiar una alarma",
+"como puedo editar un aviso",
+"me gustaria editar el aviso el miercoles que viene",
+"modificar alarma del 15 de marzo",
+"cambiar tarea mañana",
+"quiero editar la alarma que acabo de crear",
+"editar alarma de pasadomañana",
+"editar la tarea de la semana que viene",
+"me gustaria cambiar el recordatorio de esta tarde",
+"quiero editar la tarea de mañana",
+"modificar recordatorio hoy",
+"como modifico una tarea",
+"como edito una alarma",
+"edicion recordatorio de mañana",
+]
+delete01 = ["quiero borrar un recordatorio",
+"borrar recordatorio",
+"eliminar recordatorio",
+"quiero eliminar un recordatorio",
+"como elimino un recordatorio",
+"me gustaria eliminar un recordatorio",
+"quiero eliminar un aviso",
+"eliminar aviso",
+"eliminar tarea",
+"como elimino una tarea",
+"eliminar alarma",
+"quiero eliminar una alarma",
+"como elimino una alarma",
+"me gustaria eliminar una alarma",
+"borrar alarma",
+"quitar alarma",
+"quiero quitar la alarma de las 2",
+"borrar tarea de mañana",
+"eliminar recordatorio hoy",
+"me gustaria quitar la tarea del miercoles 15",
+"como elimino el aviso de mañana",
+"elimina el recordatorio del sabado a las 3",
+"quita la alarma del martes",
+"elimina el aviso del jueves",
+"borrar la tarea de mañana",
+"borra la alarma de mañana por la tarde",
+"quiero que borres el aviso del 15",
+"quiero que elimines la alarma del jueves",
+"eliminar alarma pasadomañana",
+"eliminar recordatorio miercoles 15 de mayo",
+"eliminar alarma 7 de abril",
+"quita el recordatoriop de la semana que viene",
+"borrar tarea de 2 de junio",
+]
+today00 = ["tengo algo hoy",
+"que tengo hoy",
+"agenda hoy",
+"recordatorios hoy",
+"dime que tengo hoy",
+"tengo alguna cosa hoy?",
+"tengo alguna alarma puesta hoy",
+"cosas hoy",
+"tengo cosas que hacer hoy",
+"que tengo que hacer hoy",
+"que tengo puesto hoy",
+"avisos hoy",
+"que avisos o tareas tengo hoy",
+"tengo algun recordatorio para hoy",
+"que recordatorios tengo hoy",
+"tengo alarmas hoy",
+"que alarmas tengo hoy",
+"alarma hoy",
+"hoy tengo algo",
+"tengo alarmas durante el dia de hoy",
+"tengo recordatorio hoy",
+"tengo tareas para hoy",
+"algo que hacer hoy",
+"algo hoy",
+"que hay hoy",
+"tengo recordatorios hoy",
+"tengo algun recordatorio o alarma hoy",
+"tengo alguna cosa para hoy",
+"hoy",
+"hoy agenda",
+]
+tomorrow00 = ["que tengo mañana",
+"hay algo mañana",
+"tareas mañana",
+"recordatorio mañana",
+"avisos mañana",
+"agenda mañana",
+"cual es mi agenda para mañana",
+"tengo algo mañana",
+"hola que tengo mañana",
+"tengo tareas o recordatorio mañana",
+"tengo algo para mañana",
+"hay tareas mañana",
+"tengo alguna alarma para mañana",
+"hay recordatorios mañana",
+"tengo algun recordatorio para mañana",
+"recuerdame lo que tengo mañana",
+"dime que tengo para mañana",
+"puedes decirme si tengo algo mañana",
+"dime si tengo algo programado mañana",
+"tengo algo puesto mañana",
+"mañana agenda",
+"mañana tareas",
+"algo mañana",
+"me puedes decir la agenda de mañana",
+"planning mañana",
+"dime si tengo algo mañana",
+"tengo alguna alarma mañana",
+"dime si tengo alarmas mañana",
+"tengo recordatorios mañana",
+"alguna cosa para mañana",
+]
 
 intents = []
 labels = []
@@ -142,6 +271,22 @@ for i in range(len(calendar)):
 for i in range(len(function)):
     intents.append(function[i])
     labels.append("FUNCTION00")
+
+for i in range(len(edit01)):
+    intents.append(edit01[i])
+    labels.append("EDIT01")
+
+for i in range(len(delete01)):
+    intents.append(delete01[i])
+    labels.append("DELETE01")
+
+for i in range(len(today00)):
+    intents.append(today00[i])
+    labels.append("TODAY00")
+
+for i in range(len(tomorrow00)):
+    intents.append(tomorrow00[i])
+    labels.append("TOMORROW00")
 
 #print(intents,labels)
 
@@ -171,14 +316,14 @@ labels_cat = to_categorical(label_seq)
 #print(padded_seq)
 
 model = tf.keras.Sequential([
-    tf.keras.layers.Embedding(300, 64, input_length=pad_len),
+    tf.keras.layers.Embedding(500, 64, input_length=pad_len),
     tf.keras.layers.Flatten(),
     #//tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64, return_sequences=True)),
     #tf.keras.layers.GlobalMaxPooling1D(),
-    tf.keras.layers.Dense(64, activation='relu'),
-    tf.keras.layers.Dense(64, activation='relu'),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(128, activation='relu'),
     tf.keras.layers.Dropout(0.5),
-    tf.keras.layers.Dense(3, activation='softmax')
+    tf.keras.layers.Dense(7, activation='softmax')
 ])
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])

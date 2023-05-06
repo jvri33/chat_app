@@ -34,6 +34,8 @@ class _MessageState extends State<Message> {
       reminder.delete();
       //print(path);
       final alldata = await reminder.getItems();
+
+      //print("ahora ")
     }
     return ret;
   }

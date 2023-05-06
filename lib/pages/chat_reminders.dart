@@ -2,6 +2,7 @@ import 'package:chat_app/controllers/saved_message.dart';
 import 'package:chat_app/widgets/saved_message_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import '../widgets/message.dart';
 
 import 'package:chat_app/classifiers/intent_classifier.dart';
@@ -15,6 +16,7 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
+  int init = 0;
   late IntentClassifier _intentClassifier;
   late Classifier _entityClassifier;
   late String prediction = "";
@@ -37,127 +39,200 @@ class _ChatState extends State<Chat> {
   }
 
   void sendMessage() async {
-    messages.clear();
-    if (messageController.text.isNotEmpty) {
-      intentPrediction = _intentClassifier.classify(messageController.text);
-      if (intentPrediction == "") {
-        intentPrediction = "No se ha entendido";
-        prediction = "";
-      } else {
-        prediction = "";
+    if (messageController.text != "") {
+      messages.clear();
+      if (messageController.text.isNotEmpty) {
+        intentPrediction = _intentClassifier.classify(messageController.text);
+        if (intentPrediction == "") {
+          intentPrediction = "No se ha entendido";
+          prediction = "";
+        } else {
+          prediction = "";
+        }
+        //messages.add(Message("", true, messageController.text));
+        saveMessageController.createItem(messageController.text, 1);
+
+        if (intentPrediction[intentPrediction.length - 1] == "1") {
+          prediction =
+              _entityClassifier.classify(messageController.text).toString();
+          /*messages.add(Message(intentPrediction, false, messageController.text,
+              entities: _entityClassifier.classify(messageController.text)));*/
+          //NO CREAR AQUÍ EL MENSAJE, CREARLO EN EL MESSAGE
+        }
+        /*messages.add(Message(
+            intentPrediction,
+            false,
+            messageController.text,
+          ));*/
+
+        await saveMessageController.createItem(intentPrediction, 0);
       }
-      messages.add(Message("", true, messageController.text));
-      saveMessageController.createItem(messageController.text, 1);
-      if (intentPrediction[intentPrediction.length - 1] == "1") {
-        messages.add(Message(intentPrediction, false, messageController.text,
-            entities: _entityClassifier.classify(messageController.text)));
-        //NO CREAR AQUÍ EL MENSAJE, CREARLO EN EL MESSAGE
-      } else {
-        messages.add(Message(
-          intentPrediction,
-          false,
-          messageController.text,
-        ));
-      }
-
-      await saveMessageController.createItem(intentPrediction, 0);
-
-      // Asegura que el ListView se actualice antes de hacer el desplazamiento
-
     }
-    await scrollToEnd();
+    await jumpToEnd2();
     setState(() {
       messageController.clear();
     });
-
-    //intent_prediction = "";
   }
 
-  Future<void> scrollToEnd() async {
+  Future<void> jumpToEnd() async {
     await getMessages();
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
-      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 100),
-          curve: Curves.fastOutSlowIn);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent + 30);
     });
   }
 
-  //FocusNode _messageFocusNode = FocusNode();
-  //late String messageInput = "";
+  Future<void> jumpToEnd2() async {
+    await getMessages();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Agente"),
-          centerTitle: true,
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: /*Column(children: [
-                Message("message 1", true),
-                Message("message 2", false)
-              ]),*/
+    if (init == 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        jumpToEnd();
+        init++;
+      });
+    }
 
-                  FutureBuilder(
-                future: getMessages(),
-                builder: (context, snapshot) {
-                  return ListView.builder(
-                      controller: _scrollController,
-                      itemCount: savedMessages.asMap().keys.toList().length,
-                      itemBuilder: (BuildContext context, int index) {
-                        var keys = savedMessages.asMap().keys.toList();
-                        if (index ==
-                            savedMessages.asMap().keys.toList().length - 1) {
-                          return Message(messages[1].intentPrediction,
-                              messages[1].user, messages[1].message,
-                              entities: messages[1].entities);
-                        } else {
-                          return SavedMessageWidget(
-                            savedMessages[keys[index]]['user'],
-                            savedMessages[keys[index]]['message'],
-                          );
-                        }
-                      });
-                },
-              ),
-            ),
-            /* Expanded(
-              child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: messages.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return messages[index];
-                  }),
-            ),*/
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        autofocus: true,
-                        controller: messageController,
-                        onEditingComplete: sendMessage,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(60)),
-                            hintText: 'Enter a message',
-                            contentPadding:
-                                const EdgeInsets.only(left: 25.0, top: 40.0)),
-                      ),
-                    ),
-                    IconButton(
-                        onPressed: sendMessage, icon: const Icon(Icons.send))
-                  ],
+    return WillPopScope(
+      onWillPop: () async {
+        init = 0;
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor:
+                Theme.of(context).colorScheme.secondary, // <-- SEE HERE
+            statusBarIconBrightness:
+                Brightness.dark, //<-- For Android SEE HERE (dark icons)
+            statusBarBrightness:
+                Brightness.light, //<-- For iOS SEE HERE (dark icons)
+          ),
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          title: Row(
+            children: [
+              CircleAvatar(backgroundColor: Theme.of(context).primaryColor),
+              const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Text("Agente"))
+            ],
+          ),
+          centerTitle: true,
+          leading: const BackButton(),
+        ),
+        body: Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+            colors: [Color(0xff77ddf2), Color(0xff77f7aa)],
+            stops: [0, 1],
+            begin: Alignment.bottomRight,
+            end: Alignment.topLeft,
+          )),
+          child: Column(
+            children: [
+              Expanded(
+                child: FutureBuilder(
+                  future: getMessages(),
+                  builder: (context, snapshot) {
+                    return ListView.builder(
+                        controller: _scrollController,
+                        itemCount: savedMessages.asMap().keys.toList().length,
+                        itemBuilder: (BuildContext context, int index) {
+                          var keys = savedMessages.asMap().keys.toList();
+                          if (index ==
+                              savedMessages.asMap().keys.toList().length - 1) {
+                            if (messages.isEmpty) {
+                              return SavedMessageWidget(
+                                savedMessages[keys[index]]['user'],
+                                savedMessages[keys[index]]['message'],
+                              );
+                            } else {
+                              return Message(messages[1].intentPrediction,
+                                  messages[1].user, messages[1].message,
+                                  entities: messages[1].entities);
+                            }
+                          } else {
+                            return SavedMessageWidget(
+                              savedMessages[keys[index]]['user'],
+                              savedMessages[keys[index]]['message'],
+                            );
+                          }
+                        });
+                  },
                 ),
               ),
-            )
-          ],
-        ));
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 8, top: 8),
+                    height: 60,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          spreadRadius: 0,
+                          blurRadius: 2,
+                          offset: Offset(0, -2),
+                        ),
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          spreadRadius: 0,
+                          blurRadius: 4,
+                          offset: Offset(0, 4),
+                        )
+                      ],
+                      borderRadius: const BorderRadius.all(Radius.circular(50)),
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            onTap: () {
+                              if (MediaQuery.of(context).viewInsets.bottom ==
+                                  0) {
+                                if (_scrollController.position.maxScrollExtent -
+                                        _scrollController.offset <=
+                                    300) {
+                                  Future.delayed(
+                                      const Duration(milliseconds: 500), () {
+                                    _scrollController.jumpTo(_scrollController
+                                        .position.maxScrollExtent);
+                                  });
+                                }
+                              }
+                            },
+                            controller: messageController,
+                            onEditingComplete: sendMessage,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.w500),
+                              contentPadding: const EdgeInsets.all(20),
+                              border: InputBorder.none,
+                              hintText: 'Escriba un mensaje...',
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                            color: Theme.of(context).primaryColor,
+                            onPressed: sendMessage,
+                            icon: const Icon(Icons.send))
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
