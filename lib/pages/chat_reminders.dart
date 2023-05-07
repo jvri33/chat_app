@@ -33,7 +33,6 @@ class _ChatState extends State<Chat> {
     _intentClassifier = IntentClassifier();
     _entityClassifier = Classifier();
     _responseGenerator = Respuesta();
-
   }
 
   Future<void> getMessages() async {
@@ -54,11 +53,10 @@ class _ChatState extends State<Chat> {
         }
         //messages.add(Message("", true, messageController.text));
         saveMessageController.createItem(messageController.text, 1);
-        Future<String> respuesta;
+
         if (intentPrediction[intentPrediction.length - 1] == "1") {
           /*prediction =
               _entityClassifier.classify(messageController.text);*/
-             
 
           /*messages.add(Message(intentPrediction, false, messageController.text,
               entities: _entityClassifier.classify(messageController.text)));*/
@@ -70,12 +68,13 @@ class _ChatState extends State<Chat> {
             messageController.text,
           ));*/
 
-          
-         respuesta =  _responseGenerator.getResponse(intentPrediction,_entityClassifier.classify(messageController.text));
-        //await saveMessageController.createItem(respuesta, 0);
+        await _responseGenerator.getResponse(
+            intentPrediction,
+            _entityClassifier.classify(messageController.text),
+            messageController.text);
       }
     }
-    
+
     await jumpToEnd2();
     setState(() {
       messageController.clear();

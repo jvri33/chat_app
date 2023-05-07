@@ -32,10 +32,9 @@ class _MessageState extends State<Message> {
       ret = "${str[0]} ";
       ret += (Extractor(widget.entities).hora().toString());
       Reminder reminder = Reminder();
-      reminder.createItem(ret);
+      //reminder.createItem(ret);
       reminder.delete();
       //print(path);
-      
 
       //print("ahora ")
     }
