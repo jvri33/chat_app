@@ -9,18 +9,16 @@ class Extractor {
   }
 
   bool isNumeric(String s) {
-    if (s == null) {
-      return false;
-    }
+
     return double.tryParse(s) != null;
   }
 
   TimeOfDay hora() {
-    TimeOfDay ret = TimeOfDay(hour: 0, minute: 0);
+    TimeOfDay ret = const TimeOfDay(hour: 0, minute: 0);
     for (int i = 0; i < entities.length; i++) {
       if (entities[i][2] == "TIME") {
-        print("time");
-        print(entities[i][0]);
+        //print("time");
+        //print(entities[i][0]);
         if (isNumeric(entities[i][0])) {
           int hora = int.parse(entities[i][0].toString());
           ret = TimeOfDay(hour: hora, minute: 0);
@@ -47,7 +45,7 @@ class Extractor {
 
           if (iweekday < actual) {
             dif = 7 - actual + iweekday;
-            print("entra aqui");
+            //print("entra aqui");
           }
           if (actual < iweekday) {
             dif = iweekday - actual;

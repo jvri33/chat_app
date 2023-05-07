@@ -1,10 +1,10 @@
 import 'package:chat_app/controllers/saved_message.dart';
+import 'package:chat_app/utils/respuestas.dart';
 import 'package:chat_app/widgets/saved_message_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import '../widgets/message.dart';
-
 import 'package:chat_app/classifiers/intent_classifier.dart';
 import 'package:chat_app/classifiers/entity_classifier.dart';
 
@@ -17,9 +17,10 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
   int init = 0;
+  late Respuesta _responseGenerator;
   late IntentClassifier _intentClassifier;
   late Classifier _entityClassifier;
-  late String prediction = "";
+  late List<String> prediction = [];
   late String intentPrediction = "";
   List<Message> messages = [];
   SavedMessage saveMessageController = SavedMessage();
@@ -31,6 +32,8 @@ class _ChatState extends State<Chat> {
     super.initState();
     _intentClassifier = IntentClassifier();
     _entityClassifier = Classifier();
+    _responseGenerator = Respuesta();
+
   }
 
   Future<void> getMessages() async {
@@ -45,16 +48,18 @@ class _ChatState extends State<Chat> {
         intentPrediction = _intentClassifier.classify(messageController.text);
         if (intentPrediction == "") {
           intentPrediction = "No se ha entendido";
-          prediction = "";
+          //prediction = "";
         } else {
-          prediction = "";
+          //prediction = "";
         }
         //messages.add(Message("", true, messageController.text));
         saveMessageController.createItem(messageController.text, 1);
-
+        Future<String> respuesta;
         if (intentPrediction[intentPrediction.length - 1] == "1") {
-          prediction =
-              _entityClassifier.classify(messageController.text).toString();
+          /*prediction =
+              _entityClassifier.classify(messageController.text);*/
+             
+
           /*messages.add(Message(intentPrediction, false, messageController.text,
               entities: _entityClassifier.classify(messageController.text)));*/
           //NO CREAR AQUÍ EL MENSAJE, CREARLO EN EL MESSAGE
@@ -65,9 +70,12 @@ class _ChatState extends State<Chat> {
             messageController.text,
           ));*/
 
-        await saveMessageController.createItem(intentPrediction, 0);
+          
+         respuesta =  _responseGenerator.getResponse(intentPrediction,_entityClassifier.classify(messageController.text));
+        //await saveMessageController.createItem(respuesta, 0);
       }
     }
+    
     await jumpToEnd2();
     setState(() {
       messageController.clear();
@@ -125,6 +133,7 @@ class _ChatState extends State<Chat> {
           leading: const BackButton(),
         ),
         body: Container(
+          //padding: EdgeInsets.only(top: 10),
           decoration: const BoxDecoration(
               gradient: LinearGradient(
             colors: [Color(0xff77ddf2), Color(0xff77f7aa)],
@@ -178,13 +187,13 @@ class _ChatState extends State<Chat> {
                           color: Colors.black.withOpacity(0.25),
                           spreadRadius: 0,
                           blurRadius: 2,
-                          offset: Offset(0, -2),
+                          offset: const Offset(0, -2),
                         ),
                         BoxShadow(
                           color: Colors.black.withOpacity(0.25),
                           spreadRadius: 0,
                           blurRadius: 4,
-                          offset: Offset(0, 4),
+                          offset: const Offset(0, 4),
                         )
                       ],
                       borderRadius: const BorderRadius.all(Radius.circular(50)),

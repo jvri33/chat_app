@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:tflite_flutter/tflite_flutter.dart';
@@ -25,7 +23,7 @@ class IntentClassifier {
 
   void _loadModel() async {
     _interpreter = await Interpreter.fromAsset(_modelFile);
-    print('Loaded succesfully!');
+    //print('Loaded succesfully!');
   }
 
   void _loadDictionary() async {
@@ -33,15 +31,13 @@ class IntentClassifier {
     Map<String, int> jsonMap = Map<String, int>.from(jsonDecode(vocab));
 
     _dict = jsonMap;
-    print(_dict);
+    //print(_dict);
   }
 
   String classify(txt) {
-    List<String> txtsep = txt.split(" ");
-
     List<List<double>> input = tokenizar(txt);
-    //padding seguro
-    print(input);
+    
+    //print(input);
 
     List<List<double>> output = [
       [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
@@ -59,7 +55,7 @@ class IntentClassifier {
       "CALENDAR0"
     ];
     String ret = "";
-    print(output);
+    //print(output);
     for (int k = 0; k < output.length; k++) {
       for (int i = 0; i < output[k].length; i++) {
         if (output[k][i] > 0.9) {
@@ -67,7 +63,7 @@ class IntentClassifier {
         }
       }
     }
-    print("ret: $ret");
+    //print("ret: $ret");
     return ret;
   }
 

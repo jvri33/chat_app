@@ -1,7 +1,6 @@
 import 'package:chat_app/sql_helper.dart';
 
 class SavedMessage {
-  @override
   Future<String> createItem(String s, int n) async {
     await SQLHelper.createMessage(s, n);
     return ("Created succesfully");
@@ -10,8 +9,8 @@ class SavedMessage {
   dynamic getItems() async {
     final data = await SQLHelper.getMessages();
     //print("type ${data.asMap().runtimeType}");
-    var keys = data.asMap().keys.toList();
-    print("keys: ${keys}");
+   // var keys = data.asMap().keys.toList();
+   // print("keys: ${keys}");
     //print(data[keys[0]]);
     return (data);
   }

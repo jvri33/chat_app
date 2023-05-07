@@ -2,11 +2,13 @@ import 'package:chat_app/utils/extractor.dart';
 import 'package:chat_app/controllers/reminder.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class Message extends StatefulWidget {
   String intentPrediction;
   bool user;
   List entities;
   String message;
+  // ignore: use_key_in_widget_constructors
   Message(this.intentPrediction, this.user, this.message,
       {this.entities = const []});
 
@@ -33,7 +35,7 @@ class _MessageState extends State<Message> {
       reminder.createItem(ret);
       reminder.delete();
       //print(path);
-      final alldata = await reminder.getItems();
+      
 
       //print("ahora ")
     }
@@ -61,7 +63,7 @@ class _MessageState extends State<Message> {
                   ? Text(widget.message)
                   : Column(
                       children: [
-                        Text("${widget.intentPrediction}"),
+                        Text(widget.intentPrediction),
                         FutureBuilder(
                             future: checkIntent(),
                             builder: (context, snapshot) {
@@ -70,7 +72,7 @@ class _MessageState extends State<Message> {
                               } else if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
                               } else {
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               }
                             }),
                         //Text(checkIntent()) //Text("${widget.entities} "),

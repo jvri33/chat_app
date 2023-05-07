@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/widgets.dart';
-import 'settingsPage.dart';
+import 'settings_page.dart';
 import 'chat_reminders.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,13 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.settings))
         ],
         centerTitle: true,
-        title: Text("ChatHub"),
+        title: const Text("ChatHub"),
       ),
       body: ElevatedButton(
         onPressed: () {
           nextScreen(context, const Chat());
         },
-        child: Text("Botón"),
+        child: const Text("Botón"),
       ),
     );
   }
