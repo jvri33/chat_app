@@ -1,10 +1,11 @@
 import 'package:chat_app/controllers/saved_message.dart';
 import 'package:chat_app/utils/respuestas.dart';
+import 'package:chat_app/widgets/reminder_widget.dart';
 import 'package:chat_app/widgets/saved_message_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import '../widgets/message.dart';
+
 import 'package:chat_app/classifiers/intent_classifier.dart';
 import 'package:chat_app/classifiers/entity_classifier.dart';
 
@@ -22,7 +23,7 @@ class _ChatState extends State<Chat> {
   late Classifier _entityClassifier;
   late List<String> prediction = [];
   late String intentPrediction = "";
-  List<Message> messages = [];
+
   SavedMessage saveMessageController = SavedMessage();
   late List<Map<String, dynamic>> savedMessages = [];
   final messageController = TextEditingController();
@@ -42,31 +43,14 @@ class _ChatState extends State<Chat> {
 
   void sendMessage() async {
     if (messageController.text != "") {
-      messages.clear();
       if (messageController.text.isNotEmpty) {
         intentPrediction = _intentClassifier.classify(messageController.text);
         if (intentPrediction == "") {
           intentPrediction = "No se ha entendido";
           //prediction = "";
-        } else {
-          //prediction = "";
         }
-        //messages.add(Message("", true, messageController.text));
-        saveMessageController.createItem(messageController.text, 1);
 
-        if (intentPrediction[intentPrediction.length - 1] == "1") {
-          /*prediction =
-              _entityClassifier.classify(messageController.text);*/
-
-          /*messages.add(Message(intentPrediction, false, messageController.text,
-              entities: _entityClassifier.classify(messageController.text)));*/
-          //NO CREAR AQUÍ EL MENSAJE, CREARLO EN EL MESSAGE
-        }
-        /*messages.add(Message(
-            intentPrediction,
-            false,
-            messageController.text,
-          ));*/
+        saveMessageController.createItem(messageController.text, 1, "m");
 
         await _responseGenerator.getResponse(
             intentPrediction,
@@ -151,20 +135,14 @@ class _ChatState extends State<Chat> {
                         itemCount: savedMessages.asMap().keys.toList().length,
                         itemBuilder: (BuildContext context, int index) {
                           var keys = savedMessages.asMap().keys.toList();
-                          if (index ==
-                              savedMessages.asMap().keys.toList().length - 1) {
-                            if (messages.isEmpty) {
-                              return SavedMessageWidget(
-                                savedMessages[keys[index]]['user'],
-                                savedMessages[keys[index]]['message'],
-                              );
-                            } else {
-                              return Message(messages[1].intentPrediction,
-                                  messages[1].user, messages[1].message,
-                                  entities: messages[1].entities);
-                            }
-                          } else {
+
+                          if (savedMessages[keys[index]]['type'] == 'm') {
                             return SavedMessageWidget(
+                              savedMessages[keys[index]]['user'],
+                              savedMessages[keys[index]]['message'],
+                            );
+                          } else {
+                            return ReminderWidget(
                               savedMessages[keys[index]]['user'],
                               savedMessages[keys[index]]['message'],
                             );

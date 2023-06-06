@@ -2,8 +2,10 @@ import 'package:chat_app/sql_helper.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Reminder {
-  Future<int> createItem(String s, DateTime d) async {
-    return (await SQLHelper.createReminder(s, d, 0, 0, ""));
+  Future<int> createItem(
+      String s, DateTime d, int r, int so, String da, String h) async {
+    return (await SQLHelper.createReminder(
+        s, (d.toString().split(" "))[0], r, so, da, h));
     //return ("Created succesfully");
   }
 
@@ -21,6 +23,8 @@ class Reminder {
     // ignore: unused_local_variable
     final appDir = await getApplicationDocumentsDirectory();
 
-    //SQLHelper.deleteDatabase("${appDir.path}/databases/dbchat.db");
+    print("delte");
+
+    SQLHelper.deleteDatabase("${appDir.path}/databases/dbchat.db");
   }
 }

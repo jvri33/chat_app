@@ -6,7 +6,8 @@ class SQLHelper {
     await database.execute("""CREATE TABLE reminders(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       description TEXT,
-      date DATETIME,
+      date TEXT,
+      time TEXT,
       repeat BIT,
       sound BIT,
       days JSON
@@ -14,7 +15,8 @@ class SQLHelper {
     await database.execute("""CREATE TABLE messages_rem(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       message TEXT,
-      user BIT
+      user BIT,
+      type TEXT
     );""");
   }
 
@@ -30,15 +32,17 @@ class SQLHelper {
 
   static Future<String> getPath() => getDatabasesPath();
 
-  static Future<int> createReminder(String? description, DateTime? date,
-      int? repeat, int? sound, String? days) async {
+  static Future<int> createReminder(String? description, String? date,
+      int? repeat, int? sound, String? days, String? time) async {
     final db = await SQLHelper.db();
+
     final data = {
       'description': description,
       'date': date,
       'repeat': repeat,
       'sound': sound,
-      'days': days
+      'days': days,
+      'time': time
     };
     final id = await db.insert('reminders', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
@@ -46,9 +50,10 @@ class SQLHelper {
     return id;
   }
 
-  static Future<int> createMessage(String message, int user) async {
+  static Future<int> createMessage(
+      String message, int user, String type) async {
     final db = await SQLHelper.db();
-    final data = {'message': message, 'user': user};
+    final data = {'message': message, 'user': user, 'type': type};
     final id = await db.insert('messages_rem', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
     return id;
