@@ -31,7 +31,7 @@ class Respuesta {
         await reminder.createItem(i3, d, 0, 0, "", "");
 
         ret2 =
-            "$i3/${d.toString().split(" ")[0]}/${0}/${0}/${"days"}/${"time"}";
+            "$i3/${d.toString().split(" ")[0]}/${0}/${0}/${"days"}/${"00:00"}";
 
         //ESTO ES LO QUE DEVUELVE EL METODO DE CREAR
 

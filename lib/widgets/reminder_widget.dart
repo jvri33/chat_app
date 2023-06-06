@@ -1,3 +1,7 @@
+import 'package:chat_app/widgets/date.dart';
+import 'package:chat_app/widgets/repeticion.dart';
+import 'package:chat_app/widgets/sound.dart';
+import 'package:chat_app/widgets/time.dart';
 import 'package:flutter/material.dart';
 
 class ReminderWidget extends StatelessWidget {
@@ -20,7 +24,7 @@ class ReminderWidget extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(
           minWidth: 75.0,
-          maxWidth: 300.0,
+          maxWidth: 320.0,
         ),
         child: Card(
             margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5.0),
@@ -43,27 +47,49 @@ class ReminderWidget extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
                 child: Column(
                   children: [
-                    Text(variables.toString(),
+                    Text(
+                        "Se ha creado un recordatorio el día X a las X, deseas modificarlo?",
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: user == 1
                                 ? Theme.of(context).primaryColor
                                 : Colors.white)),
-                    Row(
-                      children: [
-                        Text("Día: ${variables[1]}"),
-                        Text("Hora  ${variables[4]}")
-                      ],
+                    Container(
+                      margin: const EdgeInsets.only(left: 20.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              DateWidget(date: variables[1]),
+                              TimeWidget(time: variables[5])
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SoundWidget(sound: int.parse(variables[2])),
+                              RepeatWidget(repeat: int.parse(variables[3])),
+                            ],
+                          ),
+                          Row(children: [
+                            Text("Nombre: ${variables[0]}",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white))
+                          ]),
+                          Align(
+                              alignment: Alignment.bottomRight,
+                              child: IconButton(
+                                constraints: BoxConstraints(),
+                                padding: const EdgeInsets.only(left: 10),
+                                onPressed: () {},
+                                icon: Icon(Icons.check),
+                                color: Colors.white,
+                              ))
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Flexible(child: Text("Sonido: ${variables[2]}")),
-                        Flexible(child: Text("Nombre: ${variables[0]}"))
-                      ],
-                    ),
-                    Text("Repetición: ${variables[3]}"),
-                    IconButton(onPressed: null, icon: Icon(Icons.check))
                   ],
                 ))),
       ),
