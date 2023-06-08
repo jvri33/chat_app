@@ -14,4 +14,9 @@ class SavedMessage {
     //print(data[keys[0]]);
     return (data);
   }
+
+  void updateMessage(String mes, int id) async {
+    print("updating");
+    SQLHelper.updateMessage(mes, id);
+  }
 }

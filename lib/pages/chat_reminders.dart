@@ -145,6 +145,7 @@ class _ChatState extends State<Chat> {
                             return ReminderWidget(
                               savedMessages[keys[index]]['user'],
                               savedMessages[keys[index]]['message'],
+                              savedMessages[keys[index]]['id'],
                             );
                           }
                         });

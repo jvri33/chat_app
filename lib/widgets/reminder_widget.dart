@@ -7,13 +7,15 @@ import 'package:flutter/material.dart';
 class ReminderWidget extends StatelessWidget {
   final int user;
   final String message;
+  final int id;
 
   // ignore: use_key_in_widget_constructors
-  ReminderWidget(
-    this.user,
-    this.message,
-  );
+  ReminderWidget(this.user, this.message, this.id);
   late List<String> variables = message.split("/");
+
+  set setFecha(String f) {
+    variables[1] = f;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,8 @@ class ReminderWidget extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              DateWidget(date: variables[1]),
+                              DateWidget(
+                                  date: variables[1], id: id, message: message),
                               TimeWidget(time: variables[5])
                             ],
                           ),

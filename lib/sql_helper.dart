@@ -91,6 +91,12 @@ class SQLHelper {
     return result;
   }
 
+  static void updateMessage(String mes, int id) async {
+    final db = await SQLHelper.db();
+    final data = {'message': mes};
+    await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
+  }
+
   static Future<void> deleteReminder(int id) async {
     final db = await SQLHelper.db();
     try {
