@@ -91,9 +91,15 @@ class SQLHelper {
     return result;
   }
 
-  static void updateMessage(String mes, int id) async {
+  static void updateMessageDate(String mes, int id) async {
     final db = await SQLHelper.db();
     final data = {'message': mes};
+    await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
+  }
+
+  static void updateMessageTime(String time, int id) async {
+    final db = await SQLHelper.db();
+    final data = {'message': time};
     await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
   }
 

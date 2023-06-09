@@ -65,7 +65,8 @@ class ReminderWidget extends StatelessWidget {
                             children: [
                               DateWidget(
                                   date: variables[1], id: id, message: message),
-                              TimeWidget(time: variables[5])
+                              TimeWidget(
+                                  time: variables[5], id: id, message: message)
                             ],
                           ),
                           Row(

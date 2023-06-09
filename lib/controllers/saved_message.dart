@@ -15,8 +15,13 @@ class SavedMessage {
     return (data);
   }
 
-  void updateMessage(String mes, int id) async {
+  void updateMessageDate(String mes, int id) async {
     print("updating");
-    SQLHelper.updateMessage(mes, id);
+    SQLHelper.updateMessageDate(mes, id);
+  }
+
+  void updateMessageTime(String time, int id) async {
+    print("updating");
+    SQLHelper.updateMessageTime(time, id);
   }
 }

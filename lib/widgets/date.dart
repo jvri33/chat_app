@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+// ignore: must_be_immutable
 class DateWidget extends StatefulWidget {
   String date;
   int id;
@@ -21,10 +22,10 @@ class _DateWidgetState extends State<DateWidget> {
   Widget build(BuildContext context) {
     return Row(children: [
       Text("Día: ${widget.date}",
-          style: TextStyle(
+          style: const TextStyle(
               fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white)),
       IconButton(
-          constraints: BoxConstraints(),
+          constraints: const BoxConstraints(),
           padding: const EdgeInsets.only(left: 10),
           onPressed: () async {
             DateTime? picketDate = await showDatePicker(
@@ -42,16 +43,12 @@ class _DateWidgetState extends State<DateWidget> {
 
                 String messSt = mess.join("/");
 
-                print(widget.id);
-                print(messSt);
-                print(widget.message);
-
                 SavedMessage s = SavedMessage();
-                s.updateMessage(messSt, widget.id);
+                s.updateMessageDate(messSt, widget.id);
               });
             }
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.edit_outlined,
             color: Colors.white,
           ))
