@@ -91,7 +91,7 @@ class SQLHelper {
     return result;
   }
 
-  static void updateMessageDate(String mes, int id) async {
+  static Future<void> updateMessageDate(String mes, int id) async {
     final db = await SQLHelper.db();
     final data = {'message': mes};
     await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
@@ -100,6 +100,18 @@ class SQLHelper {
   static void updateMessageTime(String time, int id) async {
     final db = await SQLHelper.db();
     final data = {'message': time};
+    await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
+  }
+
+  static void updateMessageSound(String s, int id) async {
+    final db = await SQLHelper.db();
+    final data = {'message': s};
+    await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
+  }
+
+  static void updateMessageRepeat(String s, int id) async {
+    final db = await SQLHelper.db();
+    final data = {'message': s};
     await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
   }
 

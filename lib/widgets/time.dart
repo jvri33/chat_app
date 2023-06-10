@@ -19,7 +19,7 @@ class _TimeWidgetState extends State<TimeWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      Text("Día: ${widget.time}",
+      Text("Hora: ${widget.time}",
           style: const TextStyle(
               fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white)),
       IconButton(

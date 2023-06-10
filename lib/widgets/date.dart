@@ -1,9 +1,5 @@
 import 'package:chat_app/controllers/saved_message.dart';
-import 'package:chat_app/widgets/reminder_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 // ignore: must_be_immutable
 class DateWidget extends StatefulWidget {

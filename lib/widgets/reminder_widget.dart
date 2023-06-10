@@ -61,27 +61,48 @@ class ReminderWidget extends StatelessWidget {
                       margin: const EdgeInsets.only(left: 20.0),
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              DateWidget(
-                                  date: variables[1], id: id, message: message),
-                              TimeWidget(
-                                  time: variables[5], id: id, message: message)
-                            ],
+                          Container(
+                            margin: EdgeInsets.only(right: 8, top: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                DateWidget(
+                                    date: variables[1],
+                                    id: id,
+                                    message: message),
+                                TimeWidget(
+                                    time: variables[5],
+                                    id: id,
+                                    message: message)
+                              ],
+                            ),
                           ),
-                          Row(
-                            children: [
-                              SoundWidget(sound: int.parse(variables[2])),
-                              RepeatWidget(repeat: int.parse(variables[3])),
-                            ],
+                          Container(
+                            margin: EdgeInsets.only(right: 17, top: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SoundWidget(
+                                    sound: int.parse(variables[2]),
+                                    id: id,
+                                    message: message),
+                                RepeatWidget(
+                                    repeat: int.parse(variables[3]),
+                                    id: id,
+                                    message: message),
+                              ],
+                            ),
                           ),
-                          Row(children: [
-                            Text("Nombre: ${variables[0]}",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white))
-                          ]),
+                          Container(
+                            margin: EdgeInsets.only(right: 8, top: 8),
+                            child: Row(children: [
+                              Text("Nombre: ${variables[0]}",
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white))
+                            ]),
+                          ),
                           Align(
                               alignment: Alignment.bottomRight,
                               child: IconButton(
