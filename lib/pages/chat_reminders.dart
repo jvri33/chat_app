@@ -1,5 +1,6 @@
 import 'package:chat_app/controllers/saved_message.dart';
 import 'package:chat_app/utils/respuestas.dart';
+import 'package:chat_app/widgets/calendario.dart';
 import 'package:chat_app/widgets/reminder_widget.dart';
 import 'package:chat_app/widgets/saved_message_widget.dart';
 import 'package:flutter/material.dart';
@@ -141,12 +142,14 @@ class _ChatState extends State<Chat> {
                               savedMessages[keys[index]]['user'],
                               savedMessages[keys[index]]['message'],
                             );
-                          } else {
+                          } else if (savedMessages[keys[index]]['type'] == 'w'){
                             return ReminderWidget(
                               savedMessages[keys[index]]['user'],
                               savedMessages[keys[index]]['message'],
                               savedMessages[keys[index]]['id'],
                             );
+                          }else if(savedMessages[keys[index]]['type'] == 'c'){
+                            return Calendario();
                           }
                         });
                   },

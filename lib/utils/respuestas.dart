@@ -9,6 +9,10 @@ class Respuesta {
     //i1 = Intent
     //i2 = entities
     //i3 = message
+
+    //Reminder delete = Reminder();
+    //delete.delete();
+
     print(i1);
     print(i2);
     print(i3);
@@ -28,15 +32,20 @@ class Respuesta {
 
         Reminder reminder = Reminder();
 
-        await reminder.createItem(i3, d, 0, 0, "", "");
+        int reminderId = await reminder.createItem(i3, d, 0, 0, "", "");
 
         ret2 =
-            "$i3/${d.toString().split(" ")[0]}/${0}/${0}/${"days"}/${"00:00"}";
+            "$i3/${d.toString().split(" ")[0]}/${0}/${0}/${"days"}/${"00:00"}/$reminderId";
 
         //ESTO ES LO QUE DEVUELVE EL METODO DE CREAR
 
         //reminder.delete();
       }
+    }
+
+    if(i1 == "CALENDAR0"){
+      d = "c";
+      print("calendar intent");
     }
 
     //print(i2.isNotEmpty);

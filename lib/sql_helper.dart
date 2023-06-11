@@ -74,8 +74,8 @@ class SQLHelper {
     return db.query('reminders', where: 'id=?', whereArgs: [id], limit: 1);
   }
 
-  static Future<int> updateReminder(int id, String? description, DateTime? date,
-      int? repeat, int? sound, String? days) async {
+  static Future<int> updateReminder(int id,String? description, String? date,
+      int? repeat, int? sound, String? days, String? time) async {
     final db = await SQLHelper.db();
 
     final data = {
@@ -83,7 +83,8 @@ class SQLHelper {
       'date': date,
       'repeat': repeat,
       'sound': sound,
-      'days': days
+      'days': days,
+      'time': time
     };
 
     final result =

@@ -9,8 +9,14 @@ class Reminder {
     //return ("Created succesfully");
   }
 
-  dynamic getItems() async {
-    final data = await SQLHelper.getReminders();
+  void updateReminder(int id, String s, String d, int r, int so, String da, String h) async{
+    await SQLHelper.updateReminder(id, s, d, r, so, da, h);
+  }
+
+  Future<String> getItems() async {
+    final String data = await SQLHelper.getReminders().toString();
+
+    print(data);
     return (data);
   }
 

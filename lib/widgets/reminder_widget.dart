@@ -3,7 +3,8 @@ import 'package:chat_app/widgets/repeticion.dart';
 import 'package:chat_app/widgets/sound.dart';
 import 'package:chat_app/widgets/time.dart';
 import 'package:flutter/material.dart';
-
+import '../controllers/reminder.dart';
+// ignore: must_be_immutable
 class ReminderWidget extends StatelessWidget {
   final int user;
   final String message;
@@ -62,7 +63,7 @@ class ReminderWidget extends StatelessWidget {
                       child: Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(right: 8, top: 8),
+                            margin: const EdgeInsets.only(right: 8, top: 8),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -78,7 +79,7 @@ class ReminderWidget extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(right: 17, top: 8),
+                            margin: const EdgeInsets.only(right: 17, top: 8),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -94,7 +95,7 @@ class ReminderWidget extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(right: 8, top: 8),
+                            margin: const EdgeInsets.only(right: 8, top: 8),
                             child: Row(children: [
                               Text("Nombre: ${variables[0]}",
                                   style: const TextStyle(
@@ -106,10 +107,13 @@ class ReminderWidget extends StatelessWidget {
                           Align(
                               alignment: Alignment.bottomRight,
                               child: IconButton(
-                                constraints: BoxConstraints(),
+                                constraints: const BoxConstraints(),
                                 padding: const EdgeInsets.only(left: 10),
-                                onPressed: () {},
-                                icon: Icon(Icons.check),
+                                onPressed: () {
+                                                                    
+                                 Reminder rem = Reminder();
+                                 rem.updateReminder(id, variables[0], variables[1], int.parse(variables[3]),int.parse(variables[2]) , "days", variables[5]);},
+                                icon: const Icon(Icons.check),
                                 color: Colors.white,
                               ))
                         ],
