@@ -35,4 +35,8 @@ class SavedMessage {
     print("updating");
     SQLHelper.updateMessageRepeat(s, id);
   }
+
+  Future<void> updateMessage(String mess, id, String type) async {
+    SQLHelper.updateMessageMess(mess, id, type);
+  }
 }

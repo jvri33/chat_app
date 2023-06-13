@@ -1,17 +1,21 @@
+import 'package:chat_app/controllers/saved_message.dart';
 import 'package:chat_app/widgets/date.dart';
 import 'package:chat_app/widgets/repeticion.dart';
 import 'package:chat_app/widgets/sound.dart';
 import 'package:chat_app/widgets/time.dart';
 import 'package:flutter/material.dart';
 import '../controllers/reminder.dart';
+
 // ignore: must_be_immutable
 class ReminderWidget extends StatelessWidget {
   final int user;
-  final String message;
+  String message;
   final int id;
+  bool state = false;
 
-  // ignore: use_key_in_widget_constructors
-  ReminderWidget(this.user, this.message, this.id);
+  ReminderWidget(this.user, this.message, this.id) {}
+
+  //Se ha creado?
   late List<String> variables = message.split("/");
 
   set setFecha(String f) {
@@ -48,79 +52,107 @@ class ReminderWidget extends StatelessWidget {
             child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
-                child: Column(
-                  children: [
-                    Text(
-                        "Se ha creado un recordatorio el día X a las X, deseas modificarlo?",
+                child: state == false
+                    ? Column(
+                        children: [
+                          Text(
+                              "Se ha creado un recordatorio el día X a las X, deseas modificarlo?",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: user == 1
+                                      ? Theme.of(context).primaryColor
+                                      : Colors.white)),
+                          Container(
+                            margin: const EdgeInsets.only(left: 20.0),
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(right: 8, top: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      DateWidget(
+                                          date: variables[1],
+                                          id: id,
+                                          message: message),
+                                      TimeWidget(
+                                          time: variables[5],
+                                          id: id,
+                                          message: message)
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(right: 17, top: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SoundWidget(
+                                          sound: int.parse(variables[2]),
+                                          id: id,
+                                          message: message),
+                                      RepeatWidget(
+                                          repeat: int.parse(variables[3]),
+                                          id: id,
+                                          message: message),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(right: 8, top: 8),
+                                  child: Row(children: [
+                                    SizedBox(
+                                      width: 230,
+                                      child: Text("Nombre: ${variables[0]}",
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white)),
+                                    )
+                                  ]),
+                                ),
+                                Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: IconButton(
+                                      constraints: const BoxConstraints(),
+                                      padding: const EdgeInsets.only(left: 10),
+                                      onPressed: () async {
+                                        Reminder rem = Reminder();
+                                        rem.createItem(
+                                            variables[0],
+                                            variables[1],
+                                            int.parse(variables[3]),
+                                            int.parse(variables[2]),
+                                            "days",
+                                            variables[5]);
+
+                                        SavedMessage s = SavedMessage();
+
+                                        message =
+                                            "Se ha creado el recordatorio correctamente";
+                                        await s.updateMessage(message, id, "m");
+                                      },
+                                      icon: const Icon(Icons.check),
+                                      color: Colors.white,
+                                    ))
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    : Text(message,
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: user == 1
                                 ? Theme.of(context).primaryColor
-                                : Colors.white)),
-                    Container(
-                      margin: const EdgeInsets.only(left: 20.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(right: 8, top: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                DateWidget(
-                                    date: variables[1],
-                                    id: id,
-                                    message: message),
-                                TimeWidget(
-                                    time: variables[5],
-                                    id: id,
-                                    message: message)
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(right: 17, top: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SoundWidget(
-                                    sound: int.parse(variables[2]),
-                                    id: id,
-                                    message: message),
-                                RepeatWidget(
-                                    repeat: int.parse(variables[3]),
-                                    id: id,
-                                    message: message),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(right: 8, top: 8),
-                            child: Row(children: [
-                              Text("Nombre: ${variables[0]}",
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white))
-                            ]),
-                          ),
-                          Align(
-                              alignment: Alignment.bottomRight,
-                              child: IconButton(
-                                constraints: const BoxConstraints(),
-                                padding: const EdgeInsets.only(left: 10),
-                                onPressed: () {
-                                                                    
-                                 Reminder rem = Reminder();
-                                 rem.updateReminder(id, variables[0], variables[1], int.parse(variables[3]),int.parse(variables[2]) , "days", variables[5]);},
-                                icon: const Icon(Icons.check),
-                                color: Colors.white,
-                              ))
-                        ],
-                      ),
-                    ),
-                  ],
-                ))),
+                                : Colors.white)))),
       ),
     );
   }

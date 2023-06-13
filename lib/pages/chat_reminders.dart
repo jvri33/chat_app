@@ -68,23 +68,26 @@ class _ChatState extends State<Chat> {
 
   Future<void> jumpToEnd() async {
     await getMessages();
+
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent + 30);
+      print("jump to end init");
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
   }
 
   Future<void> jumpToEnd2() async {
     await getMessages();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      _scrollController
+          .jumpTo(_scrollController.position.maxScrollExtent + 220);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     if (init == 0) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        jumpToEnd();
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await jumpToEnd();
         init++;
       });
     }
@@ -142,14 +145,18 @@ class _ChatState extends State<Chat> {
                               savedMessages[keys[index]]['user'],
                               savedMessages[keys[index]]['message'],
                             );
-                          } else if (savedMessages[keys[index]]['type'] == 'w'){
+                          } else if (savedMessages[keys[index]]['type'] ==
+                              'w') {
                             return ReminderWidget(
                               savedMessages[keys[index]]['user'],
                               savedMessages[keys[index]]['message'],
                               savedMessages[keys[index]]['id'],
                             );
-                          }else if(savedMessages[keys[index]]['type'] == 'c'){
+                          } else if (savedMessages[keys[index]]['type'] ==
+                              'c') {
                             return Calendario();
+                          } else {
+                            return Text("Error");
                           }
                         });
                   },

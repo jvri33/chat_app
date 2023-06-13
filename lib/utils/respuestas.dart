@@ -10,6 +10,7 @@ class Respuesta {
     //i2 = entities
     //i3 = message
 
+    //
     //Reminder delete = Reminder();
     //delete.delete();
 
@@ -17,40 +18,46 @@ class Respuesta {
     print(i2);
     print(i3);
     var ret2;
-    String d = "m";
+    String dig = "m";
     SavedMessage saveMessageController = SavedMessage();
 
     //COMPROBAMOS LA INTECION
 
     if (i1 == "REMINDER1") {
-      d = "w";
+      dig = "w";
       //MIRAMOS SI TIENE ENTIDADES
       if (i2 != "[]") {
         List<String> str = (Extractor(i2).fecha()).toString().split(" ");
 
         DateTime d = DateTime.parse(str[0]);
 
-        Reminder reminder = Reminder();
+        if (d.isBefore(DateTime.now())) {
+          dig = "m";
+          ret2 = "No se pueden crear recordatorio en el pasado";
+        } else {
+          Reminder reminder = Reminder();
 
-        int reminderId = await reminder.createItem(i3, d, 0, 0, "", "");
+          //int reminderId = await reminder.createItem(i3, d, 0, 0, "", "");
 
-        ret2 =
-            "$i3/${d.toString().split(" ")[0]}/${0}/${0}/${"days"}/${"00:00"}/$reminderId";
+          //print(reminderId);
 
+          ret2 =
+              "$i3/${d.toString().split(" ")[0]}/${0}/${0}/${"days"}/${"00:00"}";
+        }
         //ESTO ES LO QUE DEVUELVE EL METODO DE CREAR
 
         //reminder.delete();
       }
     }
 
-    if(i1 == "CALENDAR0"){
-      d = "c";
+    if (i1 == "CALENDAR0") {
+      dig = "c";
       print("calendar intent");
     }
 
     //print(i2.isNotEmpty);
 
-    await saveMessageController.createItem(ret2.toString(), 0, d);
+    await saveMessageController.createItem(ret2.toString(), 0, dig);
     return ret2.toString();
   }
 }

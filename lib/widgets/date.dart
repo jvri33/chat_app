@@ -31,18 +31,23 @@ class _DateWidgetState extends State<DateWidget> {
                 lastDate: DateTime(2024));
 
             if (picketDate != null) {
+              picketDate.toString().split(" ")[0];
+              List<String> mess = widget.message.split("/");
+
+              mess[1] = picketDate.toString().split(" ")[0];
+
+              String messSt = mess.join("/");
+
+              SavedMessage s = SavedMessage();
+
+              print("before update");
+              await s.updateMessageDate(messSt, widget.id);
+
               setState(() {
-                picketDate.toString().split(" ")[0];
-                List<String> mess = widget.message.split("/");
-
-                mess[1] = picketDate.toString().split(" ")[0];
-
-                String messSt = mess.join("/");
-
-                SavedMessage s = SavedMessage();
-                s.updateMessageDate(messSt, widget.id);
+                print("object");
               });
             }
+            print("after update");
           },
           icon: const Icon(
             Icons.edit_outlined,

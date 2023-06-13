@@ -3,20 +3,20 @@ import 'package:path_provider/path_provider.dart';
 
 class Reminder {
   Future<int> createItem(
-      String s, DateTime d, int r, int so, String da, String h) async {
-    return (await SQLHelper.createReminder(
-        s, (d.toString().split(" "))[0], r, so, da, h));
+      String s, String d, int r, int so, String da, String h) async {
+    return (await SQLHelper.createReminder(s, d, r, so, da, h));
     //return ("Created succesfully");
   }
 
-  void updateReminder(int id, String s, String d, int r, int so, String da, String h) async{
+  void updateReminder(
+      int id, String s, String d, int r, int so, String da, String h) async {
     await SQLHelper.updateReminder(id, s, d, r, so, da, h);
   }
 
-  Future<String> getItems() async {
-    final String data = await SQLHelper.getReminders().toString();
+  dynamic getItems() async {
+    final data = await SQLHelper.getReminders();
 
-    print(data);
+    //print("get items: $data");
     return (data);
   }
 

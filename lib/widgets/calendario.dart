@@ -4,34 +4,71 @@ import '../controllers/reminder.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 class Calendario extends StatelessWidget {
-  const Calendario({super.key});
+  Calendario({super.key}) {
+    getCalendar();
+  }
+  List<List<int>> month = [];
+  late List<Map<String, dynamic>> savedReminders = [];
 
+  Future<void> getCalendar() async {
+    DateTime d = DateTime.now();
 
-  Future<String> getReminders() async {
+    int thisDays = DateUtils.getDaysInMonth(d.year, d.month);
+    int previous_days = DateUtils.getDaysInMonth(d.year, d.month - 1);
+    int future_days = DateUtils.getDaysInMonth(d.year, d.month + 1);
+    DateTime firstday = DateTime(d.year, d.month, 1);
+    //DateTime lastday = DateTime(d.year, d.month, this_days);
+
+    //print(firstday.weekday);
+    //print(lastday.weekday);
+
+    List<int> line = [0, 0, 0, 0, 0, 0, 0];
+    bool saved = false;
+    line[firstday.weekday] = 1;
+    int count = 0;
+    int start = firstday.weekday - 1;
+    for (int i = 1; i <= thisDays; i++) {
+      saved = false;
+      line[start + count] = i;
+      count++;
+
+      if (start + count == 7) {
+        print(line);
+        month.add(line);
+        line = [0, 0, 0, 0, 0, 0, 0];
+        start = 0;
+        count = 0;
+        saved = true;
+      }
+    }
+
+    if (saved == false) {
+      month.add(line);
+    }
+    print("mes: $line");
+    print("object $month");
+  }
+
+  Future<void> getReminders() async {
     Reminder r = Reminder();
-    String ret = await r.getItems();
-
-    return ret;
+    var printing = await r.getItems();
+    savedReminders = printing;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: getReminders(), builder: (BuildContext context, AsyncSnapshot<String> snapshot) { 
-      print(snapshot.connectionState);
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return CircularProgressIndicator();
-      } else if (snapshot.connectionState == ConnectionState.done) {
-        if (snapshot.hasError) {
-          return const Text('Error');
-        } else if (snapshot.hasData) {
-          return Text(snapshot.data);
-        } else {
-          return const Text('Empty data');
-        }
-      } else {
-        return Text('State: ${snapshot.connectionState}');
-      }});
-    
-    
+    return FutureBuilder(
+        future: getCalendar(),
+        builder: (context, snapshot) {
+          return Column(
+            children: [
+              Text(month[0].toString()),
+              Text(month[1].toString()),
+              Text(month[2].toString()),
+              Text(month[3].toString()),
+              Text(month[4].toString())
+            ],
+          );
+        });
   }
 }
