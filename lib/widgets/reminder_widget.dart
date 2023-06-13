@@ -7,27 +7,33 @@ import 'package:flutter/material.dart';
 import '../controllers/reminder.dart';
 
 // ignore: must_be_immutable
-class ReminderWidget extends StatelessWidget {
+class ReminderWidget extends StatefulWidget {
+  String response = "Se ha creado el siguiente borrador de recordatorio";
   final int user;
   String message;
   final int id;
   bool state = false;
-
-  ReminderWidget(this.user, this.message, this.id) {}
-
-  //Se ha creado?
-  late List<String> variables = message.split("/");
-
-  set setFecha(String f) {
-    variables[1] = f;
+  ReminderWidget(this.user, this.message, this.id) {
+    print(message);
+    if (message == "Se ha creado el recordatorio correctamente") {
+      state = true;
+    }
   }
+
+  @override
+  State<ReminderWidget> createState() => _ReminderWidgetState();
+}
+
+class _ReminderWidgetState extends State<ReminderWidget> {
+  //Se ha creado?
+  late List<String> variables = widget.message.split("/");
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(200))),
-      alignment: user == 1 ? Alignment.topRight : Alignment.topLeft,
+      alignment: widget.user == 1 ? Alignment.topRight : Alignment.topLeft,
       child: ConstrainedBox(
         constraints: const BoxConstraints(
           minWidth: 75.0,
@@ -38,29 +44,28 @@ class ReminderWidget extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(16),
-                  bottomRight: user == 0
+                  bottomRight: widget.user == 0
                       ? const Radius.circular(16)
                       : const Radius.circular(0),
                   topRight: const Radius.circular(16),
-                  bottomLeft: user == 1
+                  bottomLeft: widget.user == 1
                       ? const Radius.circular(16)
                       : const Radius.circular(0)),
             ),
-            color: user == 1
+            color: widget.user == 1
                 ? const Color.fromARGB(255, 187, 247, 223)
                 : Theme.of(context).primaryColor,
             child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
-                child: state == false
+                child: widget.state == false
                     ? Column(
                         children: [
-                          Text(
-                              "Se ha creado un recordatorio el día X a las X, deseas modificarlo?",
+                          Text(widget.response,
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
-                                  color: user == 1
+                                  color: widget.user == 1
                                       ? Theme.of(context).primaryColor
                                       : Colors.white)),
                           Container(
@@ -76,12 +81,12 @@ class ReminderWidget extends StatelessWidget {
                                     children: [
                                       DateWidget(
                                           date: variables[1],
-                                          id: id,
-                                          message: message),
+                                          id: widget.id,
+                                          message: widget.message),
                                       TimeWidget(
                                           time: variables[5],
-                                          id: id,
-                                          message: message)
+                                          id: widget.id,
+                                          message: widget.message)
                                     ],
                                   ),
                                 ),
@@ -94,12 +99,12 @@ class ReminderWidget extends StatelessWidget {
                                     children: [
                                       SoundWidget(
                                           sound: int.parse(variables[2]),
-                                          id: id,
-                                          message: message),
+                                          id: widget.id,
+                                          message: widget.message),
                                       RepeatWidget(
                                           repeat: int.parse(variables[3]),
-                                          id: id,
-                                          message: message),
+                                          id: widget.id,
+                                          message: widget.message),
                                     ],
                                   ),
                                 ),
@@ -124,7 +129,7 @@ class ReminderWidget extends StatelessWidget {
                                       padding: const EdgeInsets.only(left: 10),
                                       onPressed: () async {
                                         Reminder rem = Reminder();
-                                        rem.createItem(
+                                        await rem.createItem(
                                             variables[0],
                                             variables[1],
                                             int.parse(variables[3]),
@@ -134,9 +139,17 @@ class ReminderWidget extends StatelessWidget {
 
                                         SavedMessage s = SavedMessage();
 
-                                        message =
+                                        widget.message =
                                             "Se ha creado el recordatorio correctamente";
-                                        await s.updateMessage(message, id, "m");
+                                        await s.updateMessage(
+                                            widget.message, widget.id, "w");
+
+                                        setState(() {
+                                          widget.state = true;
+                                          widget.response =
+                                              "Se ha creado el recordatorio correctamente";
+                                          ;
+                                        });
                                       },
                                       icon: const Icon(Icons.check),
                                       color: Colors.white,
@@ -146,11 +159,11 @@ class ReminderWidget extends StatelessWidget {
                           ),
                         ],
                       )
-                    : Text(message,
+                    : Text(widget.message,
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: user == 1
+                            color: widget.user == 1
                                 ? Theme.of(context).primaryColor
                                 : Colors.white)))),
       ),

@@ -16,7 +16,7 @@ class SavedMessage {
   }
 
   Future<bool> updateMessageDate(String mes, int id) async {
-    print("updating d");
+    print("updating MessageDate Controller");
     await SQLHelper.updateMessageDate(mes, id);
     return true;
   }

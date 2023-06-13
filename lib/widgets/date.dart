@@ -44,7 +44,7 @@ class _DateWidgetState extends State<DateWidget> {
               await s.updateMessageDate(messSt, widget.id);
 
               setState(() {
-                print("object");
+                print("set object");
               });
             }
             print("after update");

@@ -8,7 +8,7 @@ class Calendario extends StatelessWidget {
   int mes = 6;
   int year = 2023;
 
-  List<String> recordatorios = [];
+  List<List<Map<String, dynamic>>> recordatorios = [];
   Reminder r = Reminder();
   Calendario({super.key}) {
     getCalendar();
@@ -51,16 +51,16 @@ class Calendario extends StatelessWidget {
       month.add(line);
     }
 
-    print("carga finalizada");
+    //print("carga finalizada");
   }
 
   void getDay(d) {
-    print(d);
+    //print(d);
   }
 
   Future<void> getReminders() async {
     Reminder r = Reminder();
-    print(mes);
+    //print(mes);
     String m;
     if (mes < 10) {
       m = "0$mes";
@@ -68,17 +68,19 @@ class Calendario extends StatelessWidget {
       m = mes.toString();
     }
 
-    List<List<Map<String, dynamic>>> recordatorios = await r.getItemsByDate(m);
+    recordatorios = await r.getItemsByDate(m);
+
+    recordatorios.insert(0, []);
 //-06-
     print("cargados recordatorios: $recordatorios");
 
     for (int i = 0; i < recordatorios.length; i++) {
       if (recordatorios[i].isNotEmpty) {
-        print(i + 1);
+        //print(i + 1);
       }
     }
 
-    print("zero  ${recordatorios[0]}");
+    //print("zero  ${recordatorios[0]}");
   }
 
   @override
@@ -150,34 +152,48 @@ class Calendario extends StatelessWidget {
                               children: List.generate(
                                 7,
                                 (index) {
-                                  print(month[i][index]);
-
                                   return SizedBox(
                                     width: 34,
                                     height: 30,
                                     child: (TextButton(
-                                        onPressed: month[i][index] >= day
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    month[i][index] == day
+                                                        ? Theme.of(context)
+                                                            .primaryColor
+                                                        : Colors.white)),
+                                        onPressed: month[i][index] > 0
                                             ? () {
                                                 getDay(month[i][index]);
                                               }
                                             : null,
-                                        child: Text(
-                                          month[i][index].toString(),
-                                          style: TextStyle(
-                                              /*decoration:
-                                                  recordatorios[month[i][index]]
-                                                          .isNotEmpty
-                                                      ? TextDecoration.underline
-                                                      : TextDecoration.none,*/
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w700,
-                                              color: month[i][index] < day &&
-                                                      month[i][index] > 0
-                                                  ? Theme.of(context)
-                                                      .primaryColor
-                                                  : month[i][index] != 0
-                                                      ? Colors.black
-                                                      : Colors.white),
+                                        child: Container(
+                                          color: month[i][index] == day
+                                              ? Theme.of(context).primaryColor
+                                              : Colors.white,
+                                          child: Text(
+                                            month[i][index].toString(),
+                                            style: TextStyle(
+                                                decoration: recordatorios
+                                                            .isNotEmpty &&
+                                                        recordatorios[month[i]
+                                                                [index]]
+                                                            .isNotEmpty
+                                                    ? TextDecoration.underline
+                                                    : TextDecoration.none,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w700,
+                                                color: month[i][index] < day &&
+                                                        month[i][index] > 0
+                                                    ? Theme.of(context)
+                                                        .primaryColor
+                                                    : month[i][index] != 0 &&
+                                                            month[i][index] !=
+                                                                day
+                                                        ? Colors.black
+                                                        : Colors.white),
+                                          ),
                                         ))),
                                   );
                                 },

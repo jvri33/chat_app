@@ -46,7 +46,7 @@ class SQLHelper {
     };
     final id = await db.insert('reminders', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
-    //print(id);
+    print("Creado reminder");
     return id;
   }
 
@@ -107,7 +107,7 @@ class SQLHelper {
     //print("updated");
     final data = {'message': mes};
     await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
-    print("updated");
+    print("update Message Date sql");
   }
 
   static void updateMessageTime(String time, int id) async {
