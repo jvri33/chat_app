@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 class Reminder {
   Future<int> createItem(
       String s, String d, int r, int so, String da, String h) async {
+    print("fecha: $d");
     return (await SQLHelper.createReminder(s, d, r, so, da, h));
     //return ("Created succesfully");
   }
@@ -22,6 +23,34 @@ class Reminder {
 
   Future<List<Map<String, dynamic>>> getReminder(id) async {
     var ret = await SQLHelper.getReminder(id);
+    return ret;
+  }
+
+  Future<List<List<Map<String, dynamic>>>> getItemsByDate(m) async {
+    print("get items by data");
+
+    List<List<Map<String, dynamic>>> ret = [];
+//2023-09-27
+
+    for (int i = 1; i < 32; i++) {
+      String d;
+      if (i < 10) {
+        d = "0$i";
+      } else {
+        d = i.toString();
+      }
+
+      String date = "2023-$m-$d";
+      List<Map<String, dynamic>> recordatorio =
+          await SQLHelper.getRemindersByDate(date);
+
+      ret.add(recordatorio);
+    }
+    //List<Map<String, dynamic>> recordatorio =
+    //  await SQLHelper.getRemindersByDate(m);
+
+    //ret.add(recordatorio);
+
     return ret;
   }
 

@@ -76,6 +76,14 @@ class SQLHelper {
     return db.query('reminders', where: 'id=?', whereArgs: [id], limit: 1);
   }
 
+  static Future<List<Map<String, dynamic>>> getRemindersByDate(String m) async {
+    print("Entra en Helper by date");
+
+    final db = await SQLHelper.db();
+
+    return db.query('reminders', where: 'date =?', whereArgs: [m]);
+  }
+
   static Future<int> updateReminder(int id, String? description, String? date,
       int? repeat, int? sound, String? days, String? time) async {
     final db = await SQLHelper.db();

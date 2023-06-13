@@ -4,6 +4,12 @@ import '../controllers/reminder.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 class Calendario extends StatelessWidget {
+  int day = DateTime.now().day;
+  int mes = 6;
+  int year = 2023;
+
+  List<String> recordatorios = [];
+  Reminder r = Reminder();
   Calendario({super.key}) {
     getCalendar();
   }
@@ -33,7 +39,6 @@ class Calendario extends StatelessWidget {
       count++;
 
       if (start + count == 7) {
-        print(line);
         month.add(line);
         line = [0, 0, 0, 0, 0, 0, 0];
         start = 0;
@@ -45,30 +50,150 @@ class Calendario extends StatelessWidget {
     if (saved == false) {
       month.add(line);
     }
-    print("mes: $line");
-    print("object $month");
+
+    print("carga finalizada");
+  }
+
+  void getDay(d) {
+    print(d);
   }
 
   Future<void> getReminders() async {
     Reminder r = Reminder();
-    var printing = await r.getItems();
-    savedReminders = printing;
+    print(mes);
+    String m;
+    if (mes < 10) {
+      m = "0$mes";
+    } else {
+      m = mes.toString();
+    }
+
+    List<List<Map<String, dynamic>>> recordatorios = await r.getItemsByDate(m);
+//-06-
+    print("cargados recordatorios: $recordatorios");
+
+    for (int i = 0; i < recordatorios.length; i++) {
+      if (recordatorios[i].isNotEmpty) {
+        print(i + 1);
+      }
+    }
+
+    print("zero  ${recordatorios[0]}");
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getCalendar(),
-        builder: (context, snapshot) {
-          return Column(
-            children: [
-              Text(month[0].toString()),
-              Text(month[1].toString()),
-              Text(month[2].toString()),
-              Text(month[3].toString()),
-              Text(month[4].toString())
-            ],
-          );
-        });
+      future: getReminders(),
+      builder: (context, snapshot) {
+        print("late builder");
+        return Container(
+          alignment: Alignment.centerLeft,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 324),
+            child: Card(
+              color: Theme.of(context).primaryColor,
+              margin:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5.0),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(0)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.all(12),
+                      child: const Text(
+                        "Aqui tienes el calendario:",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            bottomLeft: Radius.circular(0)),
+                      ),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 5.0),
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(top: 10.0, left: 16),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Junio",
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          Column(
+                              children: List.generate(month.length, (i) {
+                            return Row(
+                              children: List.generate(
+                                7,
+                                (index) {
+                                  print(month[i][index]);
+
+                                  return SizedBox(
+                                    width: 34,
+                                    height: 30,
+                                    child: (TextButton(
+                                        onPressed: month[i][index] >= day
+                                            ? () {
+                                                getDay(month[i][index]);
+                                              }
+                                            : null,
+                                        child: Text(
+                                          month[i][index].toString(),
+                                          style: TextStyle(
+                                              /*decoration:
+                                                  recordatorios[month[i][index]]
+                                                          .isNotEmpty
+                                                      ? TextDecoration.underline
+                                                      : TextDecoration.none,*/
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w700,
+                                              color: month[i][index] < day &&
+                                                      month[i][index] > 0
+                                                  ? Theme.of(context)
+                                                      .primaryColor
+                                                  : month[i][index] != 0
+                                                      ? Colors.black
+                                                      : Colors.white),
+                                        ))),
+                                  );
+                                },
+                              ),
+                            );
+                          })),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
