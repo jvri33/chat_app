@@ -1,5 +1,5 @@
 import 'package:chat_app/utils/extractor.dart';
-import 'package:chat_app/controllers/reminder.dart';
+
 import 'package:chat_app/controllers/saved_message.dart';
 
 class Respuesta {
@@ -17,7 +17,7 @@ class Respuesta {
     print(i1);
     print(i2);
     print(i3);
-    var ret2;
+    String ret2 = "";
     String dig = "m";
     SavedMessage saveMessageController = SavedMessage();
 
@@ -35,8 +35,6 @@ class Respuesta {
           dig = "m";
           ret2 = "No se pueden crear recordatorio en el pasado";
         } else {
-          Reminder reminder = Reminder();
-
           //int reminderId = await reminder.createItem(i3, d, 0, 0, "", "");
 
           //print(reminderId);
@@ -59,5 +57,7 @@ class Respuesta {
 
     await saveMessageController.createItem(ret2.toString(), 0, dig);
     return ret2.toString();
+
+    //para verificar las intenciones devolver i1
   }
 }

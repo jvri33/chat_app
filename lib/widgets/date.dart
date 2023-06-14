@@ -2,22 +2,23 @@ import 'package:chat_app/controllers/saved_message.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class DateWidget extends StatefulWidget {
+class DateWidget extends StatelessWidget {
   String date;
   int id;
   String message;
   DateWidget(
-      {required this.date, required this.id, required this.message, super.key});
+      {required this.date,
+      required this.id,
+      required this.message,
+      required this.onUpdateDate,
+      super.key});
 
-  @override
-  State<DateWidget> createState() => _DateWidgetState();
-}
+  final Function(String) onUpdateDate;
 
-class _DateWidgetState extends State<DateWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      Text("Día: ${widget.date}",
+      Text("Día: $date",
           style: const TextStyle(
               fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white)),
       IconButton(
@@ -26,13 +27,13 @@ class _DateWidgetState extends State<DateWidget> {
           onPressed: () async {
             DateTime? picketDate = await showDatePicker(
                 context: context,
-                initialDate: DateTime.parse(widget.date),
+                initialDate: DateTime.parse(date),
                 firstDate: DateTime.now(),
                 lastDate: DateTime(2024));
 
             if (picketDate != null) {
               picketDate.toString().split(" ")[0];
-              List<String> mess = widget.message.split("/");
+              List<String> mess = message.split("/");
 
               mess[1] = picketDate.toString().split(" ")[0];
 
@@ -41,11 +42,8 @@ class _DateWidgetState extends State<DateWidget> {
               SavedMessage s = SavedMessage();
 
               print("before update");
-              await s.updateMessageDate(messSt, widget.id);
-
-              setState(() {
-                print("set object");
-              });
+              await s.updateMessageDate(messSt, id);
+              onUpdateDate(picketDate.toString().split(" ")[0]);
             }
             print("after update");
           },

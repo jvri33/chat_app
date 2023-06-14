@@ -77,7 +77,7 @@ class SQLHelper {
   }
 
   static Future<List<Map<String, dynamic>>> getRemindersByDate(String m) async {
-    print("Entra en Helper by date");
+    //print("Entra en Helper by date");
 
     final db = await SQLHelper.db();
 

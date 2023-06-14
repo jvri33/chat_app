@@ -13,7 +13,7 @@ class ReminderWidget extends StatefulWidget {
   String message;
   final int id;
   bool state = false;
-  ReminderWidget(this.user, this.message, this.id) {
+  ReminderWidget(this.user, this.message, this.id, {super.key}) {
     print(message);
     if (message == "Se ha creado el recordatorio correctamente") {
       state = true;
@@ -27,6 +27,30 @@ class ReminderWidget extends StatefulWidget {
 class _ReminderWidgetState extends State<ReminderWidget> {
   //Se ha creado?
   late List<String> variables = widget.message.split("/");
+
+  void updateDate(String newDate) {
+    setState(() {
+      variables[1] = newDate;
+    });
+  }
+
+  void updateTime(String newTime) {
+    setState(() {
+      variables[5] = newTime;
+    });
+  }
+
+  void updateSound(String newSound) {
+    setState(() {
+      variables[2] = newSound;
+    });
+  }
+
+  void updateRepeat(String newRepeat) {
+    setState(() {
+      variables[3] = newRepeat;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,13 +104,17 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       DateWidget(
-                                          date: variables[1],
-                                          id: widget.id,
-                                          message: widget.message),
+                                        date: variables[1],
+                                        id: widget.id,
+                                        message: widget.message,
+                                        onUpdateDate: updateDate,
+                                      ),
                                       TimeWidget(
-                                          time: variables[5],
-                                          id: widget.id,
-                                          message: widget.message)
+                                        time: variables[5],
+                                        id: widget.id,
+                                        message: widget.message,
+                                        onUpdateTime: updateTime,
+                                      )
                                     ],
                                   ),
                                 ),
@@ -100,11 +128,14 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                       SoundWidget(
                                           sound: int.parse(variables[2]),
                                           id: widget.id,
-                                          message: widget.message),
+                                          message: widget.message,
+                                          onUpdateSound: updateSound),
                                       RepeatWidget(
-                                          repeat: int.parse(variables[3]),
-                                          id: widget.id,
-                                          message: widget.message),
+                                        repeat: int.parse(variables[3]),
+                                        id: widget.id,
+                                        message: widget.message,
+                                        onUpdateRepeat: updateRepeat,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -148,7 +179,6 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                           widget.state = true;
                                           widget.response =
                                               "Se ha creado el recordatorio correctamente";
-                                          ;
                                         });
                                       },
                                       icon: const Icon(Icons.check),

@@ -27,7 +27,7 @@ class Reminder {
   }
 
   Future<List<List<Map<String, dynamic>>>> getItemsByDate(m) async {
-    print("get items by data");
+    //print("get items by data");
 
     List<List<Map<String, dynamic>>> ret = [];
 //2023-09-27

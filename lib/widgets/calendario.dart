@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import '../controllers/reminder.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
+import '../controllers/reminder.dart';
+
+// ignore: must_be_immutable
 class Calendario extends StatelessWidget {
   int day = DateTime.now().day;
   int mes = 6;
@@ -20,8 +20,9 @@ class Calendario extends StatelessWidget {
     DateTime d = DateTime.now();
 
     int thisDays = DateUtils.getDaysInMonth(d.year, d.month);
-    int previous_days = DateUtils.getDaysInMonth(d.year, d.month - 1);
-    int future_days = DateUtils.getDaysInMonth(d.year, d.month + 1);
+    //Estas lineas son en caso de implementar que se van los dias anteriores y posteriores al mes seleccionado
+    //int previous_days = DateUtils.getDaysInMonth(d.year, d.month - 1);
+    //int future_days = DateUtils.getDaysInMonth(d.year, d.month + 1);
     DateTime firstday = DateTime(d.year, d.month, 1);
     //DateTime lastday = DateTime(d.year, d.month, this_days);
 
@@ -88,7 +89,7 @@ class Calendario extends StatelessWidget {
     return FutureBuilder(
       future: getReminders(),
       builder: (context, snapshot) {
-        print("late builder");
+        //print("late builder");
         return Container(
           alignment: Alignment.centerLeft,
           child: ConstrainedBox(
