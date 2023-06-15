@@ -42,6 +42,10 @@ class _ChatState extends State<Chat> {
     savedMessages = printing;
   }
 
+  refresh() {
+    setState(() {});
+  }
+
   void sendMessage() async {
     if (messageController.text != "") {
       if (messageController.text.isNotEmpty) {
@@ -148,15 +152,15 @@ class _ChatState extends State<Chat> {
                           } else if (savedMessages[keys[index]]['type'] ==
                               'w') {
                             return ReminderWidget(
-                              savedMessages[keys[index]]['user'],
-                              savedMessages[keys[index]]['message'],
-                              savedMessages[keys[index]]['id'],
-                            );
+                                savedMessages[keys[index]]['user'],
+                                savedMessages[keys[index]]['message'],
+                                savedMessages[keys[index]]['id'],
+                                refresh);
                           } else if (savedMessages[keys[index]]['type'] ==
                               'c') {
                             return Calendario();
                           } else {
-                            return Text("Error");
+                            return const Text("Error");
                           }
                         });
                   },

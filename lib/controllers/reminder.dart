@@ -58,7 +58,7 @@ class Reminder {
     // ignore: unused_local_variable
     final appDir = await getApplicationDocumentsDirectory();
 
-    print("delte");
+    //print("delte");
 
     SQLHelper.deleteDatabase("${appDir.path}/databases/dbchat.db");
   }

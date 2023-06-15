@@ -215,13 +215,30 @@ def fecha5():
 
     return string,tags
 
+def fecha6():
+    dia_rand = rd.randint(0,31)
+    if rd.randint(0,1) == 1:
+        string = f"del {dia_rand} de {meses[rd.randint(0,11)]}"
+        tags = [["<O>"],["<DAY>"],["<O>"],["<MONTH>"]]
 
+    else:
+        string = f"el {dia_rand}"
+        tags = [["<O>"],["<DAY>"]]      
+
+    return string,tags  
+def fecha7():
+    dia_rand = rd.randint(0,6)
+    
+    string = f"del {dias[dia_rand]} {rd.randint(1,31)}"
+    tags = [["<O>"],["<DAY>"],["<DAY>"]]
+
+    return string,tags      
 
 
 
 frases = []
 etiquetas = []
-funciones = [fecha5,hora1,fecha4,franja2,hora1min,fecha3,hora2,franja,x_horas_1,x_minutos,fecha1,hora1min2,fecha2,x_horas_2,fecha4,hora3,fechadddd,fecha3]
+funciones = [fecha5,fecha6, hora1,fecha4,franja2,hora1min,fecha3,hora2,franja,x_horas_1,fecha7,x_minutos,fecha1,hora1min2,fecha2,x_horas_2,fecha4,hora3,fechadddd,fecha3]
 
 for funcion in funciones:
     for i in range(700):

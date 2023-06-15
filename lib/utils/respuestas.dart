@@ -22,7 +22,14 @@ class Respuesta {
     SavedMessage saveMessageController = SavedMessage();
 
     //COMPROBAMOS LA INTECION
+    if (i1 == "EDIT1") {
+      ret2 = "Editar recordatorio";
+      print(i2);
+      List<String> str = (Extractor(i2).fecha()).toString().split(" ");
 
+      DateTime d = DateTime.parse(str[0]);
+      print(d.toString());
+    }
     if (i1 == "REMINDER1") {
       dig = "w";
       //MIRAMOS SI TIENE ENTIDADES

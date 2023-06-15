@@ -73,7 +73,7 @@ class Calendario extends StatelessWidget {
 
     recordatorios.insert(0, []);
 //-06-
-    print("cargados recordatorios: $recordatorios");
+    //print("cargados recordatorios: $recordatorios");
 
     for (int i = 0; i < recordatorios.length; i++) {
       if (recordatorios[i].isNotEmpty) {

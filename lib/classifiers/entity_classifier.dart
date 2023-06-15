@@ -81,6 +81,7 @@ class Classifier {
         if (resultados[j][k] > 0.98) {
           if (labels[k] != "O") {
             ret.add([txtsep[j], j, labels[k]]);
+            print([txtsep[j], j, labels[k]]);
           }
         }
       }

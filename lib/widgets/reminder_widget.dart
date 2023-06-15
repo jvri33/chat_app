@@ -8,12 +8,14 @@ import '../controllers/reminder.dart';
 
 // ignore: must_be_immutable
 class ReminderWidget extends StatefulWidget {
+  final Function() notifyParent;
   String response = "Se ha creado el siguiente borrador de recordatorio";
   final int user;
   String message;
   final int id;
   bool state = false;
-  ReminderWidget(this.user, this.message, this.id, {super.key}) {
+  ReminderWidget(this.user, this.message, this.id, this.notifyParent,
+      {super.key}) {
     print(message);
     if (message == "Se ha creado el recordatorio correctamente") {
       state = true;
@@ -180,6 +182,7 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                           widget.response =
                                               "Se ha creado el recordatorio correctamente";
                                         });
+                                        widget.notifyParent();
                                       },
                                       icon: const Icon(Icons.check),
                                       color: Colors.white,
