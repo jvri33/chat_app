@@ -35,15 +35,25 @@ class SoundWidget extends StatelessWidget {
         child: Checkbox(
           value: so,
           onChanged: (newv) async {
-            so = newv!;
+            print("Entramos a sound");
 
-            List<String> mess = message.split("/");
-            mess[2] = (so ? 1 : 0).toString();
-            String messSt = mess.join("/");
-            SavedMessage s = SavedMessage();
-            s.updateMessageSound(messSt, id);
+            if (message != "") {
+              so = newv!;
 
-            onUpdateSound(mess[2]);
+              List<String> mess = message.split("/");
+              mess[2] = (so ? 1 : 0).toString();
+              String messSt = mess.join("/");
+              SavedMessage s = SavedMessage();
+              s.updateMessageSound(messSt, id);
+              onUpdateSound(mess[2]);
+            } else {
+              int ret;
+              if (so == true) {
+                ret = 1;
+              } else {
+                ret = 0;
+              }
+            }
           },
           side: MaterialStateBorderSide.resolveWith(
             (states) => const BorderSide(width: 2, color: Colors.white),

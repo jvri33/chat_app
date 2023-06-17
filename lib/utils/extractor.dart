@@ -9,7 +9,6 @@ class Extractor {
   }
 
   bool isNumeric(String s) {
-
     return double.tryParse(s) != null;
   }
 
@@ -28,7 +27,7 @@ class Extractor {
     return ret;
   }
 
-  DateTime fecha() {
+  DateTime? fecha(String d) {
     int day = 0;
     int month = 0;
     int dif = 0;
@@ -59,6 +58,11 @@ class Extractor {
       if (entities[i][2] == "MONTH") {
         month = getMonth(entities[i][0]);
       }
+    }
+
+    if (day == 0 && d == "e") {
+      DateTime date = DateTime(0, 0, 0);
+      return date;
     }
 
     if (day == 0 && dif == 0) {

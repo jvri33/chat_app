@@ -1,3 +1,4 @@
+import 'package:chat_app/controllers/reminder.dart';
 import 'package:chat_app/utils/extractor.dart';
 
 import 'package:chat_app/controllers/saved_message.dart';
@@ -11,6 +12,7 @@ class Respuesta {
     //i3 = message
 
     //
+
     //Reminder delete = Reminder();
     //delete.delete();
 
@@ -23,18 +25,23 @@ class Respuesta {
 
     //COMPROBAMOS LA INTECION
     if (i1 == "EDIT1") {
+      dig = "e";
       ret2 = "Editar recordatorio";
       print(i2);
-      List<String> str = (Extractor(i2).fecha()).toString().split(" ");
+      List<String> str = (Extractor(i2).fecha("e")).toString().split(" ");
 
-      DateTime d = DateTime.parse(str[0]);
-      print(d.toString());
+      if (str == "[null]") {
+        ret2 = "EDIT1/NULL";
+      } else {
+        DateTime d = DateTime.parse(str[0]);
+        ret2 = "EDIT1/${d.toString().split(" ")[0]}";
+      }
     }
     if (i1 == "REMINDER1") {
       dig = "w";
       //MIRAMOS SI TIENE ENTIDADES
       if (i2 != "[]") {
-        List<String> str = (Extractor(i2).fecha()).toString().split(" ");
+        List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
 
         DateTime d = DateTime.parse(str[0]);
 

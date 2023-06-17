@@ -26,7 +26,15 @@ class Reminder {
     return ret;
   }
 
-  Future<List<List<Map<String, dynamic>>>> getItemsByDate(m) async {
+  Future<List<Map<String, dynamic>>> getItemsByDay(String d) async {
+    print("ENTRA EN GET BY DAY EN REMINDER");
+    List<Map<String, dynamic>> ret = [];
+    ret = await SQLHelper.getRemindersByDay(d);
+
+    return ret;
+  }
+
+  Future<List<List<Map<String, dynamic>>>> getItemsByMonth(m) async {
     //print("get items by data");
 
     List<List<Map<String, dynamic>>> ret = [];
@@ -42,7 +50,7 @@ class Reminder {
 
       String date = "2023-$m-$d";
       List<Map<String, dynamic>> recordatorio =
-          await SQLHelper.getRemindersByDate(date);
+          await SQLHelper.getRemindersByDay(date);
 
       ret.add(recordatorio);
     }

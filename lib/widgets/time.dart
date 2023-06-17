@@ -45,7 +45,15 @@ class TimeWidget extends StatelessWidget {
               if (minute < 10) {
                 minutoss = "0${minute.toString()}";
               }
-              mess[5] = "$horas:$minutoss";
+
+              if (mess[0] != "EDITING") {
+                mess[5] = "$horas:$minutoss";
+              } else {
+                print("estamos editando");
+                mess[3] = "$horas:$minutoss";
+              }
+
+              // mess[5] = "$horas:$minutoss";
 
               String messSt = mess.join("/");
               SavedMessage s = SavedMessage();
