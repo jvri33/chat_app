@@ -35,8 +35,6 @@ class SoundWidget extends StatelessWidget {
         child: Checkbox(
           value: so,
           onChanged: (newv) async {
-            print("Entramos a sound");
-
             if (message != "") {
               so = newv!;
 
@@ -46,13 +44,6 @@ class SoundWidget extends StatelessWidget {
               SavedMessage s = SavedMessage();
               s.updateMessageSound(messSt, id);
               onUpdateSound(mess[2]);
-            } else {
-              int ret;
-              if (so == true) {
-                ret = 1;
-              } else {
-                ret = 0;
-              }
             }
           },
           side: MaterialStateBorderSide.resolveWith(

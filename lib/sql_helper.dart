@@ -46,7 +46,7 @@ class SQLHelper {
     };
     final id = await db.insert('reminders', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
-    print("Creado reminder");
+
     return id;
   }
 
@@ -62,7 +62,6 @@ class SQLHelper {
   static Future<List<Map<String, dynamic>>> getMessages() async {
     final db = await SQLHelper.db();
 
-    print("get messages finalizado");
     return db.query('messages_rem', orderBy: 'id');
   }
 
@@ -107,7 +106,6 @@ class SQLHelper {
     //print("updated");
     final data = {'message': mes};
     await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
-    print("update Message Date sql");
   }
 
   static void updateMessageTime(String time, int id) async {
@@ -133,8 +131,6 @@ class SQLHelper {
     final db = await SQLHelper.db();
     final data = {'message': mess, 'type': type};
     await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
-
-    print("actualizado");
   }
 
   static Future<void> deleteReminder(int id) async {

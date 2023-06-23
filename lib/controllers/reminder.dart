@@ -4,7 +4,6 @@ import 'package:path_provider/path_provider.dart';
 class Reminder {
   Future<int> createItem(
       String s, String d, int r, int so, String da, String h) async {
-    print("fecha: $d");
     return (await SQLHelper.createReminder(s, d, r, so, da, h));
     //return ("Created succesfully");
   }
@@ -27,7 +26,6 @@ class Reminder {
   }
 
   Future<List<Map<String, dynamic>>> getItemsByDay(String d) async {
-    print("ENTRA EN GET BY DAY EN REMINDER");
     List<Map<String, dynamic>> ret = [];
     ret = await SQLHelper.getRemindersByDay(d);
 
@@ -35,10 +33,7 @@ class Reminder {
   }
 
   Future<List<List<Map<String, dynamic>>>> getItemsByMonth(m) async {
-    //print("get items by data");
-
     List<List<Map<String, dynamic>>> ret = [];
-//2023-09-27
 
     for (int i = 1; i < 32; i++) {
       String d;
@@ -54,19 +49,12 @@ class Reminder {
 
       ret.add(recordatorio);
     }
-    //List<Map<String, dynamic>> recordatorio =
-    //  await SQLHelper.getRemindersByDate(m);
-
-    //ret.add(recordatorio);
 
     return ret;
   }
 
   void delete() async {
-    // ignore: unused_local_variable
     final appDir = await getApplicationDocumentsDirectory();
-
-    //print("${appDir.path}/databases/dbchat.db");
 
     SQLHelper.deleteDatabase("${appDir.path}/databases/dbchat.db");
   }

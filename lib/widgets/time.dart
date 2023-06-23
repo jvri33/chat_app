@@ -49,7 +49,6 @@ class TimeWidget extends StatelessWidget {
               if (mess[0] != "EDITING") {
                 mess[5] = "$horas:$minutoss";
               } else {
-                print("estamos editando");
                 mess[3] = "$horas:$minutoss";
               }
 

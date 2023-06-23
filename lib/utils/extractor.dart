@@ -75,8 +75,8 @@ class Extractor {
       month = DateTime.now().month;
     }
     int year = DateTime.now().year;
-
-    DateTime date = DateTime(year, month, day);
+    DateTime time = DateTime.now();
+    DateTime date = DateTime(year, month, day, time.hour, time.minute);
 
     return date;
   }

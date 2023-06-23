@@ -1,5 +1,6 @@
 import 'package:chat_app/pages/home.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:timezone/data/latest.dart' as tz;
 
 void main() {

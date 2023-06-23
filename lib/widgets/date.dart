@@ -33,25 +33,22 @@ class DateWidget extends StatelessWidget {
 
             if (picketDate != null) {
               picketDate.toString().split(" ")[0];
-              List<String> mess = message.split("/");
-              print("mess en edit $mess");
+              print(message);
 
-              if (mess[0] != "EDITING") {
+              List<String> mess = message.split("/");
+
+              if (mess[0] != "EDITING" || mess[0] != "DELETING") {
                 mess[1] = picketDate.toString().split(" ")[0];
               } else {
-                print(
-                    "estamos editando, vamos al sobreescribir el siguiente mensaje $mess");
                 mess[2] = picketDate.toString().split(" ")[0];
-
-                print("este es el nuevo mensaje $mess");
               }
               String messSt = mess.join("/");
 
               SavedMessage s = SavedMessage();
 
-              await s.updateMessageDate(messSt, id);
+              print(picketDate.toString().split(" ")[0]);
 
-              print("despues de update Message");
+              await s.updateMessageDate(messSt, id);
 
               onUpdateDate(picketDate.toString().split(" ")[0]);
             }

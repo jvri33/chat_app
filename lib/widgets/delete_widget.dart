@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../controllers/reminder.dart';
 
 // ignore: must_be_immutable
-class EditWidget extends StatefulWidget {
+class DeleteWidget extends StatefulWidget {
   final Function() notifyParent;
   String response =
       "He encontrado el siguiente recordatorio en la fecha que indicas:";
@@ -19,26 +19,27 @@ class EditWidget extends StatefulWidget {
   late List<String> variables;
 
   List<Map<String, dynamic>> recordatorios = [];
-  EditWidget(this.user, this.message, this.id, this.notifyParent, {super.key}) {
+  DeleteWidget(this.user, this.message, this.id, this.notifyParent,
+      {super.key}) {
     if (message == "Se ha editado el recordatorio correctamente") {
       state = true;
     }
   }
 
   @override
-  State<EditWidget> createState() => _EditWidgetState();
+  State<DeleteWidget> createState() => _DeleteWidgetState();
 }
 
-class _EditWidgetState extends State<EditWidget> {
+class _DeleteWidgetState extends State<DeleteWidget> {
   late List<String> variables = widget.message.split("/");
 
   Future<String> getReminders() async {
     //print(variables.toString());
 
-    if (variables[0] == "EDIT1") {
+    if (variables[0] == "DELETE1") {
       String date = widget.message.split("/")[1];
 
-      if (date != "-0001-11-30") {
+      if (date != "NULL") {
         Reminder r = Reminder();
         widget.recordatorios = await r.getItemsByDay(date);
 
@@ -47,9 +48,9 @@ class _EditWidgetState extends State<EditWidget> {
         if (widget.cantidad == 1) {
           print("Hay un recordatorio");
           widget.message =
-              "EDITING/${widget.recordatorios[0]["id"]}/${widget.recordatorios[0]["date"]}/${widget.recordatorios[0]["time"]}/${widget.recordatorios[0]["sound"]}/${widget.recordatorios[0]["repeat"]}/${widget.recordatorios[0]["description"]}";
+              "DELETING/${widget.recordatorios[0]["id"]}/${widget.recordatorios[0]["date"]}/${widget.recordatorios[0]["time"]}/${widget.recordatorios[0]["sound"]}/${widget.recordatorios[0]["repeat"]}/${widget.recordatorios[0]["description"]}";
           SavedMessage s = SavedMessage();
-          await s.updateMessage(widget.message, widget.id, "e");
+          await s.updateMessage(widget.message, widget.id, "d");
           variables = widget.message.split("/");
         } else if (widget.cantidad == 0) {
           print("No hay recordatorios");
@@ -63,32 +64,8 @@ class _EditWidgetState extends State<EditWidget> {
   }
 
   void updateDate(String newDate) {
-    print("entra?");
-    print(variables[0]);
     setState(() {
-      if (variables[0] == "EDIT1") {
-        variables[1] = newDate;
-      } else {
-        variables[2] = newDate;
-      }
-    });
-  }
-
-  void updateTime(String newTime) {
-    setState(() {
-      variables[3] = newTime;
-    });
-  }
-
-  void updateSound(String newSound) {
-    setState(() {
-      variables[4] = newSound;
-    });
-  }
-
-  void updateRepeat(String newRepeat) {
-    setState(() {
-      variables[5] = newRepeat;
+      variables[1] = newDate;
     });
   }
 
@@ -98,7 +75,7 @@ class _EditWidgetState extends State<EditWidget> {
         future: getReminders(),
         builder: (context, snapshot) {
           if (widget.state == false) {
-            if (variables[0] == "EDITING") {
+            if (variables[0] == "DELETING") {
               return Container(
                 decoration: const BoxDecoration(
                     borderRadius:
@@ -133,7 +110,8 @@ class _EditWidgetState extends State<EditWidget> {
                           child: widget.state == false
                               ? Column(
                                   children: [
-                                    Text(widget.response,
+                                    Text(
+                                        "Desea eliminar el siguiente recordatorio?",
                                         style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w500,
@@ -144,112 +122,6 @@ class _EditWidgetState extends State<EditWidget> {
                                       margin: const EdgeInsets.only(left: 20.0),
 
                                       //Aquí empieza el contenido
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 8, top: 8),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                DateWidget(
-                                                  date: variables[2],
-                                                  id: widget.id,
-                                                  message: widget.message,
-                                                  onUpdateDate: updateDate,
-                                                ),
-                                                TimeWidget(
-                                                  time: variables[3],
-                                                  id: widget.id,
-                                                  message: widget.message,
-                                                  onUpdateTime: updateTime,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 17, top: 8),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                SoundWidget(
-                                                    sound:
-                                                        int.parse(variables[4]),
-                                                    id: widget.id,
-                                                    message: "",
-                                                    onUpdateSound: updateSound),
-                                                RepeatWidget(
-                                                  repeat:
-                                                      int.parse(variables[5]),
-                                                  id: widget.id,
-                                                  message: widget.message,
-                                                  onUpdateRepeat: updateRepeat,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 8, top: 8),
-                                            child: Row(children: [
-                                              SizedBox(
-                                                width: 230,
-                                                child: Text(
-                                                    "Nombre: ${variables[6]}",
-                                                    style: const TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Colors.white)),
-                                              )
-                                            ]),
-                                          ),
-                                          Align(
-                                              alignment: Alignment.bottomRight,
-                                              child: IconButton(
-                                                constraints:
-                                                    const BoxConstraints(),
-                                                padding: const EdgeInsets.only(
-                                                    left: 10),
-                                                onPressed: () async {
-                                                  Reminder rem = Reminder();
-
-                                                  await rem.updateReminder(
-                                                      int.parse(variables[1]),
-                                                      variables[6],
-                                                      variables[2],
-                                                      int.parse(variables[4]),
-                                                      int.parse(variables[5]),
-                                                      "days",
-                                                      variables[3]);
-
-                                                  SavedMessage s =
-                                                      SavedMessage();
-
-                                                  widget.message =
-                                                      "Se ha editado el recordatorio correctamente";
-                                                  await s.updateMessage(
-                                                      widget.message,
-                                                      widget.id,
-                                                      "e");
-
-                                                  setState(() {
-                                                    widget.state = true;
-                                                    widget.response =
-                                                        "Se ha editado el recordatorio correctamente";
-                                                  });
-                                                  widget.notifyParent();
-                                                },
-                                                icon: const Icon(Icons.check),
-                                                color: Colors.white,
-                                              ))
-                                        ],
-                                      ),
                                     ),
                                   ],
                                 )
@@ -330,7 +202,7 @@ class _EditWidgetState extends State<EditWidget> {
                                                         .primaryColor)),
                                             onPressed: () async {
                                               widget.message =
-                                                  "EDITING/${widget.recordatorios[index]["id"]}/${widget.recordatorios[index]["date"]}/${widget.recordatorios[index]["time"]}/${widget.recordatorios[index]["sound"]}/${widget.recordatorios[index]["repeat"]}/${widget.recordatorios[index]["description"]}";
+                                                  "DELETING/${widget.recordatorios[index]["id"]}/${widget.recordatorios[index]["date"]}/${widget.recordatorios[index]["time"]}/${widget.recordatorios[index]["sound"]}/${widget.recordatorios[index]["repeat"]}/${widget.recordatorios[index]["description"]}";
                                               SavedMessage s = SavedMessage();
                                               await s.updateMessage(
                                                   widget.message,
@@ -380,13 +252,13 @@ class _EditWidgetState extends State<EditWidget> {
                         color: Theme.of(context).primaryColor,
                         child: Column(children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 vertical: 16.0, horizontal: 16),
                             child: Text(
                                 variables[1] == "NULL"
                                     ? "Especifique una fecha en la que se hayan creado recordatorios:"
                                     : "No se han encontrado recordatorio el día ${variables[1]}, especifique otra fecha.",
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.white)),
@@ -402,16 +274,16 @@ class _EditWidgetState extends State<EditWidget> {
                                   onUpdateDate: updateDate)
                             ],
                           ),
-                          /*IconButton(
+                          /* IconButton(
                             constraints: const BoxConstraints(),
                             padding: const EdgeInsets.only(left: 10),
                             onPressed: () async {
                               SavedMessage s = SavedMessage();
 
                               print(variables[1]);
-                              widget.message = "EDIT1/${variables[1]}";
+                              widget.message = "DELETE1/${variables[1]}";
                               await s.updateMessage(
-                                  widget.message, widget.id, "e");
+                                  widget.message, widget.id, "d");
 
                               setState(() {
                                 variables = widget.message.split("/");

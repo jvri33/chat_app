@@ -4,6 +4,7 @@ import 'package:chat_app/widgets/repeticion.dart';
 import 'package:chat_app/widgets/sound.dart';
 import 'package:chat_app/widgets/time.dart';
 import 'package:flutter/material.dart';
+import '../controllers/notification_service.dart';
 import '../controllers/reminder.dart';
 
 // ignore: must_be_immutable
@@ -16,7 +17,6 @@ class ReminderWidget extends StatefulWidget {
   bool state = false;
   ReminderWidget(this.user, this.message, this.id, this.notifyParent,
       {super.key}) {
-    print(message);
     if (message == "Se ha creado el recordatorio correctamente") {
       state = true;
     }
@@ -162,7 +162,7 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                       padding: const EdgeInsets.only(left: 10),
                                       onPressed: () async {
                                         Reminder rem = Reminder();
-                                        await rem.createItem(
+                                        int id = await rem.createItem(
                                             variables[0],
                                             variables[1],
                                             int.parse(variables[3]),
@@ -176,7 +176,14 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                             "Se ha creado el recordatorio correctamente";
                                         await s.updateMessage(
                                             widget.message, widget.id, "w");
-
+                                        NotiticationService().scheduleNotification(
+                                            sound: variables[2] == "1",
+                                            id: id,
+                                            title: "Recordatorio",
+                                            body: variables[0],
+                                            scheduledNotificationDateTime:
+                                                DateTime.parse(
+                                                    "${variables[1]} ${variables[5]}"));
                                         setState(() {
                                           widget.state = true;
                                           widget.response =

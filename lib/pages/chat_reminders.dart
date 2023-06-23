@@ -1,6 +1,7 @@
 import 'package:chat_app/controllers/saved_message.dart';
 import 'package:chat_app/utils/respuestas.dart';
 import 'package:chat_app/widgets/calendario.dart';
+import 'package:chat_app/widgets/delete_widget.dart';
 import 'package:chat_app/widgets/edit_widget.dart';
 import 'package:chat_app/widgets/reminder_widget.dart';
 import 'package:chat_app/widgets/saved_message_widget.dart';
@@ -75,7 +76,6 @@ class _ChatState extends State<Chat> {
     await getMessages();
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      print("jump to end init");
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
   }
@@ -163,6 +163,13 @@ class _ChatState extends State<Chat> {
                           } else if (savedMessages[keys[index]]['type'] ==
                               'e') {
                             return EditWidget(
+                                savedMessages[keys[index]]['user'],
+                                savedMessages[keys[index]]['message'],
+                                savedMessages[keys[index]]['id'],
+                                refresh);
+                          } else if (savedMessages[keys[index]]['type'] ==
+                              'd') {
+                            return DeleteWidget(
                                 savedMessages[keys[index]]['user'],
                                 savedMessages[keys[index]]['message'],
                                 savedMessages[keys[index]]['id'],

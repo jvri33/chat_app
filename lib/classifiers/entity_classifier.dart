@@ -74,14 +74,12 @@ class Classifier {
     List<String> labels = ["O", "TIME", "DAY", "MONTH", "MENOS"];
 
     List ret = [];
-    //List ret = ["Entities"];
 
     for (int j = 0; j < resultados.length; j++) {
       for (int k = 0; k < resultados[j].length; k++) {
         if (resultados[j][k] > 0.98) {
           if (labels[k] != "O") {
             ret.add([txtsep[j], j, labels[k]]);
-            print([txtsep[j], j, labels[k]]);
           }
         }
       }
@@ -104,14 +102,13 @@ class Classifier {
         vector[i] = parsed as double;
       }
     }
-    //String s = "${vector[0]} ${vector[1]} ${vector[2]}";
 
     for (var i = 0; i < vector.length; i++) {
       if (vector[i] == 0) {
         vector[i] = 2;
       }
     }
-    //print(vector);
+
     return [vector];
   }
 }

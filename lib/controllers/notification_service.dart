@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+// ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz;
 
 class NotiticationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
@@ -26,24 +25,26 @@ class NotiticationService {
             (NotificationResponse notificationResponse) async {});
   }
 
-  notificationDetails() {
-    return const NotificationDetails(
-        android: AndroidNotificationDetails('channelId', 'channelName',
-            importance: Importance.max),
-        iOS: DarwinNotificationDetails());
-  }
-
-  Future showNotification(
-      {int id = 0, String? title, String? body, String? payLoad}) async {
-    return notificationsPlugin.show(
-        id, title, body, await notificationDetails());
+  notificationDetails(bool sound) {
+    if (sound) {
+      return const NotificationDetails(
+          android: AndroidNotificationDetails('channelId', 'channelName',
+              playSound: true, importance: Importance.max),
+          iOS: DarwinNotificationDetails());
+    } else {
+      return const NotificationDetails(
+          android: AndroidNotificationDetails('1', 'silenceChannel',
+              playSound: false, importance: Importance.max),
+          iOS: DarwinNotificationDetails());
+    }
   }
 
   Future scheduleNotification(
-      {int id = 0,
+      {required int id,
       String? title,
       String? body,
       String? payLoad,
+      required bool sound,
       required DateTime scheduledNotificationDateTime}) async {
     return notificationsPlugin.zonedSchedule(
         id,
@@ -53,8 +54,8 @@ class NotiticationService {
           scheduledNotificationDateTime,
           tz.local,
         ),
-        await notificationDetails(),
-        androidAllowWhileIdle: true,
+        await notificationDetails(sound),
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
   }
