@@ -9,9 +9,9 @@ class Reminder {
     //return ("Created succesfully");
   }
 
-  void updateReminder(
+  Future<int> updateReminder(
       int id, String s, String d, int r, int so, String da, String h) async {
-    await SQLHelper.updateReminder(id, s, d, r, so, da, h);
+    return await SQLHelper.updateReminder(id, s, d, r, so, da, h);
   }
 
   dynamic getItems() async {
@@ -66,7 +66,7 @@ class Reminder {
     // ignore: unused_local_variable
     final appDir = await getApplicationDocumentsDirectory();
 
-    //print("delte");
+    //print("${appDir.path}/databases/dbchat.db");
 
     SQLHelper.deleteDatabase("${appDir.path}/databases/dbchat.db");
   }

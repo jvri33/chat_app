@@ -37,6 +37,7 @@ class SavedMessage {
   }
 
   Future<void> updateMessage(String mess, id, String type) async {
-    SQLHelper.updateMessageMess(mess, id, type);
+    print("updating message");
+    await SQLHelper.updateMessageMess(mess, id, type);
   }
 }

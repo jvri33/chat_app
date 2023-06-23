@@ -128,7 +128,8 @@ class SQLHelper {
     await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
   }
 
-  static void updateMessageMess(String mess, int id, String type) async {
+  static Future<void> updateMessageMess(
+      String mess, int id, String type) async {
     final db = await SQLHelper.db();
     final data = {'message': mess, 'type': type};
     await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);

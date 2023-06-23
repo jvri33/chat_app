@@ -71,6 +71,8 @@ class Calendario extends StatelessWidget {
 
     recordatorios = await r.getItemsByMonth(m);
 
+    print(recordatorios);
+
     recordatorios.insert(0, []);
   }
 
