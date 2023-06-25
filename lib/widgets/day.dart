@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
+import 'package:flutter/material.dart';
+
 import '../controllers/reminder.dart';
 import '../controllers/saved_message.dart';
 
@@ -16,7 +18,7 @@ class DayWidget extends StatelessWidget {
   Future<String> getReminders() async {
     //print(variables.toString());
 
-    if (variables[0] == "DELETE1") {
+    if (variables[0] == "DAY") {
       String date = variables[1];
 
       if (date != "NULL") {
@@ -25,18 +27,7 @@ class DayWidget extends StatelessWidget {
 
         cantidad = recordatorios.length;
 
-        if (cantidad == 1) {
-          print("Hay un recordatorio");
-          message =
-              "DELETING/${recordatorios[0]["id"]}/${recordatorios[0]["date"]}/${recordatorios[0]["time"]}/${recordatorios[0]["sound"]}/${recordatorios[0]["repeat"]}/${recordatorios[0]["description"]}";
-          SavedMessage s = SavedMessage();
-          await s.updateMessage(message, id, "i");
-          variables = message.split("/");
-        } else if (cantidad == 0) {
-          print("No hay recordatorios");
-        } else {
-          print("Hay más de un recordatorio");
-        }
+
       }
     }
 
@@ -45,8 +36,58 @@ class DayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("Prueba de día"),
-    );
-  }
+    return FutureBuilder(
+      future: getReminders(),
+      builder: (context, snapshot) {
+        
+        if(cantidad == 0){
+return Container(
+        child: Text("No hay recordatorios."),
+      );
+        }
+        else{
+        return Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: List.generate(
+                                                cantidad, (index) {
+                                              return Column(
+                                                children: [
+                                                  SizedBox(
+                                                    width: double.infinity,
+                                                    
+                                                      child: Align(
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        child: Text(
+                                                            "${index + 1}. ${recordatorios[index]['description']}  ${recordatorios[index]['time']}",
+                                                            style: TextStyle(
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor)),
+                                                      ),
+                                                     
+                                                    ),        if (index + 1 <
+                                                      cantidad)
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 8),
+                                                      child: Divider(
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                        thickness: 1,
+                                                      ),
+                                                    ),],
+                                                  );
+                                              }),
+      
+      
+    );}
+  });}
+
 }
