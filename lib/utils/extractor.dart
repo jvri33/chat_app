@@ -28,6 +28,8 @@ class Extractor {
   }
 
   DateTime? fecha(String d) {
+    print(d);
+
     int day = 0;
     int month = 0;
     int dif = 0;
@@ -60,6 +62,8 @@ class Extractor {
       }
     }
 
+    print("day: $day");
+    print(d);
     if (day == 0 && d == "e") {
       DateTime date = DateTime(0, 0, 0);
       return date;
@@ -74,9 +78,12 @@ class Extractor {
     if (month == 0) {
       month = DateTime.now().month;
     }
+
     int year = DateTime.now().year;
     DateTime time = DateTime.now();
     DateTime date = DateTime(year, month, day, time.hour, time.minute);
+
+    print(date);
 
     return date;
   }

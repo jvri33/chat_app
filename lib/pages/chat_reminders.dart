@@ -1,6 +1,7 @@
 import 'package:chat_app/controllers/saved_message.dart';
 import 'package:chat_app/utils/respuestas.dart';
 import 'package:chat_app/widgets/calendario.dart';
+import 'package:chat_app/widgets/day.dart';
 import 'package:chat_app/widgets/delete_widget.dart';
 import 'package:chat_app/widgets/edit_widget.dart';
 import 'package:chat_app/widgets/reminder_widget.dart';
@@ -66,25 +67,8 @@ class _ChatState extends State<Chat> {
       }
     }
 
-    await jumpToEnd2();
     setState(() {
       messageController.clear();
-    });
-  }
-
-  Future<void> jumpToEnd() async {
-    await getMessages();
-
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-    });
-  }
-
-  Future<void> jumpToEnd2() async {
-    await getMessages();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      _scrollController
-          .jumpTo(_scrollController.position.maxScrollExtent + 220);
     });
   }
 
@@ -92,7 +76,6 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     if (init == 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await jumpToEnd();
         init++;
       });
     }
@@ -153,7 +136,6 @@ class _ChatState extends State<Chat> {
                           } else if (savedMessages[keys[index]]['type'] ==
                               'w') {
                             return ReminderWidget(
-                                savedMessages[keys[index]]['user'],
                                 savedMessages[keys[index]]['message'],
                                 savedMessages[keys[index]]['id'],
                                 refresh);
@@ -163,17 +145,21 @@ class _ChatState extends State<Chat> {
                           } else if (savedMessages[keys[index]]['type'] ==
                               'e') {
                             return EditWidget(
-                                savedMessages[keys[index]]['user'],
                                 savedMessages[keys[index]]['message'],
                                 savedMessages[keys[index]]['id'],
                                 refresh);
                           } else if (savedMessages[keys[index]]['type'] ==
                               'd') {
                             return DeleteWidget(
-                                savedMessages[keys[index]]['user'],
                                 savedMessages[keys[index]]['message'],
                                 savedMessages[keys[index]]['id'],
                                 refresh);
+                          } else if (savedMessages[keys[index]]['type'] ==
+                              'i') {
+                            return DayWidget(
+                              savedMessages[keys[index]]['message'],
+                              savedMessages[keys[index]]['id'],
+                            );
                           } else {
                             return const Text("Error");
                           }
@@ -210,20 +196,6 @@ class _ChatState extends State<Chat> {
                       children: [
                         Expanded(
                           child: TextField(
-                            onTap: () {
-                              if (MediaQuery.of(context).viewInsets.bottom ==
-                                  0) {
-                                if (_scrollController.position.maxScrollExtent -
-                                        _scrollController.offset <=
-                                    300) {
-                                  Future.delayed(
-                                      const Duration(milliseconds: 500), () {
-                                    _scrollController.jumpTo(_scrollController
-                                        .position.maxScrollExtent);
-                                  });
-                                }
-                              }
-                            },
                             controller: messageController,
                             onEditingComplete: sendMessage,
                             decoration: InputDecoration(

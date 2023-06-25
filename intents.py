@@ -201,7 +201,7 @@ delete01 = ["quiero borrar un recordatorio",
 "quita el recordatoriop de la semana que viene",
 "borrar tarea de 2 de junio",
 ]
-today00 = ["tengo algo hoy",
+day01 = ["tengo algo hoy",
 "que tengo hoy",
 "agenda hoy",
 "recordatorios hoy",
@@ -231,6 +231,50 @@ today00 = ["tengo algo hoy",
 "tengo alguna cosa para hoy",
 "hoy",
 "hoy agenda",
+"que tengo el 23 de junio",
+"que tengo el miercoles",
+"que tengo el martes que viene",
+"que hay el viernes",
+"que tengo mañana",
+"tengo algo el 24",
+"que tengo el dia 31",
+"que recordatorio tengo el dia 27",
+"que ntego el dia 31 de julio",
+"tengo algo que hacer el 26 de septiembre",
+"tengo tareas mañana",
+"tengo algo el dia 27?",
+"que cosas tengo que hacer el dia 3",
+"tengo que hacer algo el viernes",
+"dime que tengo que hacer el jueves",
+"dime si tengo recordatorios el domingo que viene",
+"tengo algo pasadomañana",
+"que tengo el viernes 12",
+"que cosas tengo para el jueves",
+"recuerdame lo que tengo el sabado",
+"dime lo que tengo apuntado el 17",
+"que cosas tengo que hacer el jueves",
+"que recordatorio tengo el domingo",
+"27 de enero",
+"dia 23",
+"recordatorios 2",
+"recordatorios 9 de junio",
+"que tengo el jueves",
+"que tengo el viernes 13",
+"recuerdame lo que tengo el jueves",
+"recuerdame lo que tengo que hacer el miercoles",
+"que tengo para el lunes",
+"que tengo el martes que viene",
+"que tengo el martes",
+"que tengo el miercoles",
+"que tengo el miércoles",
+"que tengo el miercoles que viene",
+"que tengo el viernes",
+"que tengo el sabado",
+"que tengo el viernes 14",
+"que tengo el martes 12",
+"que tengo el 7 de septiembre",
+"que tengo el 3 de marzo",
+
 ]
 tomorrow00 = ["que tengo mañana",
 "hay algo mañana",
@@ -287,9 +331,9 @@ for i in range(len(delete01)):
     intents.append(delete01[i])
     labels.append("DELETE01")
 
-for i in range(len(today00)):
-    intents.append(today00[i])
-    labels.append("TODAY00")
+for i in range(len(day01)):
+    intents.append(day01[i])
+    labels.append("DAY01")
 
 for i in range(len(tomorrow00)):
     intents.append(tomorrow00[i])

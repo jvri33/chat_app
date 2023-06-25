@@ -1,3 +1,5 @@
+import 'package:chat_app/controllers/saved_message.dart';
+import 'package:chat_app/widgets/day.dart';
 import 'package:flutter/material.dart';
 
 import '../controllers/reminder.dart';
@@ -56,7 +58,8 @@ class Calendario extends StatelessWidget {
   }
 
   void getDay(d) {
-    //print(d);
+    print(d);
+    print(recordatorios[d]);
   }
 
   Future<void> getReminders() async {
@@ -157,6 +160,8 @@ class Calendario extends StatelessWidget {
                                         onPressed: month[i][index] > 0
                                             ? () {
                                                 getDay(month[i][index]);
+
+                                                //DayWidget(recordatorios[0]);
                                               }
                                             : null,
                                         child: Container(

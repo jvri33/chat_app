@@ -53,7 +53,11 @@ class Reminder {
     return ret;
   }
 
-  void delete() async {
+  Future<void> delete(int id) async {
+    await SQLHelper.deleteReminder(id);
+  }
+
+  void deleteall() async {
     final appDir = await getApplicationDocumentsDirectory();
 
     SQLHelper.deleteDatabase("${appDir.path}/databases/dbchat.db");

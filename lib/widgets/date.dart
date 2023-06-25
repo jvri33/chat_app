@@ -33,7 +33,6 @@ class DateWidget extends StatelessWidget {
 
             if (picketDate != null) {
               picketDate.toString().split(" ")[0];
-              print(message);
 
               List<String> mess = message.split("/");
 
@@ -46,12 +45,13 @@ class DateWidget extends StatelessWidget {
 
               SavedMessage s = SavedMessage();
 
-              print(picketDate.toString().split(" ")[0]);
+              print(messSt);
 
               await s.updateMessageDate(messSt, id);
 
               onUpdateDate(picketDate.toString().split(" ")[0]);
             }
+            FocusScope.of(context).unfocus();
           },
           icon: const Icon(
             Icons.edit_outlined,

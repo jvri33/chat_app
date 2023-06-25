@@ -36,7 +36,7 @@ class IntentClassifier {
 
   String classify(txt) {
     List<List<double>> input = tokenizar(txt);
-    
+
     //print(input);
 
     List<List<double>> output = [
@@ -44,12 +44,13 @@ class IntentClassifier {
     ];
     _interpreter.run(input, output);
 
-    //{'o': 1, 'time': 2, 'day': 3, 'month': 4, 'menos': 5}
+//{'reminder01': 1, 'day01': 2, 'edit01': 3, 'delete01': 4, 'tomorrow00': 5, 'function00': 6, 'calendar00': 7}
+
     List<String> labels = [
       "REMINDER1",
+      "DAY1",
       "EDIT1",
       "DELETE1",
-      "TODAY0",
       "TOMORROW0",
       "FUNCTION0",
       "CALENDAR0"

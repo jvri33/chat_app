@@ -11,12 +11,11 @@ import '../controllers/reminder.dart';
 class ReminderWidget extends StatefulWidget {
   final Function() notifyParent;
   String response = "Se ha creado el siguiente borrador de recordatorio";
-  final int user;
+
   String message;
   final int id;
   bool state = false;
-  ReminderWidget(this.user, this.message, this.id, this.notifyParent,
-      {super.key}) {
+  ReminderWidget(this.message, this.id, this.notifyParent, {super.key}) {
     if (message == "Se ha creado el recordatorio correctamente") {
       state = true;
     }
@@ -59,7 +58,7 @@ class _ReminderWidgetState extends State<ReminderWidget> {
     return Container(
       decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(200))),
-      alignment: widget.user == 1 ? Alignment.topRight : Alignment.topLeft,
+      alignment: Alignment.topLeft,
       child: ConstrainedBox(
         constraints: const BoxConstraints(
           minWidth: 75.0,
@@ -67,20 +66,14 @@ class _ReminderWidgetState extends State<ReminderWidget> {
         ),
         child: Card(
             margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5.0),
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(16),
-                  bottomRight: widget.user == 0
-                      ? const Radius.circular(16)
-                      : const Radius.circular(0),
-                  topRight: const Radius.circular(16),
-                  bottomLeft: widget.user == 1
-                      ? const Radius.circular(16)
-                      : const Radius.circular(0)),
+                  topLeft: Radius.circular(16),
+                  bottomRight: Radius.circular(16),
+                  topRight: Radius.circular(16),
+                  bottomLeft: Radius.circular(0)),
             ),
-            color: widget.user == 1
-                ? const Color.fromARGB(255, 187, 247, 223)
-                : Theme.of(context).primaryColor,
+            color: Theme.of(context).primaryColor,
             child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
@@ -88,12 +81,10 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                     ? Column(
                         children: [
                           Text(widget.response,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
-                                  color: widget.user == 1
-                                      ? Theme.of(context).primaryColor
-                                      : Colors.white)),
+                                  color: Colors.white)),
                           Container(
                             margin: const EdgeInsets.only(left: 20.0),
                             child: Column(
@@ -200,12 +191,10 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                         ],
                       )
                     : Text(widget.message,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: widget.user == 1
-                                ? Theme.of(context).primaryColor
-                                : Colors.white)))),
+                            color: Colors.white)))),
       ),
     );
   }

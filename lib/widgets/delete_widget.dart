@@ -1,8 +1,6 @@
 import 'package:chat_app/controllers/saved_message.dart';
 import 'package:chat_app/widgets/date.dart';
-import 'package:chat_app/widgets/repeticion.dart';
-import 'package:chat_app/widgets/sound.dart';
-import 'package:chat_app/widgets/time.dart';
+
 import 'package:flutter/material.dart';
 import '../controllers/reminder.dart';
 
@@ -11,7 +9,7 @@ class DeleteWidget extends StatefulWidget {
   final Function() notifyParent;
   String response =
       "He encontrado el siguiente recordatorio en la fecha que indicas:";
-  final int user;
+
   String message;
   final int id;
   bool state = false;
@@ -19,9 +17,8 @@ class DeleteWidget extends StatefulWidget {
   late List<String> variables;
 
   List<Map<String, dynamic>> recordatorios = [];
-  DeleteWidget(this.user, this.message, this.id, this.notifyParent,
-      {super.key}) {
-    if (message == "Se ha editado el recordatorio correctamente") {
+  DeleteWidget(this.message, this.id, this.notifyParent, {super.key}) {
+    if (message == "Se ha borrado el recordatorio correctamente") {
       state = true;
     }
   }
@@ -37,7 +34,7 @@ class _DeleteWidgetState extends State<DeleteWidget> {
     //print(variables.toString());
 
     if (variables[0] == "DELETE1") {
-      String date = widget.message.split("/")[1];
+      String date = variables[1];
 
       if (date != "NULL") {
         Reminder r = Reminder();
@@ -80,8 +77,7 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                 decoration: const BoxDecoration(
                     borderRadius:
                         BorderRadius.only(topLeft: Radius.circular(200))),
-                alignment:
-                    widget.user == 1 ? Alignment.topRight : Alignment.topLeft,
+                alignment: Alignment.topLeft,
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(
                     minWidth: 75.0,
@@ -90,48 +86,85 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                   child: Card(
                       margin: const EdgeInsets.symmetric(
                           horizontal: 12.0, vertical: 5.0),
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
-                            topLeft: const Radius.circular(16),
-                            bottomRight: widget.user == 0
-                                ? const Radius.circular(16)
-                                : const Radius.circular(0),
-                            topRight: const Radius.circular(16),
-                            bottomLeft: widget.user == 1
-                                ? const Radius.circular(16)
-                                : const Radius.circular(0)),
+                            topLeft: Radius.circular(16),
+                            bottomRight: Radius.circular(16),
+                            topRight: Radius.circular(16),
+                            bottomLeft: Radius.circular(0)),
                       ),
-                      color: widget.user == 1
-                          ? const Color.fromARGB(255, 187, 247, 223)
-                          : Theme.of(context).primaryColor,
+                      color: Theme.of(context).primaryColor,
                       child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 16.0, horizontal: 16),
+                              vertical: 16.0, horizontal: 4),
                           child: widget.state == false
                               ? Column(
                                   children: [
-                                    Text(
+                                    const Text(
                                         "Desea eliminar el siguiente recordatorio?",
                                         style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w500,
-                                            color: widget.user == 1
-                                                ? Theme.of(context).primaryColor
-                                                : Colors.white)),
+                                            color: Colors.white)),
                                     Container(
-                                      margin: const EdgeInsets.only(left: 20.0),
+                                      margin: const EdgeInsets.only(
+                                          left: 8.0, top: 8, right: 6),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(12),
+                                            topRight: Radius.circular(12),
+                                            bottomLeft: Radius.circular(0),
+                                            bottomRight: Radius.circular(12)),
+                                      ),
 
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "      ${variables[2]} | ${variables[6]}",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                          ),
+                                          IconButton(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              onPressed: () async {
+                                                Reminder r = Reminder();
+                                                SavedMessage s = SavedMessage();
+
+                                                await r.delete(
+                                                    int.parse(variables[1]));
+
+                                                widget.message =
+                                                    "Se ha borrado el recordatorio correctamente";
+                                                await s.updateMessage(
+                                                    widget.message,
+                                                    widget.id,
+                                                    "d");
+
+                                                setState(() {
+                                                  variables =
+                                                      widget.message.split("/");
+
+                                                  print(variables);
+                                                  widget.state = true;
+                                                });
+                                              },
+                                              icon: const Icon(Icons.delete))
+                                        ],
+                                      ),
                                       //Aquí empieza el contenido
                                     ),
                                   ],
                                 )
                               : Text(widget.message,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
-                                      color: widget.user == 1
-                                          ? Theme.of(context).primaryColor
-                                          : Colors.white)))),
+                                      color: Colors.white)))),
                 ),
               );
             } else {
@@ -140,8 +173,7 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                   decoration: const BoxDecoration(
                       borderRadius:
                           BorderRadius.only(topLeft: Radius.circular(200))),
-                  alignment:
-                      widget.user == 1 ? Alignment.topRight : Alignment.topLeft,
+                  alignment: Alignment.topLeft,
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(
                       minWidth: 75.0,
@@ -150,35 +182,26 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                     child: Card(
                         margin: const EdgeInsets.symmetric(
                             horizontal: 12.0, vertical: 5.0),
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
-                              topLeft: const Radius.circular(16),
-                              bottomRight: widget.user == 0
-                                  ? const Radius.circular(16)
-                                  : const Radius.circular(0),
-                              topRight: const Radius.circular(16),
-                              bottomLeft: widget.user == 1
-                                  ? const Radius.circular(16)
-                                  : const Radius.circular(0)),
+                              topLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                              bottomLeft: Radius.circular(0)),
                         ),
-                        color: widget.user == 1
-                            ? const Color.fromARGB(255, 187, 247, 223)
-                            : Theme.of(context).primaryColor,
+                        color: Theme.of(context).primaryColor,
                         child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 16.0, horizontal: 16),
                             child: widget.state == false
                                 ? Column(
                                     children: [
-                                      Text(
-                                          "Hay más de 1 recordatorio. Elige el que quieres modificar:",
+                                      const Text(
+                                          "Hay más de 1 recordatorio. Elige el que quieres borrar:",
                                           style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w500,
-                                              color: widget.user == 1
-                                                  ? Theme.of(context)
-                                                      .primaryColor
-                                                  : Colors.white)),
+                                              color: Colors.white)),
                                       Container(
                                         margin: const EdgeInsets.only(top: 10),
                                         decoration: const BoxDecoration(
@@ -192,40 +215,63 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                                         child: Column(
                                             children: List.generate(
                                                 widget.cantidad, (index) {
-                                          return (TextButton(
-                                            child: Text(
-                                                "${index + 1}. ${widget.recordatorios[index]['description']}  ${widget.recordatorios[index]['time']}",
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Theme.of(context)
-                                                        .primaryColor)),
-                                            onPressed: () async {
-                                              widget.message =
-                                                  "DELETING/${widget.recordatorios[index]["id"]}/${widget.recordatorios[index]["date"]}/${widget.recordatorios[index]["time"]}/${widget.recordatorios[index]["sound"]}/${widget.recordatorios[index]["repeat"]}/${widget.recordatorios[index]["description"]}";
-                                              SavedMessage s = SavedMessage();
-                                              await s.updateMessage(
-                                                  widget.message,
-                                                  widget.id,
-                                                  "e");
+                                          return Column(
+                                            children: [
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: (TextButton(
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                        "${index + 1}. ${widget.recordatorios[index]['description']}  ${widget.recordatorios[index]['time']}",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor)),
+                                                  ),
+                                                  onPressed: () async {
+                                                    widget.message =
+                                                        "DELETING/${widget.recordatorios[index]["id"]}/${widget.recordatorios[index]["date"]}/${widget.recordatorios[index]["time"]}/${widget.recordatorios[index]["sound"]}/${widget.recordatorios[index]["repeat"]}/${widget.recordatorios[index]["description"]}";
+                                                    SavedMessage s =
+                                                        SavedMessage();
 
-                                              setState(() {
-                                                variables =
-                                                    widget.message.split("/");
-                                              });
-                                            },
-                                          ));
+                                                    await s.updateMessage(
+                                                        widget.message,
+                                                        widget.id,
+                                                        "d");
+
+                                                    setState(() {
+                                                      variables = widget.message
+                                                          .split("/");
+                                                    });
+                                                  },
+                                                )),
+                                              ),
+                                              if (index + 1 < widget.cantidad)
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 8),
+                                                  child: Divider(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                    thickness: 1,
+                                                  ),
+                                                ),
+                                            ],
+                                          );
                                         })),
                                       )
                                     ],
                                   )
                                 : Text(widget.message,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500,
-                                        color: widget.user == 1
-                                            ? Theme.of(context).primaryColor
-                                            : Colors.white)))),
+                                        color: Colors.white)))),
                   ),
                 );
               } else {
@@ -265,13 +311,19 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                           ),
                           Row(
                             children: [
-                              DateWidget(
-                                  date: variables[1] == "NULL"
-                                      ? DateTime.now().toString().split(" ")[0]
-                                      : variables[1],
-                                  id: widget.id,
-                                  message: widget.message,
-                                  onUpdateDate: updateDate)
+                              Container(
+                                margin:
+                                    const EdgeInsets.only(left: 24, bottom: 10),
+                                child: DateWidget(
+                                    date: variables[1] == "NULL"
+                                        ? DateTime.now()
+                                            .toString()
+                                            .split(" ")[0]
+                                        : variables[1],
+                                    id: widget.id,
+                                    message: widget.message,
+                                    onUpdateDate: updateDate),
+                              )
                             ],
                           ),
                           /* IconButton(

@@ -12,7 +12,7 @@ class Respuesta {
 
     Reminder delete = Reminder();
 
-    //delete.delete();
+    // delete.deleteall();
 
     String ret2 = "";
     String dig = "m";
@@ -20,11 +20,26 @@ class Respuesta {
 
     print("intención $i1");
 
+    if (i1 == "DAY1") {
+      List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
+      print(i2);
+      if ("${i2}" == "[]") {
+        print("no entities");
+        ret2 = "DAY/NULL";
+      } else {
+        DateTime d = DateTime.parse(str[0]);
+        ret2 = "DAY/${d.toString().split(" ")[0]}";
+      }
+
+      print(ret2);
+      dig = "i";
+    }
+
     if (i1 == "DELETE1") {
       ret2 = "Borrar recordatorio";
       dig = "d";
 
-      List<String> str = (Extractor(i2).fecha("e")).toString().split(" ");
+      List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
 
       if ("${i2}" == "[]") {
         print("no entities");
@@ -40,7 +55,7 @@ class Respuesta {
       dig = "e";
       ret2 = "Editar recordatorio";
 
-      List<String> str = (Extractor(i2).fecha("e")).toString().split(" ");
+      List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
 
       if ("${i2}" == "[]") {
         print("no entities");
@@ -55,7 +70,7 @@ class Respuesta {
       //MIRAMOS SI TIENE ENTIDADES
       if (i2 != "[]") {
         List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
-
+        print(str);
         DateTime d = DateTime.parse(str[0]);
 
         //DateTime time = DateTime.parse(str.join(" "));

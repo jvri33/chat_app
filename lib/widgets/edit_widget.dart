@@ -11,7 +11,7 @@ class EditWidget extends StatefulWidget {
   final Function() notifyParent;
   String response =
       "He encontrado el siguiente recordatorio en la fecha que indicas:";
-  final int user;
+
   String message;
   final int id;
   bool state = false;
@@ -19,7 +19,7 @@ class EditWidget extends StatefulWidget {
   late List<String> variables;
 
   List<Map<String, dynamic>> recordatorios = [];
-  EditWidget(this.user, this.message, this.id, this.notifyParent, {super.key}) {
+  EditWidget(this.message, this.id, this.notifyParent, {super.key}) {
     if (message == "Se ha editado el recordatorio correctamente") {
       state = true;
     }
@@ -36,7 +36,7 @@ class _EditWidgetState extends State<EditWidget> {
     //print(variables.toString());
 
     if (variables[0] == "EDIT1") {
-      String date = widget.message.split("/")[1];
+      String date = variables[1];
 
       if (date != "-0001-11-30") {
         Reminder r = Reminder();
@@ -63,15 +63,20 @@ class _EditWidgetState extends State<EditWidget> {
   }
 
   void updateDate(String newDate) {
-    print("entra?");
     print(variables[0]);
-    setState(() {
-      if (variables[0] == "EDIT1") {
+
+    if (variables[0] == "EDIT1") {
+      setState(() {
+        print(widget.message);
         variables[1] = newDate;
-      } else {
-        variables[2] = newDate;
-      }
-    });
+      });
+      print("variables 1");
+    } else {
+      variables[2] = newDate;
+      setState(() {});
+      print("variables 2");
+    }
+    ;
   }
 
   void updateTime(String newTime) {
@@ -103,8 +108,7 @@ class _EditWidgetState extends State<EditWidget> {
                 decoration: const BoxDecoration(
                     borderRadius:
                         BorderRadius.only(topLeft: Radius.circular(200))),
-                alignment:
-                    widget.user == 1 ? Alignment.topRight : Alignment.topLeft,
+                alignment: Alignment.topLeft,
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(
                     minWidth: 75.0,
@@ -113,20 +117,14 @@ class _EditWidgetState extends State<EditWidget> {
                   child: Card(
                       margin: const EdgeInsets.symmetric(
                           horizontal: 12.0, vertical: 5.0),
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
-                            topLeft: const Radius.circular(16),
-                            bottomRight: widget.user == 0
-                                ? const Radius.circular(16)
-                                : const Radius.circular(0),
-                            topRight: const Radius.circular(16),
-                            bottomLeft: widget.user == 1
-                                ? const Radius.circular(16)
-                                : const Radius.circular(0)),
+                            topLeft: Radius.circular(16),
+                            bottomRight: Radius.circular(16),
+                            topRight: Radius.circular(16),
+                            bottomLeft: Radius.circular(0)),
                       ),
-                      color: widget.user == 1
-                          ? const Color.fromARGB(255, 187, 247, 223)
-                          : Theme.of(context).primaryColor,
+                      color: Theme.of(context).primaryColor,
                       child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 16.0, horizontal: 16),
@@ -134,12 +132,10 @@ class _EditWidgetState extends State<EditWidget> {
                               ? Column(
                                   children: [
                                     Text(widget.response,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w500,
-                                            color: widget.user == 1
-                                                ? Theme.of(context).primaryColor
-                                                : Colors.white)),
+                                            color: Colors.white)),
                                     Container(
                                       margin: const EdgeInsets.only(left: 20.0),
 
@@ -254,12 +250,10 @@ class _EditWidgetState extends State<EditWidget> {
                                   ],
                                 )
                               : Text(widget.message,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
-                                      color: widget.user == 1
-                                          ? Theme.of(context).primaryColor
-                                          : Colors.white)))),
+                                      color: Colors.white)))),
                 ),
               );
             } else {
@@ -268,8 +262,7 @@ class _EditWidgetState extends State<EditWidget> {
                   decoration: const BoxDecoration(
                       borderRadius:
                           BorderRadius.only(topLeft: Radius.circular(200))),
-                  alignment:
-                      widget.user == 1 ? Alignment.topRight : Alignment.topLeft,
+                  alignment: Alignment.topLeft,
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(
                       minWidth: 75.0,
@@ -278,36 +271,28 @@ class _EditWidgetState extends State<EditWidget> {
                     child: Card(
                         margin: const EdgeInsets.symmetric(
                             horizontal: 12.0, vertical: 5.0),
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
-                              topLeft: const Radius.circular(16),
-                              bottomRight: widget.user == 0
-                                  ? const Radius.circular(16)
-                                  : const Radius.circular(0),
-                              topRight: const Radius.circular(16),
-                              bottomLeft: widget.user == 1
-                                  ? const Radius.circular(16)
-                                  : const Radius.circular(0)),
+                              topLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                              bottomLeft: Radius.circular(0)),
                         ),
-                        color: widget.user == 1
-                            ? const Color.fromARGB(255, 187, 247, 223)
-                            : Theme.of(context).primaryColor,
+                        color: Theme.of(context).primaryColor,
                         child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 16.0, horizontal: 16),
                             child: widget.state == false
                                 ? Column(
                                     children: [
-                                      Text(
+                                      const Text(
                                           "Hay más de 1 recordatorio. Elige el que quieres modificar:",
                                           style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w500,
-                                              color: widget.user == 1
-                                                  ? Theme.of(context)
-                                                      .primaryColor
-                                                  : Colors.white)),
+                                              color: Colors.white)),
                                       Container(
+                                        width: double.infinity,
                                         margin: const EdgeInsets.only(top: 10),
                                         decoration: const BoxDecoration(
                                           color: Colors.white,
@@ -318,42 +303,70 @@ class _EditWidgetState extends State<EditWidget> {
                                               bottomLeft: Radius.circular(0)),
                                         ),
                                         child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
                                             children: List.generate(
                                                 widget.cantidad, (index) {
-                                          return (TextButton(
-                                            child: Text(
-                                                "${index + 1}. ${widget.recordatorios[index]['description']}  ${widget.recordatorios[index]['time']}",
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Theme.of(context)
-                                                        .primaryColor)),
-                                            onPressed: () async {
-                                              widget.message =
-                                                  "EDITING/${widget.recordatorios[index]["id"]}/${widget.recordatorios[index]["date"]}/${widget.recordatorios[index]["time"]}/${widget.recordatorios[index]["sound"]}/${widget.recordatorios[index]["repeat"]}/${widget.recordatorios[index]["description"]}";
-                                              SavedMessage s = SavedMessage();
-                                              await s.updateMessage(
-                                                  widget.message,
-                                                  widget.id,
-                                                  "e");
+                                              return Column(
+                                                children: [
+                                                  SizedBox(
+                                                    width: double.infinity,
+                                                    child: (TextButton(
+                                                      child: Align(
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        child: Text(
+                                                            "${index + 1}. ${widget.recordatorios[index]['description']}  ${widget.recordatorios[index]['time']}",
+                                                            style: TextStyle(
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor)),
+                                                      ),
+                                                      onPressed: () async {
+                                                        widget.message =
+                                                            "EDITING/${widget.recordatorios[index]["id"]}/${widget.recordatorios[index]["date"]}/${widget.recordatorios[index]["time"]}/${widget.recordatorios[index]["sound"]}/${widget.recordatorios[index]["repeat"]}/${widget.recordatorios[index]["description"]}";
+                                                        SavedMessage s =
+                                                            SavedMessage();
+                                                        await s.updateMessage(
+                                                            widget.message,
+                                                            widget.id,
+                                                            "e");
 
-                                              setState(() {
-                                                variables =
-                                                    widget.message.split("/");
-                                              });
-                                            },
-                                          ));
-                                        })),
+                                                        setState(() {
+                                                          variables = widget
+                                                              .message
+                                                              .split("/");
+                                                        });
+                                                      },
+                                                    )),
+                                                  ),
+                                                  if (index + 1 <
+                                                      widget.cantidad)
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 8),
+                                                      child: Divider(
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                        thickness: 1,
+                                                      ),
+                                                    ),
+                                                ],
+                                              );
+                                            })),
                                       )
                                     ],
                                   )
                                 : Text(widget.message,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500,
-                                        color: widget.user == 1
-                                            ? Theme.of(context).primaryColor
-                                            : Colors.white)))),
+                                        color: Colors.white)))),
                   ),
                 );
               } else {
@@ -380,26 +393,32 @@ class _EditWidgetState extends State<EditWidget> {
                         color: Theme.of(context).primaryColor,
                         child: Column(children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 vertical: 16.0, horizontal: 16),
                             child: Text(
                                 variables[1] == "NULL"
                                     ? "Especifique una fecha en la que se hayan creado recordatorios:"
-                                    : "No se han encontrado recordatorio el día ${variables[1]}, especifique otra fecha.",
-                                style: TextStyle(
+                                    : "No se han encontrado recordatorios el día ${variables[1]}, especifique otra fecha.",
+                                style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.white)),
                           ),
                           Row(
                             children: [
-                              DateWidget(
-                                  date: variables[1] == "NULL"
-                                      ? DateTime.now().toString().split(" ")[0]
-                                      : variables[1],
-                                  id: widget.id,
-                                  message: widget.message,
-                                  onUpdateDate: updateDate)
+                              Container(
+                                margin:
+                                    const EdgeInsets.only(left: 24, bottom: 10),
+                                child: DateWidget(
+                                    date: variables[1] == "NULL"
+                                        ? DateTime.now()
+                                            .toString()
+                                            .split(" ")[0]
+                                        : variables[1],
+                                    id: widget.id,
+                                    message: widget.message,
+                                    onUpdateDate: updateDate),
+                              )
                             ],
                           ),
                           /*IconButton(

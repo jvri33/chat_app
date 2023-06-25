@@ -234,11 +234,17 @@ def fecha7():
 
     return string,tags      
 
+def fecha8():
+    dia_rand = rd.randint(0,6)
+    
+    string = f"del {dias[dia_rand]} "
+    tags = [["<O>"],["<DAY>"]]
 
+    return string,tags      
 
 frases = []
 etiquetas = []
-funciones = [fecha5,fecha6, hora1,fecha4,franja2,hora1min,fecha3,hora2,franja,x_horas_1,fecha7,x_minutos,fecha1,hora1min2,fecha2,x_horas_2,fecha4,hora3,fechadddd,fecha3]
+funciones = [fecha5,fecha6, hora1,fecha4,franja2,fecha8, hora1min,fecha3,hora2,franja,x_horas_1,fecha7,x_minutos,fecha1,hora1min2,fecha2,x_horas_2,fecha4,hora3,fechadddd,fecha3]
 
 for funcion in funciones:
     for i in range(700):
