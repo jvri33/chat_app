@@ -12,9 +12,7 @@ class Calendario extends StatelessWidget {
 
   List<List<Map<String, dynamic>>> recordatorios = [];
   Reminder r = Reminder();
-  Calendario({super.key}) {
-    getCalendar();
-  }
+  Calendario({super.key}) {}
   List<List<int>> month = [];
   late List<Map<String, dynamic>> savedReminders = [];
 
@@ -55,6 +53,18 @@ class Calendario extends StatelessWidget {
     }
 
     //print("carga finalizada");
+    Reminder r = Reminder();
+    //print(mes);
+    String m;
+    if (mes < 10) {
+      m = "0$mes";
+    } else {
+      m = mes.toString();
+    }
+
+    recordatorios = await r.getItemsByMonth(m);
+
+    recordatorios.insert(0, []);
   }
 
   void getDay(d) {
@@ -79,10 +89,26 @@ class Calendario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getReminders(),
+    return FutureBuilder<void>(
+      future: getCalendar(),
       builder: (context, snapshot) {
         //print("late builder");
+        if (snapshot.connectionState != ConnectionState.done) {
+          // Mientras se está cargando el calendario, puedes mostrar un indicador de carga o cualquier otro widget
+          return Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+                margin: EdgeInsets.all(10),
+                width: 30,
+                height: 30,
+                child: CircularProgressIndicator()),
+          );
+        }
+
+        if (snapshot.hasError) {
+          // Si hay un error durante la carga, puedes mostrar un mensaje de error
+          return Text('Error al cargar el calendario');
+        }
         return Container(
           alignment: Alignment.centerLeft,
           child: ConstrainedBox(
@@ -157,7 +183,9 @@ class Calendario extends StatelessWidget {
                                                         ? Theme.of(context)
                                                             .primaryColor
                                                         : Colors.white)),
-                                        onPressed: month[i][index] > 0
+                                        onPressed: month[i][index] > 0 &&
+                                                recordatorios[month[i][index]]
+                                                    .isNotEmpty
                                             ? () {
                                                 getDay(month[i][index]);
 

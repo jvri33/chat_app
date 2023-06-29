@@ -76,7 +76,11 @@ class Extractor {
       day = DateTime.now().add(Duration(days: dif)).day;
     }
     if (month == 0) {
-      month = DateTime.now().month;
+      if (day < DateTime.now().day) {
+        month = DateTime.now().month + 1;
+      } else {
+        month = DateTime.now().month;
+      }
     }
 
     int year = DateTime.now().year;
