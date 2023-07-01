@@ -276,36 +276,51 @@ day01 = ["tengo algo hoy",
 "que tengo el 3 de marzo",
 
 ]
-tomorrow00 = ["que tengo mañana",
-"hay algo mañana",
-"tareas mañana",
-"recordatorio mañana",
-"avisos mañana",
-"agenda mañana",
-"cual es mi agenda para mañana",
-"tengo algo mañana",
-"hola que tengo mañana",
-"tengo tareas o recordatorio mañana",
-"tengo algo para mañana",
-"hay tareas mañana",
-"tengo alguna alarma para mañana",
-"hay recordatorios mañana",
-"tengo algun recordatorio para mañana",
-"recuerdame lo que tengo mañana",
-"dime que tengo para mañana",
-"puedes decirme si tengo algo mañana",
-"dime si tengo algo programado mañana",
-"tengo algo puesto mañana",
-"mañana agenda",
-"mañana tareas",
-"algo mañana",
-"me puedes decir la agenda de mañana",
-"planning mañana",
-"dime si tengo algo mañana",
-"tengo alguna alarma mañana",
-"dime si tengo alarmas mañana",
-"tengo recordatorios mañana",
-"alguna cosa para mañana",
+
+thisweek = [
+"esta semana",
+"que tengo esta semana",
+"que cosas tengo esta semana",
+"que hay esta semana",
+"tengo algo esta semana",
+"dime que tengo esta semana",
+"puedes decirme lo que tengo esta semana",
+"recuerdame lo que tengo esta semana",
+"que tengo estos dias",
+"dime que tengo estos días",
+"hola que tengo esta semana",
+"dime los recordatorios que tengo esta semana",
+"puedes decirme que cosas tengo que hacer estos dias",
+"que tengo que hacer estos dias",
+"que tengo durante esta semana",
+"tengo cosas que hacer esta semana",
+]
+
+nextweek = [
+"la semana que viene",
+"que tengo la proxima semana",
+"dime lo que tengo la semana que viene",
+"puedes decirme lo que tengo la proxima semana",
+"que es lo que tengo la semana que viene",
+"que hay la semana que viene",
+"recuerdame lo que tengo la proxima semana",
+"que tengo semana que viene",
+"que cosas tengo la semana que viene",
+"que hay la proxima semana",
+"tengo algo la semana que viene",
+"dime que tengo la semana que viene",
+"puedes decirme lo que tengo la semana que viene",
+"recuerdame lo que tengo la semana que viene",
+"que tengo la semana que viene",
+"dime que tengo la proxima semana",
+"hola que tengo la semana que viene",
+"dime los recordatorios que tengo la semana que viene",
+"puedes decirme que cosas tengo que hacer la semana que viene",
+"que tengo que hacer la proxima semana",
+"que tengo durante la proxima semana",
+"tengo cosas que hacer la semana que viene",
+
+
 ]
 
 intents = []
@@ -335,9 +350,13 @@ for i in range(len(day01)):
     intents.append(day01[i])
     labels.append("DAY01")
 
-for i in range(len(tomorrow00)):
-    intents.append(tomorrow00[i])
-    labels.append("TOMORROW00")
+for i in range(len(thisweek)):
+    intents.append(thisweek[i])
+    labels.append("THISWEEK00")
+
+for i in range(len(nextweek)):
+    intents.append(nextweek[i])
+    labels.append("NEXTWEEK00")
 
 #print(intents,labels)
 
@@ -374,7 +393,7 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(128, activation='relu'),
     tf.keras.layers.Dense(128, activation='relu'),
     tf.keras.layers.Dropout(0.5),
-    tf.keras.layers.Dense(7, activation='softmax')
+    tf.keras.layers.Dense(8, activation='softmax')
 ])
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])

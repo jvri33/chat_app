@@ -20,6 +20,15 @@ class Respuesta {
 
     print("intención $i1");
 
+    if (i1 == "NEXTWEEK0") {
+      dig = "we";
+      ret2 = "NEXTWEEK";
+    }
+    if (i1 == "THISWEEK0") {
+      dig = "we";
+      ret2 = "THISWEEK";
+    }
+
     if (i1 == "DAY1") {
       List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
       print(i2);

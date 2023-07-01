@@ -40,20 +40,22 @@ class IntentClassifier {
     //print(input);
 
     List<List<double>> output = [
-      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     ];
     _interpreter.run(input, output);
 
-//{'reminder01': 1, 'day01': 2, 'edit01': 3, 'delete01': 4, 'tomorrow00': 5, 'function00': 6, 'calendar00': 7}
+//{'reminder01': 1, 'day01': 2, 'edit01': 3, 'delete01': 4,
+// 'function00': 5, 'calendar00': 6, 'nextweek00': 7, 'thisweek00': 8}
 
     List<String> labels = [
       "REMINDER1",
       "DAY1",
       "EDIT1",
       "DELETE1",
-      "TOMORROW0",
       "FUNCTION0",
-      "CALENDAR0"
+      "CALENDAR0",
+      "NEXTWEEK0",
+      "THISWEEK0"
     ];
     String ret = "";
     //print(output);

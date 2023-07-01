@@ -53,11 +53,10 @@ class DayWidget extends StatelessWidget {
       dia = dias[d!.weekday - 1];
 
       if (date != "NULL") {
-        print("not null");
         Reminder r = Reminder();
-        print(date);
+
         recordatorios = await r.getItemsByDay(date);
-        print(recordatorios);
+
         cantidad = recordatorios.length;
       }
     }

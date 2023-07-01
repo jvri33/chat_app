@@ -13,9 +13,8 @@ class Calendario extends StatelessWidget {
 
   List<List<Map<String, dynamic>>> recordatorios = [];
   Reminder r = Reminder();
-  Calendario(this.notifyParent, {super.key}) {}
+  Calendario(this.notifyParent, {super.key});
   List<List<int>> month = [];
-  late List<Map<String, dynamic>> savedReminders = [];
 
   Future<void> getCalendar() async {
     DateTime d = DateTime.now();
@@ -66,11 +65,6 @@ class Calendario extends StatelessWidget {
     recordatorios = await r.getItemsByMonth(m);
 
     recordatorios.insert(0, []);
-  }
-
-  void getDay(d) {
-    print(d);
-    print(recordatorios[d]);
   }
 
   Future<void> getReminders() async {

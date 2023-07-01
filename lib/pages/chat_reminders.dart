@@ -6,6 +6,7 @@ import 'package:chat_app/widgets/delete_widget.dart';
 import 'package:chat_app/widgets/edit_widget.dart';
 import 'package:chat_app/widgets/reminder_widget.dart';
 import 'package:chat_app/widgets/saved_message_widget.dart';
+import 'package:chat_app/widgets/week.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -160,6 +161,10 @@ class _ChatState extends State<Chat> {
                               savedMessages[keys[index]]['message'],
                               savedMessages[keys[index]]['id'],
                             );
+                          } else if (savedMessages[keys[index]]['type'] ==
+                              'we') {
+                            return (Week(
+                                savedMessages[keys[index]]['message']));
                           } else {
                             return const Text("Error");
                           }
