@@ -6,13 +6,14 @@ import '../controllers/reminder.dart';
 
 // ignore: must_be_immutable
 class Calendario extends StatelessWidget {
+  final Function() notifyParent;
   int day = DateTime.now().day;
-  int mes = 6;
+  int mes = 7;
   int year = 2023;
 
   List<List<Map<String, dynamic>>> recordatorios = [];
   Reminder r = Reminder();
-  Calendario({super.key}) {}
+  Calendario(this.notifyParent, {super.key}) {}
   List<List<int>> month = [];
   late List<Map<String, dynamic>> savedReminders = [];
 
@@ -98,16 +99,16 @@ class Calendario extends StatelessWidget {
           return Align(
             alignment: Alignment.centerLeft,
             child: Container(
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 width: 30,
                 height: 30,
-                child: CircularProgressIndicator()),
+                child: const CircularProgressIndicator()),
           );
         }
 
         if (snapshot.hasError) {
           // Si hay un error durante la carga, puedes mostrar un mensaje de error
-          return Text('Error al cargar el calendario');
+          return const Text('Error al cargar el calendario');
         }
         return Container(
           alignment: Alignment.centerLeft,
@@ -158,7 +159,7 @@ class Calendario extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 10.0, left: 16),
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Junio",
+                              "Julio",
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontSize: 14,
@@ -186,10 +187,24 @@ class Calendario extends StatelessWidget {
                                         onPressed: month[i][index] > 0 &&
                                                 recordatorios[month[i][index]]
                                                     .isNotEmpty
-                                            ? () {
-                                                getDay(month[i][index]);
-
-                                                //DayWidget(recordatorios[0]);
+                                            ? () async {
+                                                SavedMessage
+                                                    saveMessageController =
+                                                    SavedMessage();
+                                                String dig = "i";
+                                                String dateS = "";
+                                                if (day < 10) {
+                                                  dateS =
+                                                      "2023-07-0${month[i][index]}";
+                                                } else {
+                                                  dateS =
+                                                      "2023-07-${month[i][index]}";
+                                                }
+                                                String ret = "DAY/$dateS";
+                                                await saveMessageController
+                                                    .createItem(
+                                                        ret.toString(), 0, dig);
+                                                notifyParent();
                                               }
                                             : null,
                                         child: Container(

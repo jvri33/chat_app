@@ -53,9 +53,11 @@ class DayWidget extends StatelessWidget {
       dia = dias[d!.weekday - 1];
 
       if (date != "NULL") {
+        print("not null");
         Reminder r = Reminder();
+        print(date);
         recordatorios = await r.getItemsByDay(date);
-
+        print(recordatorios);
         cantidad = recordatorios.length;
       }
     }
@@ -124,8 +126,8 @@ class DayWidget extends StatelessWidget {
                     ),
                     color: Theme.of(context).primaryColor,
                     child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16.0, horizontal: 16),
                       child: Column(
                         children: [
                           Align(
@@ -137,7 +139,7 @@ class DayWidget extends StatelessWidget {
                                     color: Colors.white)),
                           ),
                           Container(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(8),

@@ -12,7 +12,7 @@ class Respuesta {
 
     Reminder delete = Reminder();
 
-    // delete.deleteall();
+    //delete.deleteall();
 
     String ret2 = "";
     String dig = "m";

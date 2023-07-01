@@ -141,7 +141,7 @@ class _ChatState extends State<Chat> {
                                 refresh);
                           } else if (savedMessages[keys[index]]['type'] ==
                               'c') {
-                            return Calendario();
+                            return Calendario(refresh);
                           } else if (savedMessages[keys[index]]['type'] ==
                               'e') {
                             return EditWidget(
