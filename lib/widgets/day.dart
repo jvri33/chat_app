@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 
 import '../controllers/reminder.dart';
-import '../controllers/saved_message.dart';
 
 // ignore: must_be_immutable
 class DayWidget extends StatelessWidget {

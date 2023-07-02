@@ -3,6 +3,7 @@ import 'package:chat_app/widgets/date.dart';
 
 import 'package:flutter/material.dart';
 import '../controllers/reminder.dart';
+import '../controllers/notification_service.dart';
 
 // ignore: must_be_immutable
 class DeleteWidget extends StatefulWidget {
@@ -43,16 +44,11 @@ class _DeleteWidgetState extends State<DeleteWidget> {
         widget.cantidad = widget.recordatorios.length;
 
         if (widget.cantidad == 1) {
-          print("Hay un recordatorio");
           widget.message =
               "DELETING/${widget.recordatorios[0]["id"]}/${widget.recordatorios[0]["date"]}/${widget.recordatorios[0]["time"]}/${widget.recordatorios[0]["sound"]}/${widget.recordatorios[0]["repeat"]}/${widget.recordatorios[0]["description"]}";
           SavedMessage s = SavedMessage();
           await s.updateMessage(widget.message, widget.id, "d");
           variables = widget.message.split("/");
-        } else if (widget.cantidad == 0) {
-          print("No hay recordatorios");
-        } else {
-          print("Hay más de un recordatorio");
         }
       }
     }
@@ -137,6 +133,10 @@ class _DeleteWidgetState extends State<DeleteWidget> {
 
                                                 await r.delete(
                                                     int.parse(variables[1]));
+                                                await NotiticationService()
+                                                    .cancelNotification(
+                                                        int.parse(
+                                                            variables[1]));
 
                                                 widget.message =
                                                     "Se ha borrado el recordatorio correctamente";
@@ -149,7 +149,6 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                                                   variables =
                                                       widget.message.split("/");
 
-                                                  print(variables);
                                                   widget.state = true;
                                                 });
                                               },

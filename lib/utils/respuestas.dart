@@ -18,8 +18,6 @@ class Respuesta {
     String dig = "m";
     SavedMessage saveMessageController = SavedMessage();
 
-    print("intención $i1");
-
     if (i1 == "NEXTWEEK0") {
       dig = "we";
       ret2 = "NEXTWEEK";
@@ -31,16 +29,14 @@ class Respuesta {
 
     if (i1 == "DAY1") {
       List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
-      print(i2);
-      if ("${i2}" == "[]") {
-        print("no entities");
+
+      if ("$i2" == "[]") {
         ret2 = "DAY/NULL";
       } else {
         DateTime d = DateTime.parse(str[0]);
         ret2 = "DAY/${d.toString().split(" ")[0]}";
       }
 
-      print(ret2);
       dig = "i";
     }
 
@@ -50,8 +46,7 @@ class Respuesta {
 
       List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
 
-      if ("${i2}" == "[]") {
-        print("no entities");
+      if ("$i2" == "[]") {
         ret2 = "DELETE1/NULL";
       } else {
         DateTime d = DateTime.parse(str[0]);
@@ -66,8 +61,7 @@ class Respuesta {
 
       List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
 
-      if ("${i2}" == "[]") {
-        print("no entities");
+      if ("$i2" == "[]") {
         ret2 = "EDIT1/NULL";
       } else {
         DateTime d = DateTime.parse(str[0]);
@@ -79,7 +73,7 @@ class Respuesta {
       //MIRAMOS SI TIENE ENTIDADES
       if (i2 != "[]") {
         List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
-        print(str);
+
         DateTime d = DateTime.parse(str[0]);
 
         //DateTime time = DateTime.parse(str.join(" "));
