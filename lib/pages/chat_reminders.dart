@@ -41,14 +41,24 @@ class _ChatState extends State<Chat> {
     _responseGenerator = Respuesta();
   }
 
+  calendarButton() {
+    messageController.text = "Calendario";
+    sendMessage();
+  }
+
+  addButton() {
+    messageController.text = "Recordatorio";
+    sendMessage();
+  }
+
+  helpButton() {
+    messageController.text = "Ayuda";
+    sendMessage();
+  }
+
   Future<void> getMessages() async {
     var printing = await saveMessageController.getItems();
     savedMessages = printing;
-  }
-
-  Future<void> _scrollDown() async {
-    print("scroll");
-    _controller.jumpTo(_controller.position.maxScrollExtent);
   }
 
   refresh() {
@@ -82,7 +92,7 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [PopMenu()],
+        actions: [PopMenu(calendarButton, addButton, helpButton)],
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor:
               Theme.of(context).colorScheme.secondary, // <-- SEE HERE
