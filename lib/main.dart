@@ -1,4 +1,5 @@
 import 'package:chat_app/pages/home.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:timezone/data/latest.dart' as tz;
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
       theme: ThemeData(
           primaryColor: const Color.fromARGB(255, 0, 115, 99),
           colorScheme: ColorScheme.fromSwatch().copyWith(

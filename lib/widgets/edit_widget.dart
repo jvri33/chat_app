@@ -4,6 +4,7 @@ import 'package:chat_app/widgets/repeticion.dart';
 import 'package:chat_app/widgets/sound.dart';
 import 'package:chat_app/widgets/time.dart';
 import 'package:flutter/material.dart';
+import '../controllers/notification_service.dart';
 import '../controllers/reminder.dart';
 
 // ignore: must_be_immutable
@@ -45,16 +46,11 @@ class _EditWidgetState extends State<EditWidget> {
         widget.cantidad = widget.recordatorios.length;
 
         if (widget.cantidad == 1) {
-          print("Hay un recordatorio");
           widget.message =
               "EDITING/${widget.recordatorios[0]["id"]}/${widget.recordatorios[0]["date"]}/${widget.recordatorios[0]["time"]}/${widget.recordatorios[0]["sound"]}/${widget.recordatorios[0]["repeat"]}/${widget.recordatorios[0]["description"]}";
           SavedMessage s = SavedMessage();
           await s.updateMessage(widget.message, widget.id, "e");
           variables = widget.message.split("/");
-        } else if (widget.cantidad == 0) {
-          print("No hay recordatorios");
-        } else {
-          print("Hay más de un recordatorio");
         }
       }
     }
@@ -63,25 +59,21 @@ class _EditWidgetState extends State<EditWidget> {
   }
 
   void updateDate(String newDate) {
-    print(variables[0]);
-
     if (variables[0] == "EDIT1") {
       setState(() {
-        print(widget.message);
         variables[1] = newDate;
       });
-      print("variables 1");
     } else {
       variables[2] = newDate;
       setState(() {});
-      print("variables 2");
     }
-    ;
   }
 
   void updateTime(String newTime) {
     setState(() {
       variables[3] = newTime;
+
+      print(variables[3]);
     });
   }
 
@@ -177,7 +169,7 @@ class _EditWidgetState extends State<EditWidget> {
                                                     sound:
                                                         int.parse(variables[4]),
                                                     id: widget.id,
-                                                    message: "",
+                                                    message: widget.message,
                                                     onUpdateSound: updateSound),
                                                 RepeatWidget(
                                                   repeat:
@@ -219,10 +211,27 @@ class _EditWidgetState extends State<EditWidget> {
                                                       int.parse(variables[1]),
                                                       variables[6],
                                                       variables[2],
-                                                      int.parse(variables[4]),
                                                       int.parse(variables[5]),
+                                                      int.parse(variables[4]),
                                                       "days",
                                                       variables[3]);
+
+                                                  await NotiticationService()
+                                                      .cancelNotification(
+                                                          int.parse(
+                                                              variables[1]));
+
+                                                  NotiticationService()
+                                                      .scheduleNotification(
+                                                          sound: variables[4] ==
+                                                              "1",
+                                                          id: int.parse(
+                                                              variables[5]),
+                                                          title: "Recordatorio",
+                                                          body: variables[6],
+                                                          scheduledNotificationDateTime:
+                                                              DateTime.parse(
+                                                                  "${variables[2]} ${variables[3]}"));
 
                                                   SavedMessage s =
                                                       SavedMessage();

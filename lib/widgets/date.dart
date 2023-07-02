@@ -26,10 +26,20 @@ class DateWidget extends StatelessWidget {
           padding: const EdgeInsets.only(left: 10),
           onPressed: () async {
             DateTime? picketDate = await showDatePicker(
+                locale: const Locale("es", "ES"),
                 context: context,
                 initialDate: DateTime.parse(date),
                 firstDate: DateTime.now(),
-                lastDate: DateTime(2024));
+                lastDate: DateTime(2024),
+                builder: ((context, child) {
+                  return Theme(
+                      data: Theme.of(context).copyWith(
+                          colorScheme: ColorScheme.light(
+                              primary: Theme.of(context).primaryColor,
+                              onPrimary: Colors.white,
+                              onSurface: Theme.of(context).primaryColor)),
+                      child: child!);
+                }));
 
             if (picketDate != null) {
               picketDate.toString().split(" ")[0];
@@ -38,6 +48,7 @@ class DateWidget extends StatelessWidget {
 
               if (mess[0] != "EDITING" || mess[0] != "DELETING") {
                 mess[1] = picketDate.toString().split(" ")[0];
+                print(mess[1]);
               } else {
                 mess[2] = picketDate.toString().split(" ")[0];
               }
@@ -45,12 +56,11 @@ class DateWidget extends StatelessWidget {
 
               SavedMessage s = SavedMessage();
 
-              print(messSt);
-
               await s.updateMessageDate(messSt, id);
 
               onUpdateDate(picketDate.toString().split(" ")[0]);
             }
+            // ignore: use_build_context_synchronously
             FocusScope.of(context).unfocus();
           },
           icon: const Icon(

@@ -31,8 +31,10 @@ class TimeWidget extends StatelessWidget {
                     minute: int.parse(time.split(":")[1])));
 
             if (pickedTime != null) {
-              List<String> mess = message.split("/");
+              print("picked time: $pickedTime");
 
+              List<String> mess = message.split("/");
+              print(mess[0]);
               int hora = pickedTime.hour;
               int minute = pickedTime.minute;
 
@@ -50,15 +52,20 @@ class TimeWidget extends StatelessWidget {
                 mess[5] = "$horas:$minutoss";
               } else {
                 mess[3] = "$horas:$minutoss";
+                print(mess[3]);
               }
 
               // mess[5] = "$horas:$minutoss";
 
               String messSt = mess.join("/");
               SavedMessage s = SavedMessage();
-              s.updateMessageTime(messSt, id);
+              await s.updateMessageTime(messSt, id);
 
-              onUpdateTime(mess[5]);
+              if (mess[0] != "EDITING") {
+                onUpdateTime(mess[5]);
+              } else {
+                onUpdateTime(mess[3]);
+              }
             }
           },
           icon: const Icon(

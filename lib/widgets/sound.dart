@@ -36,14 +36,25 @@ class SoundWidget extends StatelessWidget {
           value: so,
           onChanged: (newv) async {
             if (message != "") {
+              print(message);
               so = newv!;
 
               List<String> mess = message.split("/");
-              mess[2] = (so ? 1 : 0).toString();
+              if (mess[0] != "EDITING") {
+                mess[2] = (so ? 1 : 0).toString();
+              } else {
+                mess[4] = (so ? 1 : 0).toString();
+              }
               String messSt = mess.join("/");
               SavedMessage s = SavedMessage();
               s.updateMessageSound(messSt, id);
-              onUpdateSound(mess[2]);
+              print(messSt);
+
+              if (mess[0] != "EDITING") {
+                onUpdateSound(mess[2]);
+              } else {
+                onUpdateSound(mess[4]);
+              }
             }
           },
           side: MaterialStateBorderSide.resolveWith(

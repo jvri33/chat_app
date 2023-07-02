@@ -6,7 +6,7 @@ class SavedMessage {
     return ("Created succesfully");
   }
 
-  dynamic getItems() async {
+  Future<dynamic> getItems() async {
     final data = await SQLHelper.getMessages();
 
     return (data);
@@ -17,8 +17,8 @@ class SavedMessage {
     return true;
   }
 
-  void updateMessageTime(String time, int id) async {
-    SQLHelper.updateMessageTime(time, id);
+  Future<void> updateMessageTime(String time, int id) async {
+    await SQLHelper.updateMessageTime(time, id);
   }
 
   void updateMessageSound(String s, int id) async {

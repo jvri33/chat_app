@@ -4,11 +4,11 @@ import 'package:chat_app/widgets/calendario.dart';
 import 'package:chat_app/widgets/day.dart';
 import 'package:chat_app/widgets/delete_widget.dart';
 import 'package:chat_app/widgets/edit_widget.dart';
+import 'package:chat_app/widgets/popmenu.dart';
 import 'package:chat_app/widgets/reminder_widget.dart';
 import 'package:chat_app/widgets/saved_message_widget.dart';
 import 'package:chat_app/widgets/week.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
 import 'package:chat_app/classifiers/intent_classifier.dart';
@@ -28,11 +28,11 @@ class _ChatState extends State<Chat> {
   late Classifier _entityClassifier;
   late List<String> prediction = [];
   late String intentPrediction = "";
-
+  final ScrollController _controller = ScrollController();
   SavedMessage saveMessageController = SavedMessage();
   late List<Map<String, dynamic>> savedMessages = [];
   final messageController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +44,11 @@ class _ChatState extends State<Chat> {
   Future<void> getMessages() async {
     var printing = await saveMessageController.getItems();
     savedMessages = printing;
+  }
+
+  Future<void> _scrollDown() async {
+    print("scroll");
+    _controller.jumpTo(_controller.position.maxScrollExtent);
   }
 
   refresh() {
@@ -75,155 +80,149 @@ class _ChatState extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
-    if (init == 0) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        init++;
-      });
-    }
-
-    return WillPopScope(
-      onWillPop: () async {
-        init = 0;
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor:
-                Theme.of(context).colorScheme.secondary, // <-- SEE HERE
-            statusBarIconBrightness:
-                Brightness.dark, //<-- For Android SEE HERE (dark icons)
-            statusBarBrightness:
-                Brightness.light, //<-- For iOS SEE HERE (dark icons)
-          ),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          title: Row(
-            children: [
-              CircleAvatar(backgroundColor: Theme.of(context).primaryColor),
-              const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  child: Text("Agente"))
-            ],
-          ),
-          centerTitle: true,
-          leading: const BackButton(),
+    return Scaffold(
+      appBar: AppBar(
+        actions: [PopMenu()],
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor:
+              Theme.of(context).colorScheme.secondary, // <-- SEE HERE
+          statusBarIconBrightness:
+              Brightness.dark, //<-- For Android SEE HERE (dark icons)
+          statusBarBrightness:
+              Brightness.light, //<-- For iOS SEE HERE (dark icons)
         ),
-        body: Container(
-          //padding: EdgeInsets.only(top: 10),
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-            colors: [Color(0xff77ddf2), Color(0xff77f7aa)],
-            stops: [0, 1],
-            begin: Alignment.bottomRight,
-            end: Alignment.topLeft,
-          )),
-          child: Column(
-            children: [
-              Expanded(
-                child: FutureBuilder(
-                  future: getMessages(),
-                  builder: (context, snapshot) {
-                    return ListView.builder(
-                        controller: _scrollController,
-                        itemCount: savedMessages.asMap().keys.toList().length,
-                        itemBuilder: (BuildContext context, int index) {
-                          var keys = savedMessages.asMap().keys.toList();
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        title: Row(
+          children: [
+            CircleAvatar(backgroundColor: Theme.of(context).primaryColor),
+            const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Text("Timmy")),
+          ],
+        ),
+        centerTitle: true,
+        leading: const BackButton(),
+      ),
+      body: Container(
+        //padding: EdgeInsets.only(top: 10),
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+          colors: [Color(0xff77ddf2), Color(0xff77f7aa)],
+          stops: [0, 1],
+          begin: Alignment.bottomRight,
+          end: Alignment.topLeft,
+        )),
+        child: Column(
+          children: [
+            Expanded(
+              child: FutureBuilder(
+                future: getMessages(),
+                builder: (context, snapshot) {
+                  return ListView.builder(
+                      reverse: true,
+                      controller: _controller,
+                      itemCount: savedMessages.asMap().keys.toList().length,
+                      itemBuilder: (BuildContext context, int index) {
+                        var keys = savedMessages.asMap().keys.toList();
+                        final reversedIndex =
+                            savedMessages.asMap().keys.toList().length -
+                                1 -
+                                index;
 
-                          if (savedMessages[keys[index]]['type'] == 'm') {
-                            return SavedMessageWidget(
-                              savedMessages[keys[index]]['user'],
-                              savedMessages[keys[index]]['message'],
-                            );
-                          } else if (savedMessages[keys[index]]['type'] ==
-                              'w') {
-                            return ReminderWidget(
-                                savedMessages[keys[index]]['message'],
-                                savedMessages[keys[index]]['id'],
-                                refresh);
-                          } else if (savedMessages[keys[index]]['type'] ==
-                              'c') {
-                            return Calendario(refresh);
-                          } else if (savedMessages[keys[index]]['type'] ==
-                              'e') {
-                            return EditWidget(
-                                savedMessages[keys[index]]['message'],
-                                savedMessages[keys[index]]['id'],
-                                refresh);
-                          } else if (savedMessages[keys[index]]['type'] ==
-                              'd') {
-                            return DeleteWidget(
-                                savedMessages[keys[index]]['message'],
-                                savedMessages[keys[index]]['id'],
-                                refresh);
-                          } else if (savedMessages[keys[index]]['type'] ==
-                              'i') {
-                            return DayWidget(
-                              savedMessages[keys[index]]['message'],
-                              savedMessages[keys[index]]['id'],
-                            );
-                          } else if (savedMessages[keys[index]]['type'] ==
-                              'we') {
-                            return (Week(
-                                savedMessages[keys[index]]['message']));
-                          } else {
-                            return const Text("Error");
-                          }
-                        });
-                  },
-                ),
+                        if (savedMessages[keys[reversedIndex]]['type'] == 'm') {
+                          return SavedMessageWidget(
+                            savedMessages[keys[reversedIndex]]['user'],
+                            savedMessages[keys[reversedIndex]]['message'],
+                          );
+                        } else if (savedMessages[keys[reversedIndex]]['type'] ==
+                            'w') {
+                          return ReminderWidget(
+                              savedMessages[keys[reversedIndex]]['message'],
+                              savedMessages[keys[reversedIndex]]['id'],
+                              refresh);
+                        } else if (savedMessages[keys[reversedIndex]]['type'] ==
+                            'c') {
+                          return Calendario(refresh);
+                        } else if (savedMessages[keys[reversedIndex]]['type'] ==
+                            'e') {
+                          return EditWidget(
+                              savedMessages[keys[reversedIndex]]['message'],
+                              savedMessages[keys[reversedIndex]]['id'],
+                              refresh);
+                        } else if (savedMessages[keys[reversedIndex]]['type'] ==
+                            'd') {
+                          return DeleteWidget(
+                              savedMessages[keys[reversedIndex]]['message'],
+                              savedMessages[keys[reversedIndex]]['id'],
+                              refresh);
+                        } else if (savedMessages[keys[reversedIndex]]['type'] ==
+                            'i') {
+                          return DayWidget(
+                            savedMessages[keys[reversedIndex]]['message'],
+                            savedMessages[keys[reversedIndex]]['id'],
+                          );
+                        } else if (savedMessages[keys[reversedIndex]]['type'] ==
+                            'we') {
+                          return (Week(
+                              savedMessages[keys[reversedIndex]]['message']));
+                        } else {
+                          return const Text("Error");
+                        }
+                      });
+                },
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 8, top: 8),
-                    height: 60,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          spreadRadius: 0,
-                          blurRadius: 2,
-                          offset: const Offset(0, -2),
-                        ),
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          spreadRadius: 0,
-                          blurRadius: 4,
-                          offset: const Offset(0, 4),
-                        )
-                      ],
-                      borderRadius: const BorderRadius.all(Radius.circular(50)),
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: messageController,
-                            onEditingComplete: sendMessage,
-                            decoration: InputDecoration(
-                              hintStyle: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.w500),
-                              contentPadding: const EdgeInsets.all(20),
-                              border: InputBorder.none,
-                              hintText: 'Escriba un mensaje...',
-                            ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 8, top: 8),
+                  height: 60,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        spreadRadius: 0,
+                        blurRadius: 2,
+                        offset: const Offset(0, -2),
+                      ),
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        spreadRadius: 0,
+                        blurRadius: 4,
+                        offset: const Offset(0, 4),
+                      )
+                    ],
+                    borderRadius: const BorderRadius.all(Radius.circular(50)),
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: messageController,
+                          onEditingComplete: sendMessage,
+                          decoration: InputDecoration(
+                            hintStyle: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.w500),
+                            contentPadding: const EdgeInsets.all(20),
+                            border: InputBorder.none,
+                            hintText: 'Escriba un mensaje...',
                           ),
                         ),
-                        IconButton(
-                            color: Theme.of(context).primaryColor,
-                            onPressed: sendMessage,
-                            icon: const Icon(Icons.send))
-                      ],
-                    ),
+                      ),
+                      IconButton(
+                          color: Theme.of(context).primaryColor,
+                          onPressed: sendMessage,
+                          icon: const Icon(Icons.send))
+                    ],
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
