@@ -1,11 +1,11 @@
 import 'package:chat_app/controllers/saved_message.dart';
-import 'package:chat_app/widgets/date.dart';
-import 'package:chat_app/widgets/repeticion.dart';
-import 'package:chat_app/widgets/sound.dart';
-import 'package:chat_app/widgets/time.dart';
+import '../TimmyWidgets/date.dart';
+import '../TimmyWidgets/repeticion.dart';
+import '../TimmyWidgets/sound.dart';
+import '../TimmyWidgets/time.dart';
 import 'package:flutter/material.dart';
-import '../controllers/notification_service.dart';
-import '../controllers/reminder.dart';
+import '../../controllers/notification_service.dart';
+import '../../controllers/reminder.dart';
 
 // ignore: must_be_immutable
 class ReminderWidget extends StatefulWidget {

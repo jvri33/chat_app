@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../controllers/reminder.dart';
+import '../../controllers/reminder.dart';
 
 // ignore: must_be_immutable
 class DayWidget extends StatelessWidget {

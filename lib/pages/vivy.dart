@@ -1,13 +1,8 @@
 import 'package:chat_app/controllers/vivy_saved_message.dart';
-import 'package:chat_app/utils/respuestas.dart';
-import 'package:chat_app/widgets/calendario.dart';
-import 'package:chat_app/widgets/day.dart';
-import 'package:chat_app/widgets/delete_widget.dart';
-import 'package:chat_app/widgets/edit_widget.dart';
-import 'package:chat_app/widgets/popmenu.dart';
-import 'package:chat_app/widgets/reminder_widget.dart';
+import 'package:chat_app/utils/respuestas_vivy.dart';
+
 import 'package:chat_app/widgets/saved_message_widget.dart';
-import 'package:chat_app/widgets/week.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -23,7 +18,7 @@ class Vivy extends StatefulWidget {
 
 class _VivyState extends State<Vivy> {
   int init = 0;
-  late Respuesta _responseGenerator;
+  late RespuestaVivy _responseGenerator;
   late IntentClassifier _intentClassifier;
   late Classifier _entityClassifier;
   late List<String> prediction = [];
@@ -38,7 +33,7 @@ class _VivyState extends State<Vivy> {
     super.initState();
     _intentClassifier = IntentClassifier();
     _entityClassifier = Classifier();
-    _responseGenerator = Respuesta();
+    _responseGenerator = RespuestaVivy();
   }
 
   calendarButton() {
@@ -93,7 +88,6 @@ class _VivyState extends State<Vivy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [PopMenu(calendarButton, addButton, helpButton)],
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor:
               Theme.of(context).colorScheme.secondary, // <-- SEE HERE
@@ -151,46 +145,6 @@ class _VivyState extends State<Vivy> {
                               savedMessages[keys[reversedIndex]]['user'],
                               savedMessages[keys[reversedIndex]]['message'],
                             );
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'w') {
-                            return ReminderWidget(
-                                savedMessages[keys[reversedIndex]]['message'],
-                                savedMessages[keys[reversedIndex]]['id'],
-                                refresh);
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'c') {
-                            return Calendario(
-                                savedMessages[keys[reversedIndex]]['message'],
-                                savedMessages[keys[reversedIndex]]['id'],
-                                refresh);
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'e') {
-                            return EditWidget(
-                                savedMessages[keys[reversedIndex]]['message'],
-                                savedMessages[keys[reversedIndex]]['id'],
-                                refresh);
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'd') {
-                            return DeleteWidget(
-                                savedMessages[keys[reversedIndex]]['message'],
-                                savedMessages[keys[reversedIndex]]['id'],
-                                refresh);
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'i') {
-                            return DayWidget(
-                              savedMessages[keys[reversedIndex]]['message'],
-                              savedMessages[keys[reversedIndex]]['id'],
-                            );
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'we') {
-                            return (Week(
-                                savedMessages[keys[reversedIndex]]['message']));
                           } else {
                             return const Text("Error");
                           }

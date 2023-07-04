@@ -2,7 +2,7 @@ import 'package:chat_app/controllers/saved_message.dart';
 
 import 'package:flutter/material.dart';
 
-import '../controllers/reminder.dart';
+import '../../controllers/reminder.dart';
 
 // ignore: must_be_immutable
 class Calendario extends StatelessWidget {

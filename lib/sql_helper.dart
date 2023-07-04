@@ -18,6 +18,12 @@ class SQLHelper {
       user BIT,
       type TEXT
     );""");
+    await database.execute("""CREATE TABLE messages_vivy(
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      message TEXT,
+      user BIT,
+      type TEXT
+    );""");
   }
 
   static Future<Database> db() async {
@@ -59,10 +65,25 @@ class SQLHelper {
     return id;
   }
 
+  static Future<int> createMessageVivy(
+      String message, int user, String type) async {
+    final db = await SQLHelper.db();
+    final data = {'message': message, 'user': user, 'type': type};
+    final id = await db.insert('messages_vivy', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+
   static Future<List<Map<String, dynamic>>> getMessages() async {
     final db = await SQLHelper.db();
 
     return db.query('messages_rem', orderBy: 'id');
+  }
+
+  static Future<List<Map<String, dynamic>>> getMessagesVivy() async {
+    final db = await SQLHelper.db();
+
+    return db.query('messages_vivy', orderBy: 'id');
   }
 
   static Future<List<Map<String, dynamic>>> getReminders() async {
@@ -109,6 +130,13 @@ class SQLHelper {
     await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
   }
 
+  static Future<void> updateMessageVivy(String mes, int id) async {
+    final db = await SQLHelper.db();
+    //print("updated");
+    final data = {'message': mes};
+    await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
+  }
+
   static Future<void> updateMessageTime(String time, int id) async {
     final db = await SQLHelper.db();
     final data = {'message': time};
@@ -129,10 +157,16 @@ class SQLHelper {
 
   static Future<void> updateMessageMess(
       String mess, int id, String type) async {
-    print("bd message");
     final db = await SQLHelper.db();
     final data = {'message': mess, 'type': type};
     await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);
+  }
+
+  static Future<void> updateMessageMessVivy(
+      String mess, int id, String type) async {
+    final db = await SQLHelper.db();
+    final data = {'message': mess, 'type': type};
+    await db.update('messages_vivy', data, where: "id=?", whereArgs: [id]);
   }
 
   static Future<void> deleteReminder(int id) async {

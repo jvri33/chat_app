@@ -1,11 +1,13 @@
 import 'dart:ui';
 
 import 'package:chat_app/controllers/saved_message.dart';
-import 'package:chat_app/widgets/date.dart';
 
 import 'package:flutter/material.dart';
-import '../controllers/reminder.dart';
-import '../controllers/notification_service.dart';
+
+import '../TimmyWidgets/date.dart';
+
+import '../../controllers/notification_service.dart';
+import '../../controllers/reminder.dart';
 
 // ignore: must_be_immutable
 class DeleteWidget extends StatefulWidget {
@@ -194,7 +196,7 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                                       child: Row(
                                         children: [
                                           Container(
-                                            padding: EdgeInsets.all(10),
+                                            padding: const EdgeInsets.all(10),
                                             width: 220,
                                             child: Text(
                                               "${variables[2]} | ${variables[6]}",

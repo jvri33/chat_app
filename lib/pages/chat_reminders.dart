@@ -1,13 +1,13 @@
 import 'package:chat_app/controllers/saved_message.dart';
 import 'package:chat_app/utils/respuestas.dart';
-import 'package:chat_app/widgets/calendario.dart';
-import 'package:chat_app/widgets/day.dart';
-import 'package:chat_app/widgets/delete_widget.dart';
-import 'package:chat_app/widgets/edit_widget.dart';
-import 'package:chat_app/widgets/popmenu.dart';
-import 'package:chat_app/widgets/reminder_widget.dart';
+import 'package:chat_app/widgets/TimmyWidgets/calendario.dart';
+import 'package:chat_app/widgets/TimmyWidgets/day.dart';
+import 'package:chat_app/widgets/TimmyWidgets/delete_widget.dart';
+import 'package:chat_app/widgets/TimmyWidgets/edit_widget.dart';
+import 'package:chat_app/widgets/TimmyWidgets/popmenu.dart';
+import 'package:chat_app/widgets/TimmyWidgets/reminder_widget.dart';
 import 'package:chat_app/widgets/saved_message_widget.dart';
-import 'package:chat_app/widgets/week.dart';
+import 'package:chat_app/widgets/TimmyWidgets/week.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
