@@ -16,6 +16,7 @@ class ReminderWidget extends StatefulWidget {
   final int id;
   bool state = false;
   ReminderWidget(this.message, this.id, this.notifyParent, {super.key}) {
+    print(message);
     if (message == "Se ha creado el recordatorio correctamente") {
       state = true;
     }

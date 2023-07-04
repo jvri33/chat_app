@@ -62,7 +62,9 @@ class _ChatState extends State<Chat> {
   }
 
   refresh() {
-    setState(() {});
+    setState(() {
+      print("refresh");
+    });
   }
 
   void sendMessage() async {
@@ -77,9 +79,10 @@ class _ChatState extends State<Chat> {
         saveMessageController.createItem(messageController.text, 1, "m");
 
         await _responseGenerator.getResponse(
-            intentPrediction,
-            _entityClassifier.classify(messageController.text),
-            messageController.text);
+          intentPrediction,
+          _entityClassifier.classify(messageController.text),
+          messageController.text,
+        );
       }
     }
 
@@ -128,57 +131,70 @@ class _ChatState extends State<Chat> {
               child: FutureBuilder(
                 future: getMessages(),
                 builder: (context, snapshot) {
-                  return ListView.builder(
-                      reverse: true,
-                      controller: _controller,
-                      itemCount: savedMessages.asMap().keys.toList().length,
-                      itemBuilder: (BuildContext context, int index) {
-                        var keys = savedMessages.asMap().keys.toList();
-                        final reversedIndex =
-                            savedMessages.asMap().keys.toList().length -
-                                1 -
-                                index;
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return ListView.builder(
+                        reverse: true,
+                        controller: _controller,
+                        itemCount: savedMessages.asMap().keys.toList().length,
+                        itemBuilder: (BuildContext context, int index) {
+                          var keys = savedMessages.asMap().keys.toList();
+                          final reversedIndex =
+                              savedMessages.asMap().keys.toList().length -
+                                  1 -
+                                  index;
 
-                        if (savedMessages[keys[reversedIndex]]['type'] == 'm') {
-                          return SavedMessageWidget(
-                            savedMessages[keys[reversedIndex]]['user'],
-                            savedMessages[keys[reversedIndex]]['message'],
-                          );
-                        } else if (savedMessages[keys[reversedIndex]]['type'] ==
-                            'w') {
-                          return ReminderWidget(
+                          if (savedMessages[keys[reversedIndex]]['type'] ==
+                              'm') {
+                            return SavedMessageWidget(
+                              savedMessages[keys[reversedIndex]]['user'],
+                              savedMessages[keys[reversedIndex]]['message'],
+                            );
+                          } else if (savedMessages[keys[reversedIndex]]
+                                  ['type'] ==
+                              'w') {
+                            return ReminderWidget(
+                                savedMessages[keys[reversedIndex]]['message'],
+                                savedMessages[keys[reversedIndex]]['id'],
+                                refresh);
+                          } else if (savedMessages[keys[reversedIndex]]
+                                  ['type'] ==
+                              'c') {
+                            return Calendario(refresh);
+                          } else if (savedMessages[keys[reversedIndex]]
+                                  ['type'] ==
+                              'e') {
+                            return EditWidget(
+                                savedMessages[keys[reversedIndex]]['message'],
+                                savedMessages[keys[reversedIndex]]['id'],
+                                refresh);
+                          } else if (savedMessages[keys[reversedIndex]]
+                                  ['type'] ==
+                              'd') {
+                            return DeleteWidget(
+                                savedMessages[keys[reversedIndex]]['message'],
+                                savedMessages[keys[reversedIndex]]['id'],
+                                refresh);
+                          } else if (savedMessages[keys[reversedIndex]]
+                                  ['type'] ==
+                              'i') {
+                            return DayWidget(
                               savedMessages[keys[reversedIndex]]['message'],
                               savedMessages[keys[reversedIndex]]['id'],
-                              refresh);
-                        } else if (savedMessages[keys[reversedIndex]]['type'] ==
-                            'c') {
-                          return Calendario(refresh);
-                        } else if (savedMessages[keys[reversedIndex]]['type'] ==
-                            'e') {
-                          return EditWidget(
-                              savedMessages[keys[reversedIndex]]['message'],
-                              savedMessages[keys[reversedIndex]]['id'],
-                              refresh);
-                        } else if (savedMessages[keys[reversedIndex]]['type'] ==
-                            'd') {
-                          return DeleteWidget(
-                              savedMessages[keys[reversedIndex]]['message'],
-                              savedMessages[keys[reversedIndex]]['id'],
-                              refresh);
-                        } else if (savedMessages[keys[reversedIndex]]['type'] ==
-                            'i') {
-                          return DayWidget(
-                            savedMessages[keys[reversedIndex]]['message'],
-                            savedMessages[keys[reversedIndex]]['id'],
-                          );
-                        } else if (savedMessages[keys[reversedIndex]]['type'] ==
-                            'we') {
-                          return (Week(
-                              savedMessages[keys[reversedIndex]]['message']));
-                        } else {
-                          return const Text("Error");
-                        }
-                      });
+                            );
+                          } else if (savedMessages[keys[reversedIndex]]
+                                  ['type'] ==
+                              'we') {
+                            return (Week(
+                                savedMessages[keys[reversedIndex]]['message']));
+                          } else {
+                            return const Text("Error");
+                          }
+                        });
+                  }
                 },
               ),
             ),

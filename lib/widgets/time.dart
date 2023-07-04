@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import 'package:chat_app/controllers/saved_message.dart';
@@ -25,16 +27,26 @@ class TimeWidget extends StatelessWidget {
           padding: const EdgeInsets.only(left: 10),
           onPressed: () async {
             TimeOfDay? pickedTime = await showTimePicker(
+                builder: (context, child) {
+                  return BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                    child: Theme(
+                        data: Theme.of(context).copyWith(
+                            colorScheme: ColorScheme.light(
+                                primary: Theme.of(context).primaryColor,
+                                onPrimary: Colors.white,
+                                onSurface: Theme.of(context).primaryColor)),
+                        child: child!),
+                  );
+                },
                 context: context,
                 initialTime: TimeOfDay(
                     hour: int.parse(time.split(":")[0]),
                     minute: int.parse(time.split(":")[1])));
 
             if (pickedTime != null) {
-              print("picked time: $pickedTime");
-
               List<String> mess = message.split("/");
-              print(mess[0]);
+
               int hora = pickedTime.hour;
               int minute = pickedTime.minute;
 
@@ -52,7 +64,6 @@ class TimeWidget extends StatelessWidget {
                 mess[5] = "$horas:$minutoss";
               } else {
                 mess[3] = "$horas:$minutoss";
-                print(mess[3]);
               }
 
               // mess[5] = "$horas:$minutoss";

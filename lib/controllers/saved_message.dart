@@ -3,6 +3,7 @@ import 'package:chat_app/sql_helper.dart';
 class SavedMessage {
   Future<String> createItem(String s, int n, String s2) async {
     await SQLHelper.createMessage(s, n, s2);
+
     return ("Created succesfully");
   }
 

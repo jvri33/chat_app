@@ -40,7 +40,6 @@ class NotiticationService {
   }
 
   Future<void> cancelNotification(int id) async {
-    print("borrar notificacion $id");
     await notificationsPlugin.cancel(id);
   }
 
@@ -51,8 +50,6 @@ class NotiticationService {
       String? payLoad,
       required bool sound,
       required DateTime scheduledNotificationDateTime}) async {
-    print("$id al crear noti");
-
     return notificationsPlugin.zonedSchedule(
         id,
         title,

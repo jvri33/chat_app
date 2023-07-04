@@ -36,7 +36,6 @@ class SoundWidget extends StatelessWidget {
           value: so,
           onChanged: (newv) async {
             if (message != "") {
-              print(message);
               so = newv!;
 
               List<String> mess = message.split("/");
@@ -48,7 +47,6 @@ class SoundWidget extends StatelessWidget {
               String messSt = mess.join("/");
               SavedMessage s = SavedMessage();
               s.updateMessageSound(messSt, id);
-              print(messSt);
 
               if (mess[0] != "EDITING") {
                 onUpdateSound(mess[2]);

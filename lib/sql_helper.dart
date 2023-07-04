@@ -61,7 +61,7 @@ class SQLHelper {
 
   static Future<List<Map<String, dynamic>>> getMessages() async {
     final db = await SQLHelper.db();
-    print("get messages");
+
     return db.query('messages_rem', orderBy: 'id');
   }
 
@@ -129,6 +129,7 @@ class SQLHelper {
 
   static Future<void> updateMessageMess(
       String mess, int id, String type) async {
+    print("bd message");
     final db = await SQLHelper.db();
     final data = {'message': mess, 'type': type};
     await db.update('messages_rem', data, where: "id=?", whereArgs: [id]);

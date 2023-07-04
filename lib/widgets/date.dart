@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:chat_app/controllers/saved_message.dart';
 import 'package:flutter/material.dart';
 
@@ -32,13 +34,16 @@ class DateWidget extends StatelessWidget {
                 firstDate: DateTime.now(),
                 lastDate: DateTime(2024),
                 builder: ((context, child) {
-                  return Theme(
-                      data: Theme.of(context).copyWith(
-                          colorScheme: ColorScheme.light(
-                              primary: Theme.of(context).primaryColor,
-                              onPrimary: Colors.white,
-                              onSurface: Theme.of(context).primaryColor)),
-                      child: child!);
+                  return BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                    child: Theme(
+                        data: Theme.of(context).copyWith(
+                            colorScheme: ColorScheme.light(
+                                primary: Theme.of(context).primaryColor,
+                                onPrimary: Colors.white,
+                                onSurface: Theme.of(context).primaryColor)),
+                        child: child!),
+                  );
                 }));
 
             if (picketDate != null) {
@@ -48,7 +53,6 @@ class DateWidget extends StatelessWidget {
 
               if (mess[0] != "EDITING" || mess[0] != "DELETING") {
                 mess[1] = picketDate.toString().split(" ")[0];
-                print(mess[1]);
               } else {
                 mess[2] = picketDate.toString().split(" ")[0];
               }

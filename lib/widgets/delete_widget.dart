@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:chat_app/controllers/saved_message.dart';
 import 'package:chat_app/widgets/date.dart';
 
@@ -54,6 +56,81 @@ class _DeleteWidgetState extends State<DeleteWidget> {
     }
 
     return "finish";
+  }
+
+  void _showDeleteConfirmationDialog() {
+    showGeneralDialog(
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Container();
+      },
+      context: context,
+      transitionBuilder: (BuildContext context, a1, a2, w) {
+        final curvedAnimation = CurvedAnimation(
+            parent: a1,
+            curve: Curves.fastOutSlowIn); // Ajusta la curva de animación aquí
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+          child: ScaleTransition(
+            scale: Tween<double>(begin: 0.5, end: 1.0).animate(curvedAnimation),
+            child: AlertDialog(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(16.0),
+                ),
+              ),
+              title: Text(
+                'Confirmar eliminación',
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w800),
+              ),
+              content: const Text(
+                  '¿Estás seguro de que deseas eliminar el recordatorio?'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Cancelar',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Eliminar',
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16)),
+                  onPressed: () async {
+                    // Aquí puedes realizar las acciones de eliminación y actualizar el estado
+                    Reminder r = Reminder();
+                    SavedMessage s = SavedMessage();
+
+                    await r.delete(int.parse(variables[1]));
+                    await NotiticationService()
+                        .cancelNotification(int.parse(variables[1]));
+
+                    widget.message =
+                        'Se ha borrado el recordatorio correctamente';
+                    await s.updateMessage(widget.message, widget.id, 'd');
+
+                    setState(() {
+                      variables = widget.message.split('/');
+                      widget.state = true;
+                    });
+
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void updateDate(String newDate) {
@@ -116,18 +193,24 @@ class _DeleteWidgetState extends State<DeleteWidget> {
 
                                       child: Row(
                                         children: [
-                                          Text(
-                                            "      ${variables[2]} | ${variables[6]}",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Theme.of(context)
-                                                    .primaryColor),
+                                          Container(
+                                            padding: EdgeInsets.all(10),
+                                            width: 220,
+                                            child: Text(
+                                              "${variables[2]} | ${variables[6]}",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Theme.of(context)
+                                                      .primaryColor),
+                                            ),
                                           ),
                                           IconButton(
                                               color: Theme.of(context)
                                                   .primaryColor,
-                                              onPressed: () async {
+                                              onPressed:
+                                                  _showDeleteConfirmationDialog,
+                                              /*
                                                 Reminder r = Reminder();
                                                 SavedMessage s = SavedMessage();
 
@@ -151,7 +234,7 @@ class _DeleteWidgetState extends State<DeleteWidget> {
 
                                                   widget.state = true;
                                                 });
-                                              },
+                                              */
                                               icon: const Icon(Icons.delete))
                                         ],
                                       ),

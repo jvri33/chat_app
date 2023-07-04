@@ -72,8 +72,6 @@ class _EditWidgetState extends State<EditWidget> {
   void updateTime(String newTime) {
     setState(() {
       variables[3] = newTime;
-
-      print(variables[3]);
     });
   }
 
