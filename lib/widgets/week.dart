@@ -111,67 +111,75 @@ class Week extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           vertical: 16.0, horizontal: 16),
                       margin: const EdgeInsets.only(right: 8, top: 12, left: 4),
-                      child: Column(
-                        children: List.generate(recordatorios.length, (index) {
-                          List<Widget> innerList = [];
+                      child: cantidad == 0
+                          ? const SizedBox(
+                              width: 220,
+                              child: Text(
+                                "No tienes nada todavía.",
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ))
+                          : Column(
+                              children:
+                                  List.generate(recordatorios.length, (index) {
+                                List<Widget> innerList = [];
 
-                          for (int i = 0;
-                              i < recordatorios[index].length;
-                              i++) {
-                            innerList.add(
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8),
-                                width: double.infinity,
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                      "${recordatorios[index][i]['description']}  ${recordatorios[index][i]['time']}",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
-                                          color:
-                                              Theme.of(context).primaryColor)),
-                                ),
-                              ),
-                            );
-                          }
-                          if (recordatorios[index].isNotEmpty) {
-                            p++;
-                          }
-                          return Column(
-                            children: [
-                              if (recordatorios[index].isNotEmpty)
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(dias[index],
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black))),
-                              Column(
-                                children: List.generate(
-                                  innerList.length,
-                                  (j) {
-                                    return (Column(children: [
-                                      innerList[j],
-                                    ]));
-                                  },
-                                ),
-                              ),
-                              if (index >= startl && index != 6)
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  child: Divider(
-                                    color: Theme.of(context).primaryColor,
-                                    thickness: 1,
-                                  ),
-                                ),
-                            ],
-                          );
-                        }),
-                      ),
+                                for (int i = 0;
+                                    i < recordatorios[index].length;
+                                    i++) {
+                                  innerList.add(
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      width: double.infinity,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                            "${recordatorios[index][i]['description']}  ${recordatorios[index][i]['time']}",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Theme.of(context)
+                                                    .primaryColor)),
+                                      ),
+                                    ),
+                                  );
+                                }
+                                if (recordatorios[index].isNotEmpty) {
+                                  p++;
+                                }
+                                return Column(
+                                  children: [
+                                    if (recordatorios[index].isNotEmpty)
+                                      Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(dias[index],
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black))),
+                                    Column(
+                                      children: List.generate(
+                                        innerList.length,
+                                        (j) {
+                                          return (Column(children: [
+                                            innerList[j],
+                                          ]));
+                                        },
+                                      ),
+                                    ),
+                                    if (index >= startl && index != 6)
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8),
+                                        child: Divider(
+                                          color: Theme.of(context).primaryColor,
+                                          thickness: 1,
+                                        ),
+                                      ),
+                                  ],
+                                );
+                              }),
+                            ),
                     ),
                   ],
                 ),

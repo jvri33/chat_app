@@ -100,9 +100,20 @@ class Respuesta {
 
     if (i1 == "CALENDAR0") {
       dig = "c";
+      ret2 = "CALENDAR/";
+      List t = i2;
+      for (int i = 0; i < t.length; i++) {
+        if (t[i][2] == "MONTH") {
+          ret2 = "CALENDAR/${t[i][0]}";
+        }
+      }
     }
 
     //print(i2.isNotEmpty);
+    if (ret2 == "") {
+      ret2 =
+          "Lo siento, no te he entendido, intenta expresarte de otra manera :)";
+    }
 
     await saveMessageController.createItem(ret2.toString(), 0, dig);
     //await f();

@@ -16,7 +16,7 @@ class ReminderWidget extends StatefulWidget {
   final int id;
   bool state = false;
   ReminderWidget(this.message, this.id, this.notifyParent, {super.key}) {
-    print(message);
+    //print(message);
     if (message == "Se ha creado el recordatorio correctamente") {
       state = true;
     }
@@ -168,6 +168,7 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                             "Se ha creado el recordatorio correctamente";
                                         await s.updateMessage(
                                             widget.message, widget.id, "w");
+
                                         NotiticationService().scheduleNotification(
                                             sound: variables[2] == "1",
                                             id: id,
@@ -176,6 +177,7 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                             scheduledNotificationDateTime:
                                                 DateTime.parse(
                                                     "${variables[1]} ${variables[5]}"));
+
                                         setState(() {
                                           widget.state = true;
                                           widget.response =

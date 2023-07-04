@@ -1,3 +1,4 @@
+import 'package:chat_app/pages/vivy.dart';
 import 'package:flutter/material.dart';
 import '../widgets/widgets.dart';
 import 'settings_page.dart';
@@ -32,18 +33,25 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         title: const Text("ChatHub"),
       ),
-      body: ElevatedButton(
-        onPressed: () {
-          nextScreen(context, const Chat());
+      body: Row(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              nextScreen(context, const Chat());
 
-          /* NotiticationService().scheduleNotification(
-              title: "Prueba de notificación",
-              body: "Aquí iría el título",
-              scheduledNotificationDateTime:
-                  DateTime.now().add(const Duration(seconds: 40)));
+              /* NotiticationService().scheduleNotification(
+                  title: "Prueba de notificación",
+                  body: "Aquí iría el título",
+                  scheduledNotificationDateTime:
+                      DateTime.now().add(const Duration(seconds: 40)));
 */
-        },
-        child: const Text("Botón"),
+            },
+            child: const Text("Botón"),
+          ),
+          ElevatedButton(
+              onPressed: (() => nextScreen(context, const Vivy())),
+              child: const Text("Vivy"))
+        ],
       ),
     );
   }

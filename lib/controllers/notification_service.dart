@@ -25,17 +25,17 @@ class NotiticationService {
             (NotificationResponse notificationResponse) async {});
   }
 
-  notificationDetails(bool sound) {
+  notificationDetails(bool sound, int id) {
     if (sound) {
-      return const NotificationDetails(
-          android: AndroidNotificationDetails('channelId', 'channelName',
+      return NotificationDetails(
+          android: AndroidNotificationDetails('$id', '$id',
               playSound: true, importance: Importance.max),
-          iOS: DarwinNotificationDetails());
+          iOS: const DarwinNotificationDetails());
     } else {
-      return const NotificationDetails(
-          android: AndroidNotificationDetails('1', 'silenceChannel',
+      return NotificationDetails(
+          android: AndroidNotificationDetails('$id', '$id',
               playSound: false, importance: Importance.max),
-          iOS: DarwinNotificationDetails());
+          iOS: const DarwinNotificationDetails());
     }
   }
 
@@ -58,7 +58,7 @@ class NotiticationService {
           scheduledNotificationDateTime,
           tz.local,
         ),
-        await notificationDetails(sound),
+        await notificationDetails(sound, id),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);

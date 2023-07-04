@@ -6,20 +6,49 @@ import '../controllers/reminder.dart';
 
 // ignore: must_be_immutable
 class Calendario extends StatelessWidget {
+  final String message;
+  final int id;
   final Function() notifyParent;
   int day = DateTime.now().day;
-  int mes = 7;
+  int mes = 0;
   int year = 2023;
-
+  int actualmes = DateTime.now().month;
+  List<String> meses = [
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre"
+  ];
   List<List<Map<String, dynamic>>> recordatorios = [];
   Reminder r = Reminder();
-  Calendario(this.notifyParent, {super.key});
+  Calendario(this.message, this.id, this.notifyParent, {super.key}) {
+    if (message.split("/")[1] != "") {
+      for (int i = 0; i < meses.length; i++) {
+        if (meses[i] == (message.split("/")[1].toLowerCase())) {
+          mes = i;
+        }
+      }
+    } else {
+      mes = actualmes - 1;
+    }
+    //print(message);
+  }
   List<List<int>> month = [];
 
   Future<void> getCalendar() async {
-    DateTime d = DateTime.now();
+    DateTime de = DateTime.now();
 
-    int thisDays = DateUtils.getDaysInMonth(d.year, d.month);
+    DateTime d = DateTime(de.year, mes + 1, 1);
+
+    int thisDays = DateUtils.getDaysInMonth(d.year, mes + 1);
     //Estas lineas son en caso de implementar que se van los dias anteriores y posteriores al mes seleccionado
     //int previous_days = DateUtils.getDaysInMonth(d.year, d.month - 1);
     //int future_days = DateUtils.getDaysInMonth(d.year, d.month + 1);
@@ -57,29 +86,16 @@ class Calendario extends StatelessWidget {
     //print(mes);
     String m;
     if (mes < 10) {
-      m = "0$mes";
+      m = "0${mes + 1}";
     } else {
-      m = mes.toString();
+      m = {mes + 1}.toString();
     }
 
     recordatorios = await r.getItemsByMonth(m);
 
     recordatorios.insert(0, []);
-  }
 
-  Future<void> getReminders() async {
-    Reminder r = Reminder();
-    //print(mes);
-    String m;
-    if (mes < 10) {
-      m = "0$mes";
-    } else {
-      m = mes.toString();
-    }
-
-    recordatorios = await r.getItemsByMonth(m);
-
-    recordatorios.insert(0, []);
+    //print(recordatorios);
   }
 
   @override
@@ -153,7 +169,7 @@ class Calendario extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 10.0, left: 16),
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Julio",
+                              meses[mes],
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontSize: 14,
@@ -174,7 +190,9 @@ class Calendario extends StatelessWidget {
                                         style: ButtonStyle(
                                             backgroundColor:
                                                 MaterialStateProperty.all(
-                                                    month[i][index] == day
+                                                    mes + 1 == actualmes &&
+                                                            month[i][index] ==
+                                                                day
                                                         ? Theme.of(context)
                                                             .primaryColor
                                                         : Colors.white)),
@@ -189,10 +207,10 @@ class Calendario extends StatelessWidget {
                                                 String dateS = "";
                                                 if (day < 10) {
                                                   dateS =
-                                                      "2023-07-0${month[i][index]}";
+                                                      "2023-0${mes + 1}-0${month[i][index]}";
                                                 } else {
                                                   dateS =
-                                                      "2023-07-${month[i][index]}";
+                                                      "2023-0${mes + 1}-${month[i][index]}";
                                                 }
                                                 String ret = "DAY/$dateS";
                                                 await saveMessageController
@@ -202,7 +220,8 @@ class Calendario extends StatelessWidget {
                                               }
                                             : null,
                                         child: Container(
-                                          color: month[i][index] == day
+                                          color: mes + 1 == actualmes &&
+                                                  month[i][index] == day
                                               ? Theme.of(context).primaryColor
                                               : Colors.white,
                                           child: Text(
@@ -216,9 +235,14 @@ class Calendario extends StatelessWidget {
                                                     ? TextDecoration.underline
                                                     : TextDecoration.none,
                                                 fontSize: 13,
+                                                decorationThickness: 3,
                                                 fontWeight: FontWeight.w700,
-                                                color: month[i][index] < day &&
-                                                        month[i][index] > 0
+                                                color: (month[i][index] < day &&
+                                                            month[i][index] >
+                                                                0) ||
+                                                        (mes + 1 != actualmes &&
+                                                            month[i][index] !=
+                                                                0)
                                                     ? Theme.of(context)
                                                         .primaryColor
                                                     : month[i][index] != 0 &&

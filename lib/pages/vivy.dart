@@ -1,4 +1,4 @@
-import 'package:chat_app/controllers/saved_message.dart';
+import 'package:chat_app/controllers/vivy_saved_message.dart';
 import 'package:chat_app/utils/respuestas.dart';
 import 'package:chat_app/widgets/calendario.dart';
 import 'package:chat_app/widgets/day.dart';
@@ -14,14 +14,14 @@ import 'package:flutter/services.dart';
 import 'package:chat_app/classifiers/intent_classifier.dart';
 import 'package:chat_app/classifiers/entity_classifier.dart';
 
-class Chat extends StatefulWidget {
-  const Chat({super.key});
+class Vivy extends StatefulWidget {
+  const Vivy({super.key});
 
   @override
-  State<Chat> createState() => _ChatState();
+  State<Vivy> createState() => _VivyState();
 }
 
-class _ChatState extends State<Chat> {
+class _VivyState extends State<Vivy> {
   int init = 0;
   late Respuesta _responseGenerator;
   late IntentClassifier _intentClassifier;
@@ -29,7 +29,7 @@ class _ChatState extends State<Chat> {
   late List<String> prediction = [];
   late String intentPrediction = "";
   final ScrollController _controller = ScrollController();
-  SavedMessage saveMessageController = SavedMessage();
+  VivySavedMessage saveMessageController = VivySavedMessage();
   late List<Map<String, dynamic>> savedMessages = [];
   final messageController = TextEditingController();
 
@@ -108,7 +108,7 @@ class _ChatState extends State<Chat> {
             CircleAvatar(backgroundColor: Theme.of(context).primaryColor),
             const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
-                child: Text("Timmy")),
+                child: Text("Vivy")),
           ],
         ),
         centerTitle: true,
