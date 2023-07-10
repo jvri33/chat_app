@@ -45,6 +45,10 @@ dependencies:
   path_provider:
   flutter_localizations:
     sdk: flutter
+  qr_code_scanner: ^1.0.1
+  qr_bar_code_scanner_dialog: ^0.0.5
+  camera: ^0.10.5+2
+ 
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +77,7 @@ flutter:
       - assets/vocabulario.json
       - assets/modelo_intents.tflite
       - assets/vocabulario_intents.json
+      - assets/logo_verde.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

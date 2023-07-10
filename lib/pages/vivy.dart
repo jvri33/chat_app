@@ -1,5 +1,6 @@
 import 'package:chat_app/controllers/vivy_saved_message.dart';
 import 'package:chat_app/utils/respuestas_vivy.dart';
+import 'package:chat_app/widgets/VivyWidgets/qr.dart';
 
 import 'package:chat_app/widgets/saved_message_widget.dart';
 
@@ -145,6 +146,10 @@ class _VivyState extends State<Vivy> {
                               savedMessages[keys[reversedIndex]]['user'],
                               savedMessages[keys[reversedIndex]]['message'],
                             );
+                          } else if (savedMessages[keys[reversedIndex]]
+                                  ['type'] ==
+                              'qr') {
+                            return QR();
                           } else {
                             return const Text("Error");
                           }

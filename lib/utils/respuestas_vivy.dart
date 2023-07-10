@@ -18,6 +18,11 @@ class RespuestaVivy {
     String dig = "m";
     VivySavedMessage saveMessageController = VivySavedMessage();
 
+    if (i3 == "qr") {
+      ret2 = "QR";
+      dig = "qr";
+    }
+
     if (ret2 == "") {
       ret2 =
           "Lo siento, no te he entendido, intenta expresarte de otra manera :)";
