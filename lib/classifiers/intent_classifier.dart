@@ -72,20 +72,16 @@ class IntentClassifier {
 
   List<List<double>> tokenizar(String text) {
     final tokens = text.split(' ');
-
     List<String> lowercaseNames =
         tokens.map((name) => name.toLowerCase()).toList();
     var vector = List<double>.filled(17, 0);
-    //parametrizar
+
     for (var i = 0; i < lowercaseNames.length; i++) {
       if (_dict.containsKey(lowercaseNames[i])) {
         var parsed = _dict[lowercaseNames[i]]?.toDouble();
-
         vector[i] = parsed as double;
       }
     }
-    //String s = "${vector[0]} ${vector[1]} ${vector[2]}";
-
     return [vector];
   }
 }

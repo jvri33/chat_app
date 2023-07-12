@@ -276,7 +276,6 @@ day01 = ["tengo algo hoy",
 "que tengo el 3 de marzo",
 
 ]
-
 thisweek = [
 "esta semana",
 "que tengo esta semana",
@@ -295,7 +294,6 @@ thisweek = [
 "que tengo durante esta semana",
 "tengo cosas que hacer esta semana",
 ]
-
 nextweek = [
 "la semana que viene",
 "que tengo la proxima semana",
@@ -322,7 +320,6 @@ nextweek = [
 
 
 ]
-
 intents = []
 labels = []
 
@@ -386,7 +383,7 @@ labels_cat = to_categorical(label_seq)
 #print(padded_seq)
 
 model = tf.keras.Sequential([
-    tf.keras.layers.Embedding(500, 64, input_length=pad_len),
+    tf.keras.layers.Embedding(500, 128, input_length=pad_len),
     tf.keras.layers.Flatten(),
     #//tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64, return_sequences=True)),
     #tf.keras.layers.GlobalMaxPooling1D(),

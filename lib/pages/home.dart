@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: Container(
-                      margin: EdgeInsets.only(top: 104),
+                      margin: EdgeInsets.only(top: 80),
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -74,19 +74,51 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: ElevatedButton(
                         onPressed: (() => nextScreen(context, const Chat())),
-                        child: Text("Timmy"),
+                        child: Image.asset(
+                          'assets/timmy.png',
+                          width: 200,
+                        ),
                         style: ElevatedButton.styleFrom(
                           shadowColor: Colors.black,
                           //side: BorderSide(color: Colors.white, width: 20),
                           shape: CircleBorder(),
-                          padding: EdgeInsets.all(100),
-                          backgroundColor:
-                              Color(0xff77f7aa), // <-- Button color
+                          //padding: EdgeInsets.all(100),
+                          backgroundColor: Theme.of(context)
+                              .colorScheme
+                              .secondary, // <-- Button color
                           foregroundColor: Colors.white, // <-- Splash color
                         ),
                       ),
                     ),
-                  )
+                  ),
+                  Container(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Text("Timmy",
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 34))),
+                  Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Text("Tareas y recordatorios",
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18))),
+                  Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Text("Gestión del calendario",
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18))),
+                  Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Text("Detección de fechas y horas",
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18)))
                 ],
               ),
               // space them using a sized box
@@ -111,12 +143,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: ElevatedButton(
                         onPressed: (() => nextScreen(context, const Vivy())),
-                        child: Text("Vivy"),
+                        child: Image.asset(
+                          'assets/vivy.png',
+                          width: 200,
+                        ),
                         style: ElevatedButton.styleFrom(
                           shadowColor: Colors.black,
                           //side: BorderSide(color: Colors.white, width: 20),
                           shape: CircleBorder(),
-                          padding: EdgeInsets.all(100),
+
                           backgroundColor:
                               Color(0xff77f7aa), // <-- Button color
                           foregroundColor: Colors.white, // <-- Splash color
