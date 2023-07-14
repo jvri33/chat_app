@@ -140,20 +140,13 @@ class _ChatState extends State<Chat> {
                         itemCount: savedMessages.asMap().keys.toList().length,
                         itemBuilder: (BuildContext context, int index) {
                           var keys = savedMessages.asMap().keys.toList();
-                          final reversedIndex =
-                              savedMessages.asMap().keys.toList().length -
-                                  1 -
-                                  index;
-
-                          if (savedMessages[keys[reversedIndex]]['type'] ==
-                              'm') {
+                          final reversedIndex = savedMessages.asMap().keys.toList().length - 1 - index;
+                          if (savedMessages[keys[reversedIndex]]['type'] == 'm') {
                             return SavedMessageWidget(
                               savedMessages[keys[reversedIndex]]['user'],
                               savedMessages[keys[reversedIndex]]['message'],
                             );
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'w') {
+                          } else if (savedMessages[keys[reversedIndex]]['type'] == 'w') {
                             return ReminderWidget(
                                 savedMessages[keys[reversedIndex]]['message'],
                                 savedMessages[keys[reversedIndex]]['id'],
