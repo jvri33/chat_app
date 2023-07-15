@@ -19,8 +19,12 @@ class RespuestaVivy {
     VivySavedMessage saveMessageController = VivySavedMessage();
 
     if (i3 == "qr") {
-      ret2 = "QR";
+      ret2 = "QR/scan";
       dig = "qr";
+    }
+
+    if (i3 == "tt") {
+      dig = "tt";
     }
 
     if (ret2 == "") {

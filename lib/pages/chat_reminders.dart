@@ -10,7 +10,7 @@ import 'package:chat_app/widgets/saved_message_widget.dart';
 import 'package:chat_app/widgets/TimmyWidgets/week.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:chat_app/widgets/SpeechToText.dart';
 import 'package:chat_app/classifiers/intent_classifier.dart';
 import 'package:chat_app/classifiers/entity_classifier.dart';
 
@@ -39,6 +39,10 @@ class _ChatState extends State<Chat> {
     _intentClassifier = IntentClassifier();
     _entityClassifier = Classifier();
     _responseGenerator = Respuesta();
+  }
+
+  setText(String t) {
+    messageController.text = t;
   }
 
   calendarButton() {
@@ -140,13 +144,19 @@ class _ChatState extends State<Chat> {
                         itemCount: savedMessages.asMap().keys.toList().length,
                         itemBuilder: (BuildContext context, int index) {
                           var keys = savedMessages.asMap().keys.toList();
-                          final reversedIndex = savedMessages.asMap().keys.toList().length - 1 - index;
-                          if (savedMessages[keys[reversedIndex]]['type'] == 'm') {
+                          final reversedIndex =
+                              savedMessages.asMap().keys.toList().length -
+                                  1 -
+                                  index;
+                          if (savedMessages[keys[reversedIndex]]['type'] ==
+                              'm') {
                             return SavedMessageWidget(
                               savedMessages[keys[reversedIndex]]['user'],
                               savedMessages[keys[reversedIndex]]['message'],
                             );
-                          } else if (savedMessages[keys[reversedIndex]]['type'] == 'w') {
+                          } else if (savedMessages[keys[reversedIndex]]
+                                  ['type'] ==
+                              'w') {
                             return ReminderWidget(
                                 savedMessages[keys[reversedIndex]]['message'],
                                 savedMessages[keys[reversedIndex]]['id'],
@@ -219,7 +229,9 @@ class _ChatState extends State<Chat> {
                   ),
                   child: Row(
                     children: [
+                      Expanded(child: SpeechTT(setText)),
                       Expanded(
+                        flex: 4,
                         child: TextField(
                           controller: messageController,
                           onEditingComplete: sendMessage,
@@ -227,7 +239,8 @@ class _ChatState extends State<Chat> {
                             hintStyle: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.w500),
-                            contentPadding: const EdgeInsets.all(20),
+                            contentPadding: const EdgeInsets.only(
+                                top: 20, bottom: 20, left: 10, right: 10),
                             border: InputBorder.none,
                             hintText: 'Escriba un mensaje...',
                           ),

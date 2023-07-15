@@ -14,6 +14,7 @@ class VivySavedMessage {
   }
 
   Future<void> updateMessage(String mess, id, String type) async {
+    print("update object");
     await SQLHelper.updateMessageMessVivy(mess, id, type);
   }
 }
