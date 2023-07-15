@@ -225,7 +225,7 @@ class _ChatState extends State<Chat> {
                       )
                     ],
                     borderRadius: const BorderRadius.all(Radius.circular(50)),
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Colors.white,
                   ),
                   child: Row(
                     children: [

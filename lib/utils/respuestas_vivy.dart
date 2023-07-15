@@ -23,8 +23,8 @@ class RespuestaVivy {
       dig = "qr";
     }
 
-    if (i3 == "tt") {
-      dig = "tt";
+    if (i3 == "pdf") {
+      dig = "pdf";
     }
 
     if (ret2 == "") {

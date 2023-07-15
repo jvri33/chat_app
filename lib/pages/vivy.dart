@@ -1,6 +1,7 @@
 import 'package:chat_app/controllers/vivy_saved_message.dart';
 import 'package:chat_app/utils/respuestas_vivy.dart';
 import 'package:chat_app/widgets/SpeechToText.dart';
+
 import 'package:chat_app/widgets/VivyWidgets/qr.dart';
 
 import 'package:chat_app/widgets/saved_message_widget.dart';
@@ -160,8 +161,8 @@ class _VivyState extends State<Vivy> {
                                 savedMessages[keys[reversedIndex]]['id']);
                           } else if (savedMessages[keys[reversedIndex]]
                                   ['type'] ==
-                              'tt') {
-                            return Text("tt");
+                              'pdf') {
+                            return Text("fdf");
                           } else {
                             return const Text("Error");
                           }

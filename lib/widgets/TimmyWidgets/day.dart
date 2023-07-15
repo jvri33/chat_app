@@ -126,56 +126,95 @@ class DayWidget extends StatelessWidget {
                           vertical: 16.0, horizontal: 16),
                       child: Column(
                         children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text("$dia, $dian de $mes",
-                                style: const TextStyle(
+                          Container(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: const Text(
+                                "Hola! Esto es lo que tienes programado durante el día de hoy:",
+                                style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.white)),
                           ),
-                          Container(
-                            decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    bottomRight: Radius.circular(8),
-                                    topRight: Radius.circular(8),
-                                    bottomLeft: Radius.circular(0))),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 16.0, horizontal: 16),
-                            margin: const EdgeInsets.only(
-                                right: 8, top: 12, left: 4),
-                            child: Column(
-                              children: List.generate(cantidad, (index) {
-                                return Column(
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 16.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                            "${index + 1}. ${recordatorios[index]['description']}  ${recordatorios[index]['time']}",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Theme.of(context)
-                                                    .primaryColor)),
-                                      ),
-                                    ),
-                                    if (index + 1 < cantidad)
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8),
-                                        child: Divider(
-                                          color: Theme.of(context).primaryColor,
-                                          thickness: 1,
-                                        ),
-                                      ),
+                                    Text(dia,
+                                        style: const TextStyle(
+                                            fontSize: 8,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white)),
+                                    Text(dian,
+                                        style: const TextStyle(
+                                            fontSize: 26,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white)),
+                                    Text(mes,
+                                        style: const TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white)),
                                   ],
-                                );
-                              }),
-                            ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: List.generate(cantidad, (index) {
+                                    return Column(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: Color.fromARGB(255,
+                                                  220 - index * 30, 247, 223),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(16),
+                                                      bottomRight:
+                                                          Radius.circular(16),
+                                                      topRight:
+                                                          Radius.circular(16),
+                                                      bottomLeft:
+                                                          Radius.circular(0))),
+                                          width: double.infinity,
+                                          height: 50,
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0),
+                                              child: Text(
+                                                  "${recordatorios[index]['description']}  ${recordatorios[index]['time']}",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Theme.of(context)
+                                                          .primaryColor)),
+                                            ),
+                                          ),
+                                        ),
+                                        if (index + 1 < cantidad)
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8),
+                                            child: Divider(
+                                              height: 6,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              thickness: 1,
+                                            ),
+                                          ),
+                                      ],
+                                    );
+                                  }),
+                                ),
+                              )
+                            ],
                           ),
                         ],
                       ),

@@ -10,13 +10,17 @@ class PopMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (PopupMenuButton(
+        constraints: BoxConstraints(maxWidth: 128),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(16.0),
           ),
         ),
         color: Theme.of(context).colorScheme.secondary,
-        icon: const Icon(Icons.more_vert),
+        icon: Icon(
+          Icons.more_vert,
+          color: Theme.of(context).primaryColor,
+        ),
         iconSize: 32,
         // add icon, by default "3 dot" icon
         // icon: Icon(Icons.book)

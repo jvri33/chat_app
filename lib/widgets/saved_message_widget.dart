@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class SavedMessageWidget extends StatelessWidget {
@@ -15,11 +14,10 @@ class SavedMessageWidget extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(200))),
-    
       alignment: user == 1 ? Alignment.topRight : Alignment.topLeft,
       child: ConstrainedBox(
         constraints: const BoxConstraints(
-          minWidth: 75.0, 
+          minWidth: 75.0,
           maxWidth: 300.0,
         ),
         child: Card(
@@ -27,11 +25,13 @@ class SavedMessageWidget extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(16),
-                  bottomRight:
-                      user == 0 ? const Radius.circular(16) : const Radius.circular(0),
+                  bottomRight: user == 0
+                      ? const Radius.circular(16)
+                      : const Radius.circular(0),
                   topRight: const Radius.circular(16),
-                  bottomLeft:
-                      user == 1 ? const Radius.circular(16) : const Radius.circular(0)),
+                  bottomLeft: user == 1
+                      ? const Radius.circular(16)
+                      : const Radius.circular(0)),
             ),
             color: user == 1
                 ? const Color.fromARGB(255, 187, 247, 223)

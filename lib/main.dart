@@ -20,11 +20,11 @@ class MyApp extends StatelessWidget {
           primaryColor: const Color.fromARGB(255, 0, 115, 99),
           colorScheme: ColorScheme.fromSwatch().copyWith(
             secondary:
-                const Color.fromARGB(255, 228, 253, 240), // Your accent color
+                const Color.fromARGB(255, 187, 247, 223), // Your accent color
           ),
           //colorScheme: ColorScheme(primary: Color.fromARGB(255, 0, 115, 99), background: Colors.white),
           appBarTheme: const AppBarTheme(
-              backgroundColor: Color.fromARGB(255, 228, 253, 240),
+              backgroundColor: Color.fromARGB(255, 187, 247, 223),
               foregroundColor: Color.fromRGBO(0, 115, 99, 1))),
       debugShowCheckedModeBanner: false,
       home: const HomeScreen(),
