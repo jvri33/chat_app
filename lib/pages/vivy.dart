@@ -1,5 +1,6 @@
 import 'package:chat_app/controllers/vivy_saved_message.dart';
 import 'package:chat_app/utils/respuestas_vivy.dart';
+import 'package:chat_app/widgets/SpeechToText.dart';
 import 'package:chat_app/widgets/VivyWidgets/qr.dart';
 
 import 'package:chat_app/widgets/saved_message_widget.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/services.dart';
 
 import 'package:chat_app/classifiers/intent_classifier.dart';
 import 'package:chat_app/classifiers/entity_classifier.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class Vivy extends StatefulWidget {
   const Vivy({super.key});
@@ -35,6 +37,10 @@ class _VivyState extends State<Vivy> {
     _intentClassifier = IntentClassifier();
     _entityClassifier = Classifier();
     _responseGenerator = RespuestaVivy();
+  }
+
+  setText(String t) {
+    messageController.text = t;
   }
 
   calendarButton() {
@@ -149,7 +155,13 @@ class _VivyState extends State<Vivy> {
                           } else if (savedMessages[keys[reversedIndex]]
                                   ['type'] ==
                               'qr') {
-                            return QrWidget();
+                            return QrWidget(
+                                savedMessages[keys[reversedIndex]]['message'],
+                                savedMessages[keys[reversedIndex]]['id']);
+                          } else if (savedMessages[keys[reversedIndex]]
+                                  ['type'] ==
+                              'tt') {
+                            return Text("tt");
                           } else {
                             return const Text("Error");
                           }
@@ -185,7 +197,9 @@ class _VivyState extends State<Vivy> {
                   ),
                   child: Row(
                     children: [
+                      Expanded(child: SpeechTT(setText)),
                       Expanded(
+                        flex: 4,
                         child: TextField(
                           controller: messageController,
                           onEditingComplete: sendMessage,
@@ -193,7 +207,8 @@ class _VivyState extends State<Vivy> {
                             hintStyle: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.w500),
-                            contentPadding: const EdgeInsets.all(20),
+                            contentPadding: const EdgeInsets.only(
+                                top: 20, bottom: 20, left: 10, right: 10),
                             border: InputBorder.none,
                             hintText: 'Escriba un mensaje...',
                           ),
