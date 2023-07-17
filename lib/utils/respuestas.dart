@@ -1,4 +1,5 @@
 import 'package:chat_app/utils/extractor.dart';
+import 'package:flutter/material.dart';
 import '../controllers/reminder.dart';
 import 'package:chat_app/controllers/saved_message.dart';
 
@@ -9,6 +10,8 @@ class Respuesta {
     //i1 = Intent
     //i2 = entities
     //i3 = message
+
+    print(i2);
 
     Reminder delete = Reminder();
 
@@ -28,8 +31,8 @@ class Respuesta {
     }
 
     if (i1 == "DAY1") {
-      List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
-
+      List<String> str = (Extractor(i2).fecha()).toString().split(" ");
+      List<String> str2 = (Extractor(i2).hora()).toString().split(" ");
       if ("$i2" == "[]") {
         ret2 = "DAY/NULL";
       } else {
@@ -44,7 +47,7 @@ class Respuesta {
       ret2 = "Borrar recordatorio";
       dig = "d";
 
-      List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
+      List<String> str = (Extractor(i2).fecha()).toString().split(" ");
 
       if ("$i2" == "[]") {
         ret2 = "DELETE1/NULL";
@@ -59,7 +62,7 @@ class Respuesta {
       dig = "e";
       ret2 = "Editar recordatorio";
 
-      List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
+      List<String> str = (Extractor(i2).fecha()).toString().split(" ");
 
       if ("$i2" == "[]") {
         ret2 = "EDIT1/NULL";
@@ -70,28 +73,63 @@ class Respuesta {
     }
     if (i1 == "REMINDER1") {
       dig = "w";
+      bool horario = false;
       //MIRAMOS SI TIENE ENTIDADES
       if (i2 != "[]") {
-        List<String> str = (Extractor(i2).fecha("")).toString().split(" ");
+        for (int i = 0; i < i2.length; i++) {
+          if (i2[i][2] == "HORARIO") {
+            horario = true;
+          }
+        }
 
-        DateTime d = DateTime.parse(str[0]);
+        List<String> str = (Extractor(i2).fecha()).toString().split(" ");
 
-        //DateTime time = DateTime.parse(str.join(" "));
+        TimeOfDay str2 = (Extractor(i2).hora());
+        print(str2);
+        DateTime d = DateTime.now();
+        String hour = str2.hour.toString();
+        String minute = str2.minute.toString();
+        if (str2.minute < 10) {
+          minute = "0${str2.minute}";
+        }
+        if (str2.hour < 10) {
+          hour = "0${str2.hour}";
+        }
 
-        DateTime compare = DateTime(
-            DateTime.now().year, DateTime.now().month, DateTime.now().day);
+        d = DateTime.parse("${str[0]} $hour:$minute:00");
+        print(d);
+
+        DateTime compare = DateTime.now();
         //rint(time);
         if (d.isBefore(compare)) {
-          dig = "m";
-          ret2 = "No se pueden crear recordatorios en el pasado";
-        } else {
-          //int reminderId = await reminder.createItem(i3, d, 0, 0, "", "");
+          DateTime doce =
+              DateTime(d.year, d.month, d.day, d.hour + 12, d.minute);
+          print(doce);
+          if (doce.isAfter(DateTime.now()) && !horario) {
+            hour = (str2.hour + 12).toString();
+          } else {
+            ret2 =
+                "Se ha creado el siguiente borrador de recordatorio pero para mañana.";
+            d = DateTime(d.year, d.month, d.day + 1, d.hour, d.minute);
 
-          //print(reminderId);
+            if (d.isBefore(compare)) {
+              dig = "m";
+              ret2 = "No se pueden crear recordatorios en el pasado";
 
-          ret2 =
-              "$i3/${d.toString().split(" ")[0]}/${0}/${0}/${"days"}/${str[1].split(":")[0]}:${str[1].split(":")[1]}";
+              await saveMessageController.createItem(ret2.toString(), 0, dig);
+              //await f();
+              return ret2.toString();
+            }
+          }
         }
+
+        //int reminderId = await reminder.createItem(i3, d, 0, 0, "", "");
+
+        //print(reminderId);
+
+        ret2 =
+            "$i3/${d.toString().split(" ")[0]}/${0}/${0}/${"days"}/$hour:$minute";
+
         //ESTO ES LO QUE DEVUELVE EL METODO DE CREAR
 
         //reminder.delete();

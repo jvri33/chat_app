@@ -63,7 +63,7 @@ class Classifier {
 
     for (int j = 0; j < preds.length; j++) {
       List<List<double>> output = [
-        [0.0, 0.0, 0.0, 0.0, 0.0]
+        [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
       ];
 
       _interpreter.run(preds[j], output);
@@ -71,7 +71,7 @@ class Classifier {
       resultados.add(output[0]);
     }
     //{'o': 1, 'time': 2, 'day': 3, 'month': 4, 'menos': 5}
-    List<String> labels = ["O", "TIME", "DAY", "MONTH", "MENOS"];
+    List<String> labels = ["O", "TIME", "DAY", "MONTH", "HORARIO", "MENOS"];
 
     List ret = [];
 

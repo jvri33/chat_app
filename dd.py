@@ -93,14 +93,14 @@ def franja():
     
     peri = ["mañana","noche","tarde","madrugada"]
     string = f"de la {peri[rd.randint(0,3)]}"
-    tags = [["<O>"],["<O>"],["<TIME>"]]
+    tags = [["<O>"],["<O>"],["<HORARIO>"]]
 
     return string, tags
 
 def franja2():
 
     string = f"del mediodia"
-    tags = [["<O>"],["<TIME>"]]
+    tags = [["<O>"],["<HORARIO>"]]
 
     return string, tags
 
@@ -242,6 +242,7 @@ def fecha8():
 
     return string,tags      
 
+
 frases = []
 etiquetas = []
 funciones = [fecha5,fecha6, hora1,fecha4,franja2,fecha8, hora1min,fecha3,hora2,franja,x_horas_1,fecha7,x_minutos,fecha1,hora1min2,fecha2,x_horas_2,fecha4,hora3,fechadddd,fecha3]
@@ -271,9 +272,29 @@ for funcion in funciones:
             frases.append(frase)
             etiquetas.append(tag)
 
-#print(frases,tags)
+frases.append("poner un recordatorio")
+etiquetas.append("<O>")
+
+frases.append("un recordatorio hoy")
+etiquetas.append("<O>")
+
+frases.append("un recordatorio mañana")
+etiquetas.append("<O>" )
+
+frases.append("recordatorio mañana a")
+etiquetas.append("<DAY>")
+
+frases.append("recordatorio hoy NULL")
+etiquetas.append("<DAY>")
+
+frases.append("un recordatorio a")
+etiquetas.append("<O>")
+
+frases.append("y 25 de")
+etiquetas.append("<TIME>")
+
 num_frases = len(etiquetas)
-print(num_frases)
+
 
 import tensorflow as tf
 import numpy as np
@@ -310,7 +331,7 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(64, activation='relu'),
     tf.keras.layers.Dense(64, activation='relu'),
     tf.keras.layers.Dropout(0.5),
-    tf.keras.layers.Dense(5, activation='softmax')
+    tf.keras.layers.Dense(6, activation='softmax')
 ])
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])

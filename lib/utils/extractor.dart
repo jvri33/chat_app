@@ -13,21 +13,46 @@ class Extractor {
   }
 
   TimeOfDay hora() {
-    TimeOfDay ret = const TimeOfDay(hour: 0, minute: 0);
+    int tarde = 0;
+    List<dynamic> times = [];
     for (int i = 0; i < entities.length; i++) {
       if (entities[i][2] == "TIME") {
-        //print("time");
-        //print(entities[i][0]);
-        if (isNumeric(entities[i][0])) {
-          int hora = int.parse(entities[i][0].toString());
-          ret = TimeOfDay(hour: hora, minute: 0);
+        times.add(entities[i]);
+      }
+
+      if (entities[i][2] == "HORARIO") {
+        if (entities[i][0] == "tarde" || entities[i][0] == "noche") {
+          tarde = 12;
         }
       }
     }
+
+    TimeOfDay ret = const TimeOfDay(hour: 0, minute: 0);
+    for (int i = 0; i < times.length; i++) {
+      //print("time");
+
+      //print(entities[i][0]);
+      if (times.length == 1 && isNumeric(times[i][0])) {
+        int hora = int.parse(times[i][0].toString());
+        ret = TimeOfDay(hour: hora + tarde, minute: 0);
+      } else if (times.length > 1 && isNumeric(times[i][0])) {
+        int hora = int.parse(times[i][0].toString());
+        int min = int.parse(times[i + 1][0].toString());
+        return ret = TimeOfDay(hour: hora + tarde, minute: min);
+      } else {
+        List<String> hhmm = times[i][0].toString().split(":");
+        if (hhmm.length == 2) {
+          ret = TimeOfDay(
+              hour: int.parse(hhmm[0]) + tarde, minute: int.parse(hhmm[1]));
+        }
+      }
+    }
+    print(ret);
+
     return ret;
   }
 
-  DateTime? fecha(String d) {
+  DateTime? fecha() {
     int day = 0;
     int month = 0;
     int dif = 0;
@@ -38,19 +63,37 @@ class Extractor {
         if (isNumeric(entities[i][0])) {
           day = int.parse(entities[i][0].toString());
         } else {
-          String sday = entities[i][0];
-          int iweekday = weekday(sday);
-          int actual = (DateTime.now().weekday);
+          if (entities[i][0] == "hoy" ||
+              entities[i][0] == "mañana" ||
+              entities[i][0] == "pasadomañana" ||
+              entities[i][0] == "pasaomañana") {
+            if (entities[i][0] == "hoy") {
+              day = DateTime.now().day;
+            }
+            if (entities[i][0] == "mañana") {
+              day = DateTime.now().day + 1;
+            }
+            if (entities[i][0] == "pasadomañana" ||
+                entities[i][0] == "pasaomañana") {
+              print("pasadomañana");
 
-          if (iweekday < actual) {
-            dif = 7 - actual + iweekday;
-            //print("entra aqui");
-          }
-          if (actual < iweekday) {
-            dif = iweekday - actual;
-          }
-          if (actual == iweekday) {
-            dif = 7;
+              day = DateTime.now().day + 2;
+            }
+          } else {
+            String sday = entities[i][0];
+            int iweekday = weekday(sday);
+            int actual = (DateTime.now().weekday);
+
+            if (iweekday < actual) {
+              dif = 7 - actual + iweekday;
+              //print("entra aqui");
+            }
+            if (actual < iweekday) {
+              dif = iweekday - actual;
+            }
+            if (actual == iweekday) {
+              dif = 7;
+            }
           }
         }
       }
@@ -60,10 +103,10 @@ class Extractor {
       }
     }
 
-    if (day == 0 && d == "e") {
+    /*if (day == 0) {
       DateTime date = DateTime(0, 0, 0);
       return date;
-    }
+    }*/
 
     if (day == 0 && dif == 0) {
       day = DateTime.now().day;
@@ -82,6 +125,8 @@ class Extractor {
     int year = DateTime.now().year;
     DateTime time = DateTime.now();
     DateTime date = DateTime(year, month, day, time.hour, time.minute);
+
+    print("date $date");
 
     return date;
   }

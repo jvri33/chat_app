@@ -70,6 +70,7 @@ class TimeWidget extends StatelessWidget {
 
               String messSt = mess.join("/");
               SavedMessage s = SavedMessage();
+              print(messSt);
               await s.updateMessageTime(messSt, id);
 
               if (mess[0] != "EDITING") {
