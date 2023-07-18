@@ -1,6 +1,6 @@
 import 'package:chat_app/controllers/vivy_saved_message.dart';
 import 'package:chat_app/utils/respuestas_vivy.dart';
-import 'package:chat_app/widgets/SpeechToText.dart';
+import 'package:chat_app/widgets/Speech.dart';
 
 import 'package:chat_app/widgets/VivyWidgets/qr.dart';
 
@@ -11,7 +11,6 @@ import 'package:flutter/services.dart';
 
 import 'package:chat_app/classifiers/intent_classifier.dart';
 import 'package:chat_app/classifiers/entity_classifier.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 
 class Vivy extends StatefulWidget {
   const Vivy({super.key});
@@ -162,7 +161,7 @@ class _VivyState extends State<Vivy> {
                           } else if (savedMessages[keys[reversedIndex]]
                                   ['type'] ==
                               'pdf') {
-                            return Text("fdf");
+                            return const Text("fdf");
                           } else {
                             return const Text("Error");
                           }

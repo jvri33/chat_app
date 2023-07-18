@@ -142,10 +142,10 @@ class Calendario extends StatelessWidget {
                     Container(
                       alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.all(12),
-                      child: const Text(
+                      child: Text(
                         "Aqui tienes el calendario:",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.tertiary,
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
                         ),
@@ -153,9 +153,9 @@ class Calendario extends StatelessWidget {
                     ),
                     Container(
                       padding: const EdgeInsets.all(10),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(10),
                             bottomRight: Radius.circular(10),
                             topRight: Radius.circular(10),
@@ -195,7 +195,9 @@ class Calendario extends StatelessWidget {
                                                                 day
                                                         ? Theme.of(context)
                                                             .primaryColor
-                                                        : Colors.white)),
+                                                        : Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary)),
                                         onPressed: month[i][index] > 0 &&
                                                 recordatorios[month[i][index]]
                                                     .isNotEmpty
@@ -223,7 +225,9 @@ class Calendario extends StatelessWidget {
                                           color: mes + 1 == actualmes &&
                                                   month[i][index] == day
                                               ? Theme.of(context).primaryColor
-                                              : Colors.white,
+                                              : Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary,
                                           child: Text(
                                             month[i][index].toString(),
                                             style: TextStyle(
@@ -249,7 +253,9 @@ class Calendario extends StatelessWidget {
                                                             month[i][index] !=
                                                                 day
                                                         ? Colors.black
-                                                        : Colors.white),
+                                                        : Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary),
                                           ),
                                         ))),
                                   );

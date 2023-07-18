@@ -82,10 +82,11 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                     ? Column(
                         children: [
                           Text(widget.response,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
-                                  color: Colors.white)),
+                                  color:
+                                      Theme.of(context).colorScheme.tertiary)),
                           Container(
                             margin: const EdgeInsets.only(left: 20.0),
                             child: Column(
@@ -140,10 +141,12 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                     SizedBox(
                                       width: 230,
                                       child: Text("Nombre: ${variables[0]}",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w500,
-                                              color: Colors.white)),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary)),
                                     )
                                   ]),
                                 ),
@@ -186,7 +189,9 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                         widget.notifyParent();
                                       },
                                       icon: const Icon(Icons.check),
-                                      color: Colors.white,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ))
                               ],
                             ),
@@ -194,10 +199,10 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                         ],
                       )
                     : Text(widget.message,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white)))),
+                            color: Theme.of(context).colorScheme.tertiary)))),
       ),
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:chat_app/controllers/saved_message.dart';
 import 'package:chat_app/utils/respuestas.dart';
 import 'package:chat_app/widgets/TimmyWidgets/calendario.dart';
@@ -10,7 +12,7 @@ import 'package:chat_app/widgets/saved_message_widget.dart';
 import 'package:chat_app/widgets/TimmyWidgets/week.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:chat_app/widgets/SpeechToText.dart';
+import 'package:chat_app/widgets/Speech.dart';
 import 'package:chat_app/classifiers/intent_classifier.dart';
 import 'package:chat_app/classifiers/entity_classifier.dart';
 
@@ -19,6 +21,18 @@ class Chat extends StatefulWidget {
 
   @override
   State<Chat> createState() => _ChatState();
+}
+
+dynamic js = {};
+
+Future<dynamic> loadConfig() async {
+  final contents = await rootBundle.loadString(
+    'assets/config.json',
+  );
+
+// decode our json
+  final json = jsonDecode(contents);
+  return json;
 }
 
 class _ChatState extends State<Chat> {
@@ -36,6 +50,7 @@ class _ChatState extends State<Chat> {
   @override
   void initState() {
     super.initState();
+
     _intentClassifier = IntentClassifier();
     _entityClassifier = Classifier();
     _responseGenerator = Respuesta();
@@ -61,6 +76,7 @@ class _ChatState extends State<Chat> {
   }
 
   Future<void> getMessages() async {
+    js = await loadConfig();
     var printing = await saveMessageController.getItems();
     savedMessages = printing;
   }
@@ -120,13 +136,20 @@ class _ChatState extends State<Chat> {
       ),
       body: Container(
         //padding: EdgeInsets.only(top: 10),
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-          colors: [Color(0xff77ddf2), Color(0xff77f7aa)],
-          stops: [0, 1],
-          begin: Alignment.bottomRight,
-          end: Alignment.topLeft,
-        )),
+        decoration: BoxDecoration(
+            gradient: js['night'] == false
+                ? const LinearGradient(
+                    colors: [Color(0xff77ddf2), Color(0xff77f7aa)],
+                    stops: [0, 1],
+                    begin: Alignment.bottomRight,
+                    end: Alignment.topLeft)
+                : const LinearGradient(colors: [
+                    Color.fromARGB(255, 24, 32, 33),
+                    Color.fromARGB(255, 24, 32, 33)
+                  ], stops: [
+                    0,
+                    1
+                  ], begin: Alignment.bottomRight, end: Alignment.topLeft)),
         child: Column(
           children: [
             Expanded(
@@ -225,7 +248,7 @@ class _ChatState extends State<Chat> {
                       )
                     ],
                     borderRadius: const BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   child: Row(
                     children: [

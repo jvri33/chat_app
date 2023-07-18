@@ -16,7 +16,7 @@ class Extractor {
     int tarde = 0;
     List<dynamic> times = [];
     for (int i = 0; i < entities.length; i++) {
-      if (entities[i][2] == "TIME") {
+      if (entities[i][2] == "TIME" && isNumeric(entities[i][0])) {
         times.add(entities[i]);
       }
 
@@ -29,15 +29,16 @@ class Extractor {
 
     TimeOfDay ret = const TimeOfDay(hour: 0, minute: 0);
     for (int i = 0; i < times.length; i++) {
-      //print("time");
-
-      //print(entities[i][0]);
       if (times.length == 1 && isNumeric(times[i][0])) {
         int hora = int.parse(times[i][0].toString());
         ret = TimeOfDay(hour: hora + tarde, minute: 0);
-      } else if (times.length > 1 && isNumeric(times[i][0])) {
+      } else if (times.length > 1 &&
+          isNumeric(times[i][0]) &&
+          i + 1 < times.length) {
         int hora = int.parse(times[i][0].toString());
+
         int min = int.parse(times[i + 1][0].toString());
+
         return ret = TimeOfDay(hour: hora + tarde, minute: min);
       } else {
         List<String> hhmm = times[i][0].toString().split(":");
@@ -47,7 +48,10 @@ class Extractor {
         }
       }
     }
-    print(ret);
+    if (times.isEmpty) {
+      ret = TimeOfDay(
+          hour: DateTime.now().hour, minute: DateTime.now().minute + 1);
+    }
 
     return ret;
   }
@@ -75,8 +79,6 @@ class Extractor {
             }
             if (entities[i][0] == "pasadomañana" ||
                 entities[i][0] == "pasaomañana") {
-              print("pasadomañana");
-
               day = DateTime.now().day + 2;
             }
           } else {
@@ -125,8 +127,6 @@ class Extractor {
     int year = DateTime.now().year;
     DateTime time = DateTime.now();
     DateTime date = DateTime(year, month, day, time.hour, time.minute);
-
-    print("date $date");
 
     return date;
   }

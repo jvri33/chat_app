@@ -58,28 +58,32 @@ class _QrWidgetState extends State<QrWidget> {
                 child: variables[1] != "scan"
                     ? GestureDetector(
                         onTap: () async {
+                          // ignore: deprecated_member_use
                           await launch(variables[1].toString());
                         },
                         child: Column(
                           children: [
-                            const Text(
-                                "He obtenido la siguiente Url en el QR:\n",
+                            Text("He obtenido la siguiente Url en el QR:\n",
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white)),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .tertiary)),
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(variables[1].toString(),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.white)),
-                                const Icon(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary)),
+                                Icon(
                                   Icons.touch_app,
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.tertiary,
                                 )
                               ],
                             ),
@@ -89,11 +93,11 @@ class _QrWidgetState extends State<QrWidget> {
                         style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white))*/
+                            color: Theme.of(context).colorScheme.tertiary))*/
                     : TextButton(
                         style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
-                            minimumSize: Size(50, 30),
+                            minimumSize: const Size(50, 30),
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             alignment: Alignment.centerLeft),
                         onPressed: () {
@@ -107,16 +111,16 @@ class _QrWidgetState extends State<QrWidget> {
                                 variables[1] = code!;
 
                                 setState(() {
-                                  print("state");
                                   this.code = code;
                                 });
                               });
                         },
-                        child: const Text("Haz click para escanear el código",
+                        child: Text("Haz click para escanear el código",
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.white))))),
+                                color:
+                                    Theme.of(context).colorScheme.tertiary))))),
       ),
     ));
   }

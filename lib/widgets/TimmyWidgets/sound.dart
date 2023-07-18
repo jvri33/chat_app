@@ -26,9 +26,11 @@ class SoundWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      const Text("Sonido: ",
+      Text("Sonido: ",
           style: TextStyle(
-              fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white)),
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).colorScheme.tertiary)),
       SizedBox(
         height: 24.0,
         width: 24.0,
@@ -56,7 +58,8 @@ class SoundWidget extends StatelessWidget {
             }
           },
           side: MaterialStateBorderSide.resolveWith(
-            (states) => const BorderSide(width: 2, color: Colors.white),
+            (states) => BorderSide(
+                width: 2, color: Theme.of(context).colorScheme.tertiary),
           ),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
         ),

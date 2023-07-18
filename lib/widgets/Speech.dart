@@ -1,7 +1,11 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:speech_to_text/speech_to_text.dart';
 
+// ignore: must_be_immutable
 class SpeechTT extends StatefulWidget {
   Function setText;
   SpeechTT(this.setText, {super.key});
@@ -21,16 +25,16 @@ class _SpeechTTState extends State<SpeechTT> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(top: 2),
+          margin: const EdgeInsets.only(top: 2),
           width: 50,
           child: FloatingActionButton(
             elevation: 0.0,
             backgroundColor: Theme.of(context).primaryColor,
             onPressed: () {},
             child: GestureDetector(
-              child: const Icon(
+              child: Icon(
                 Icons.mic,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.tertiary,
               ),
               onTapDown: (details) async {
                 HapticFeedback.heavyImpact();
@@ -41,7 +45,7 @@ class _SpeechTTState extends State<SpeechTT> {
                     setState(() {
                       isListening = true;
                       speechToText.listen(
-                        pauseFor: Duration(seconds: 3),
+                        pauseFor: const Duration(seconds: 3),
                         onResult: (result) {
                           setState(() {
                             text = result.recognizedWords;

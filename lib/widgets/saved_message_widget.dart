@@ -34,7 +34,7 @@ class SavedMessageWidget extends StatelessWidget {
                       : const Radius.circular(0)),
             ),
             color: user == 1
-                ? const Color.fromARGB(255, 187, 247, 223)
+                ? Theme.of(context).colorScheme.secondary
                 : Theme.of(context).primaryColor,
             child: Padding(
               padding:
@@ -45,7 +45,7 @@ class SavedMessageWidget extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: user == 1
                           ? Theme.of(context).primaryColor
-                          : Colors.white)),
+                          : Theme.of(context).colorScheme.tertiary)),
             )),
       ),
     );

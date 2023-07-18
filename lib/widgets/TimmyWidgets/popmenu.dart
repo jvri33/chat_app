@@ -10,7 +10,7 @@ class PopMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (PopupMenuButton(
-        constraints: BoxConstraints(maxWidth: 128),
+        constraints: const BoxConstraints(maxWidth: 128),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(16.0),

@@ -11,8 +11,6 @@ class Respuesta {
     //i2 = entities
     //i3 = message
 
-    print(i2);
-
     Reminder delete = Reminder();
 
     //delete.deleteall();
@@ -72,6 +70,7 @@ class Respuesta {
       }
     }
     if (i1 == "REMINDER1") {
+      print(i2);
       dig = "w";
       bool horario = false;
       //MIRAMOS SI TIENE ENTIDADES
@@ -85,7 +84,7 @@ class Respuesta {
         List<String> str = (Extractor(i2).fecha()).toString().split(" ");
 
         TimeOfDay str2 = (Extractor(i2).hora());
-        print(str2);
+
         DateTime d = DateTime.now();
         String hour = str2.hour.toString();
         String minute = str2.minute.toString();
@@ -97,14 +96,13 @@ class Respuesta {
         }
 
         d = DateTime.parse("${str[0]} $hour:$minute:00");
-        print(d);
 
         DateTime compare = DateTime.now();
         //rint(time);
         if (d.isBefore(compare)) {
           DateTime doce =
               DateTime(d.year, d.month, d.day, d.hour + 12, d.minute);
-          print(doce);
+
           if (doce.isAfter(DateTime.now()) && !horario) {
             hour = (str2.hour + 12).toString();
           } else {

@@ -95,15 +95,16 @@ class Week extends StatelessWidget {
                               mes == "THISWEEK"
                                   ? "Esta semana tienes todo esto:"
                                   : "La próxima semana tienes todo esto:",
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
-                                  color: Colors.white)),
+                                  color:
+                                      Theme.of(context).colorScheme.tertiary)),
                     ),
                     Container(
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(8),
                               bottomRight: Radius.circular(8),
                               topRight: Radius.circular(8),

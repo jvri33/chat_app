@@ -88,14 +88,14 @@ class DayWidget extends StatelessWidget {
                           bottomLeft: Radius.circular(0)),
                     ),
                     color: Theme.of(context).primaryColor,
-                    child: const Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16.0, horizontal: 16),
                       child: Text("No hay recordatorios.",
                           style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
-                              color: Colors.white)),
+                              color: Theme.of(context).colorScheme.tertiary)),
                     )),
               ),
             );
@@ -128,12 +128,14 @@ class DayWidget extends StatelessWidget {
                         children: [
                           Container(
                             padding: const EdgeInsets.only(bottom: 10),
-                            child: const Text(
+                            child: Text(
                                 "Hola! Esto es lo que tienes programado durante el día de hoy:",
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white)),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .tertiary)),
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,20 +146,26 @@ class DayWidget extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(dia,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontSize: 8,
                                             fontWeight: FontWeight.w500,
-                                            color: Colors.white)),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary)),
                                     Text(dian,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontSize: 26,
                                             fontWeight: FontWeight.w500,
-                                            color: Colors.white)),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary)),
                                     Text(mes,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.w500,
-                                            color: Colors.white)),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary)),
                                   ],
                                 ),
                               ),
@@ -168,8 +176,9 @@ class DayWidget extends StatelessWidget {
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                              color: Color.fromARGB(255,
-                                                  220 - index * 30, 247, 223),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
                                               borderRadius:
                                                   const BorderRadius.only(
                                                       topLeft:

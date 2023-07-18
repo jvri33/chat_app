@@ -20,8 +20,10 @@ class TimeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(children: [
       Text("Hora: $time",
-          style: const TextStyle(
-              fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white)),
+          style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).colorScheme.tertiary)),
       IconButton(
           constraints: const BoxConstraints(),
           padding: const EdgeInsets.only(left: 10),
@@ -34,7 +36,8 @@ class TimeWidget extends StatelessWidget {
                         data: Theme.of(context).copyWith(
                             colorScheme: ColorScheme.light(
                                 primary: Theme.of(context).primaryColor,
-                                onPrimary: Colors.white,
+                                onPrimary:
+                                    Theme.of(context).colorScheme.tertiary,
                                 onSurface: Theme.of(context).primaryColor)),
                         child: child!),
                   );
@@ -70,7 +73,7 @@ class TimeWidget extends StatelessWidget {
 
               String messSt = mess.join("/");
               SavedMessage s = SavedMessage();
-              print(messSt);
+
               await s.updateMessageTime(messSt, id);
 
               if (mess[0] != "EDITING") {
@@ -80,9 +83,9 @@ class TimeWidget extends StatelessWidget {
               }
             }
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.edit_outlined,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.tertiary,
           ))
     ]);
   }

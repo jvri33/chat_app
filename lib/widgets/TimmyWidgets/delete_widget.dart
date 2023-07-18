@@ -175,18 +175,22 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                           child: widget.state == false
                               ? Column(
                                   children: [
-                                    const Text(
+                                    Text(
                                         "Desea eliminar el siguiente recordatorio?",
                                         style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w500,
-                                            color: Colors.white)),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary)),
                                     Container(
                                       margin: const EdgeInsets.only(
                                           left: 8.0, top: 8, right: 6),
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
+                                        borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(12),
                                             topRight: Radius.circular(12),
                                             bottomLeft: Radius.circular(0),
@@ -245,10 +249,12 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                                   ],
                                 )
                               : Text(widget.message,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.white)))),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary)))),
                 ),
               );
             } else {
@@ -280,17 +286,21 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                             child: widget.state == false
                                 ? Column(
                                     children: [
-                                      const Text(
+                                      Text(
                                           "Hay más de 1 recordatorio. Elige el que quieres borrar:",
                                           style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w500,
-                                              color: Colors.white)),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary)),
                                       Container(
                                         margin: const EdgeInsets.only(top: 10),
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                          borderRadius: const BorderRadius.only(
                                               topLeft: Radius.circular(10),
                                               bottomRight: Radius.circular(10),
                                               topRight: Radius.circular(10),
@@ -352,10 +362,12 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                                     ],
                                   )
                                 : Text(widget.message,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.white)))),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary)))),
                   ),
                 );
               } else {
@@ -388,10 +400,12 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                                 variables[1] == "NULL"
                                     ? "Especifique una fecha en la que se hayan creado recordatorios:"
                                     : "No se han encontrado recordatorio el día ${variables[1]}, especifique otra fecha.",
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white)),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .tertiary)),
                           ),
                           Row(
                             children: [
@@ -426,7 +440,7 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                               });
                             },
                             icon: const Icon(Icons.check),
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.tertiary,
                           )*/
                         ])),
                   ),
@@ -459,10 +473,10 @@ class _DeleteWidgetState extends State<DeleteWidget> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 16.0, horizontal: 16),
                       child: Text(widget.message,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
-                              color: Colors.white)),
+                              color: Theme.of(context).colorScheme.tertiary)),
                     )),
               ),
             );

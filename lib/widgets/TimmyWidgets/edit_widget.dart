@@ -125,10 +125,12 @@ class _EditWidgetState extends State<EditWidget> {
                               ? Column(
                                   children: [
                                     Text(widget.response,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w500,
-                                            color: Colors.white)),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary)),
                                     Container(
                                       margin: const EdgeInsets.only(left: 20.0),
 
@@ -190,11 +192,13 @@ class _EditWidgetState extends State<EditWidget> {
                                                 width: 230,
                                                 child: Text(
                                                     "Nombre: ${variables[6]}",
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         fontSize: 12,
                                                         fontWeight:
                                                             FontWeight.w500,
-                                                        color: Colors.white)),
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary)),
                                               )
                                             ]),
                                           ),
@@ -252,7 +256,9 @@ class _EditWidgetState extends State<EditWidget> {
                                                   widget.notifyParent();
                                                 },
                                                 icon: const Icon(Icons.check),
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary,
                                               ))
                                         ],
                                       ),
@@ -260,10 +266,12 @@ class _EditWidgetState extends State<EditWidget> {
                                   ],
                                 )
                               : Text(widget.message,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.white)))),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary)))),
                 ),
               );
             } else {
@@ -295,18 +303,22 @@ class _EditWidgetState extends State<EditWidget> {
                             child: widget.state == false
                                 ? Column(
                                     children: [
-                                      const Text(
+                                      Text(
                                           "Hay más de 1 recordatorio. Elige el que quieres modificar:",
                                           style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w500,
-                                              color: Colors.white)),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary)),
                                       Container(
                                         width: double.infinity,
                                         margin: const EdgeInsets.only(top: 10),
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                          borderRadius: const BorderRadius.only(
                                               topLeft: Radius.circular(10),
                                               bottomRight: Radius.circular(10),
                                               topRight: Radius.circular(10),
@@ -373,10 +385,12 @@ class _EditWidgetState extends State<EditWidget> {
                                     ],
                                   )
                                 : Text(widget.message,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.white)))),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary)))),
                   ),
                 );
               } else {
@@ -409,10 +423,12 @@ class _EditWidgetState extends State<EditWidget> {
                                 variables[1] == "NULL"
                                     ? "Especifique una fecha en la que se hayan creado recordatorios:"
                                     : "No se han encontrado recordatorios el día ${variables[1]}, especifique otra fecha.",
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white)),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .tertiary)),
                           ),
                           Row(
                             children: [
@@ -431,24 +447,6 @@ class _EditWidgetState extends State<EditWidget> {
                               )
                             ],
                           ),
-                          /*IconButton(
-                            constraints: const BoxConstraints(),
-                            padding: const EdgeInsets.only(left: 10),
-                            onPressed: () async {
-                              SavedMessage s = SavedMessage();
-
-                              print(variables[1]);
-                              widget.message = "EDIT1/${variables[1]}";
-                              await s.updateMessage(
-                                  widget.message, widget.id, "e");
-
-                              setState(() {
-                                variables = widget.message.split("/");
-                              });
-                            },
-                            icon: const Icon(Icons.check),
-                            color: Colors.white,
-                          )*/
                         ])),
                   ),
                 );
@@ -480,10 +478,10 @@ class _EditWidgetState extends State<EditWidget> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 16.0, horizontal: 16),
                       child: Text(widget.message,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
-                              color: Colors.white)),
+                              color: Theme.of(context).colorScheme.tertiary)),
                     )),
               ),
             );

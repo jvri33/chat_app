@@ -364,23 +364,28 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.utils import to_categorical
 
+#Creacion e inicialización del Tokenizer
 intents_tokenizer = Tokenizer(num_words = 1000,oov_token = "<OOV>")
+
+#Se asigna un token a cada palabra
 intents_tokenizer.fit_on_texts(intents)
+#se recorren las frases para sustituir cada palabra con su respectivo token
 seq = intents_tokenizer.texts_to_sequences(intents) 
 
+#se padean las frases con la longitud máxima de entre todas las frases
 longest_intent = max(seq, key=len)
 pad_len = len(longest_intent)
-
 padded_seq = pad_sequences(seq,maxlen = pad_len, padding='post')
 
+#se tokenizan las etiquetas
 labels_tokenizer = Tokenizer()
 labels_tokenizer.fit_on_texts(labels)
 
+#se repesentan las etiquetas en un vector de 
+#one hot encoding label 5: [0 0 0 0 1]  label: 1[1 0 0 0 0]
 label_seq = np.array(labels_tokenizer.texts_to_sequences(labels)) -1
-#print(label_seq)
 labels_cat = to_categorical(label_seq)
-#print(labels_cat)
-#print(padded_seq)
+
 
 model = tf.keras.Sequential([
     tf.keras.layers.Embedding(500, 128, input_length=pad_len),

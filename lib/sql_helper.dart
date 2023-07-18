@@ -24,6 +24,11 @@ class SQLHelper {
       user BIT,
       type TEXT
     );""");
+    await database.execute("""CREATE TABLE CONFIG(
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      night BIT,
+      tutorial BIT
+    );""");
   }
 
   static Future<Database> db() async {
