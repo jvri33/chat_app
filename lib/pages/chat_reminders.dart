@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'dart:ui';
+import 'package:video_player/video_player.dart';
 import 'package:chat_app/controllers/saved_message.dart';
 import 'package:chat_app/utils/respuestas.dart';
 import 'package:chat_app/widgets/TimmyWidgets/calendario.dart';
@@ -36,6 +37,7 @@ Future<dynamic> loadConfig() async {
 }
 
 class _ChatState extends State<Chat> {
+  late VideoPlayerController _controllerv;
   int init = 0;
   late Respuesta _responseGenerator;
   late IntentClassifier _intentClassifier;
@@ -46,14 +48,26 @@ class _ChatState extends State<Chat> {
   SavedMessage saveMessageController = SavedMessage();
   late List<Map<String, dynamic>> savedMessages = [];
   final messageController = TextEditingController();
-
+  final PageController _pcontroller = PageController();
   @override
   void initState() {
     super.initState();
+    _controllerv = VideoPlayerController.asset('assets/video.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+        _controllerv.play();
+        _controllerv.setLooping(true);
+      });
 
     _intentClassifier = IntentClassifier();
     _entityClassifier = Classifier();
     _responseGenerator = Respuesta();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controllerv.dispose();
   }
 
   setText(String t) {
@@ -161,66 +175,172 @@ class _ChatState extends State<Chat> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    return ListView.builder(
-                        reverse: true,
-                        controller: _controller,
-                        itemCount: savedMessages.asMap().keys.toList().length,
-                        itemBuilder: (BuildContext context, int index) {
-                          var keys = savedMessages.asMap().keys.toList();
-                          final reversedIndex =
-                              savedMessages.asMap().keys.toList().length -
-                                  1 -
-                                  index;
-                          if (savedMessages[keys[reversedIndex]]['type'] ==
-                              'm') {
-                            return SavedMessageWidget(
-                              savedMessages[keys[reversedIndex]]['user'],
-                              savedMessages[keys[reversedIndex]]['message'],
-                            );
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'w') {
-                            return ReminderWidget(
+                    if (savedMessages.asMap().keys.toList().isEmpty) {
+                      saveMessageController.createItem(
+                          "Hola! Soy Timmy, y estaré encantado de ayudarte a gestionar tu agenda y tu tiempo",
+                          0,
+                          "m");
+                    }
+                    if (js['tutorialTim'] == true) {
+                      return BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                        child: AlertDialog(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(32.0))),
+                          content: SizedBox(
+                            width: 300,
+                            height: 500,
+                            child: PageView.builder(
+                              controller: _pcontroller,
+                              itemCount: 3,
+                              itemBuilder: (context, index) {
+                                return (Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                      child: AspectRatio(
+                                        aspectRatio:
+                                            _controllerv.value.aspectRatio,
+                                        child: Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                                child:
+                                                    VideoPlayer(_controllerv))
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const Text(
+                                      "Crea recordatorios y tareas escribiendo en el chat",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10))),
+                                            backgroundColor:
+                                                Theme.of(context).primaryColor),
+                                        onPressed: () {
+                                          _pcontroller.animateToPage(index + 1,
+                                              duration:
+                                                  Duration(milliseconds: 500),
+                                              curve: Curves.ease);
+                                        },
+                                        child: Text("Siguiente")),
+                                    Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 2),
+                                            child: CircleAvatar(
+                                              backgroundColor: Theme.of(context)
+                                                  .primaryColor,
+                                              maxRadius: index == 0 ? 6 : 3,
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 2),
+                                            child: CircleAvatar(
+                                              backgroundColor: Theme.of(context)
+                                                  .primaryColor,
+                                              maxRadius: index == 1 ? 6 : 3,
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 2),
+                                            child: CircleAvatar(
+                                              backgroundColor: Theme.of(context)
+                                                  .primaryColor,
+                                              maxRadius: index == 2 ? 6 : 3,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ));
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return ListView.builder(
+                          reverse: true,
+                          controller: _controller,
+                          itemCount: savedMessages.asMap().keys.toList().length,
+                          itemBuilder: (BuildContext context, int index) {
+                            var keys = savedMessages.asMap().keys.toList();
+                            final reversedIndex =
+                                savedMessages.asMap().keys.toList().length -
+                                    1 -
+                                    index;
+                            if (savedMessages[keys[reversedIndex]]['type'] ==
+                                'm') {
+                              return SavedMessageWidget(
+                                savedMessages[keys[reversedIndex]]['user'],
+                                savedMessages[keys[reversedIndex]]['message'],
+                              );
+                            } else if (savedMessages[keys[reversedIndex]]
+                                    ['type'] ==
+                                'w') {
+                              return ReminderWidget(
+                                  savedMessages[keys[reversedIndex]]['message'],
+                                  savedMessages[keys[reversedIndex]]['id'],
+                                  refresh);
+                            } else if (savedMessages[keys[reversedIndex]]
+                                    ['type'] ==
+                                'c') {
+                              return Calendario(
+                                  savedMessages[keys[reversedIndex]]['message'],
+                                  savedMessages[keys[reversedIndex]]['id'],
+                                  refresh);
+                            } else if (savedMessages[keys[reversedIndex]]
+                                    ['type'] ==
+                                'e') {
+                              return EditWidget(
+                                  savedMessages[keys[reversedIndex]]['message'],
+                                  savedMessages[keys[reversedIndex]]['id'],
+                                  refresh);
+                            } else if (savedMessages[keys[reversedIndex]]
+                                    ['type'] ==
+                                'd') {
+                              return DeleteWidget(
+                                  savedMessages[keys[reversedIndex]]['message'],
+                                  savedMessages[keys[reversedIndex]]['id'],
+                                  refresh);
+                            } else if (savedMessages[keys[reversedIndex]]
+                                    ['type'] ==
+                                'i') {
+                              return DayWidget(
                                 savedMessages[keys[reversedIndex]]['message'],
                                 savedMessages[keys[reversedIndex]]['id'],
-                                refresh);
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'c') {
-                            return Calendario(
-                                savedMessages[keys[reversedIndex]]['message'],
-                                savedMessages[keys[reversedIndex]]['id'],
-                                refresh);
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'e') {
-                            return EditWidget(
-                                savedMessages[keys[reversedIndex]]['message'],
-                                savedMessages[keys[reversedIndex]]['id'],
-                                refresh);
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'd') {
-                            return DeleteWidget(
-                                savedMessages[keys[reversedIndex]]['message'],
-                                savedMessages[keys[reversedIndex]]['id'],
-                                refresh);
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'i') {
-                            return DayWidget(
-                              savedMessages[keys[reversedIndex]]['message'],
-                              savedMessages[keys[reversedIndex]]['id'],
-                            );
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'we') {
-                            return (Week(
-                                savedMessages[keys[reversedIndex]]['message']));
-                          } else {
-                            return const Text("Error");
-                          }
-                        });
+                              );
+                            } else if (savedMessages[keys[reversedIndex]]
+                                    ['type'] ==
+                                'we') {
+                              return (Week(savedMessages[keys[reversedIndex]]
+                                  ['message']));
+                            } else {
+                              return const Text("Error");
+                            }
+                          });
+                    }
                   }
                 },
               ),

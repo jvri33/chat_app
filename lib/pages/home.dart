@@ -26,13 +26,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
+        /* actions: [
           IconButton(
               onPressed: () {
-                nextScreen(context, const SettingsPage());
+                nextScreen(context, SettingsPage(widget.night));
               },
               icon: const Icon(Icons.settings))
-        ],
+        ],*/
         title: const Text(
           "Chub",
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 24),
@@ -185,26 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-        ), /*Row(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                nextScreen(context, const Chat());
-
-                /* NotiticationService().scheduleNotification(
-                    title: "Prueba de notificación",
-                    body: "Aquí iría el título",
-                    scheduledNotificationDateTime:
-                        DateTime.now().add(const Duration(seconds: 40)));
-*/
-              },
-              child: const Text("Botón"),
-            ),
-            ElevatedButton(
-                onPressed: (() => nextScreen(context, const Vivy())),
-                child: const Text("Vivy"))
-          ],
-        ),*/
+        ),
       ),
     );
   }

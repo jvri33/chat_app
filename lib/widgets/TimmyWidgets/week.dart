@@ -154,10 +154,11 @@ class Week extends StatelessWidget {
                                       Align(
                                           alignment: Alignment.centerLeft,
                                           child: Text(dias[index],
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black))),
+                                                  fontWeight: FontWeight.w800,
+                                                  color: Theme.of(context)
+                                                      .primaryColor))),
                                     Column(
                                       children: List.generate(
                                         innerList.length,

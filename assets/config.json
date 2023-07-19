@@ -1,6 +1,6 @@
 {
     "night":false,
-    "tutorialTim":false,
+    "tutorialTim":true,
     "tutorialViv":false
     
 }

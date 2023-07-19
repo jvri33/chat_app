@@ -50,6 +50,7 @@ dependencies:
       url: https://github.com/jvri33/qr-bar-code-scanner-dialog2.git
       ref: eccf995
   camera: ^0.10.5+2
+  video_player: ^2.7.0
     
 
 
@@ -94,6 +95,7 @@ flutter:
       - assets/vivy.png
       - assets/timmy.png
       - assets/config.json
+      - assets/video.mp4
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
