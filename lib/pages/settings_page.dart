@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
-  bool night;
-  SettingsPage(this.night, {super.key});
+  SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => SettingsPageState();
@@ -10,9 +10,6 @@ class SettingsPage extends StatefulWidget {
 
 class SettingsPageState extends State<SettingsPage> {
   bool s = false;
-  void initState() {
-    s = widget.night;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +25,20 @@ class SettingsPageState extends State<SettingsPage> {
         height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
-            gradient: widget.night == false
-                ? const LinearGradient(
-                    colors: [Color(0xff77ddf2), Color(0xff77f7aa)],
-                    stops: [0, 1],
-                    begin: Alignment.bottomRight,
-                    end: Alignment.topLeft)
-                : const LinearGradient(colors: [
-                    Color.fromARGB(255, 24, 32, 33),
-                    Color.fromARGB(255, 24, 32, 33)
-                  ], stops: [
-                    0,
-                    1
-                  ], begin: Alignment.bottomRight, end: Alignment.topLeft)),
+            gradient:
+                MediaQuery.of(context).platformBrightness == Brightness.light
+                    ? const LinearGradient(
+                        colors: [Color(0xff77ddf2), Color(0xff77f7aa)],
+                        stops: [0, 1],
+                        begin: Alignment.bottomRight,
+                        end: Alignment.topLeft)
+                    : const LinearGradient(colors: [
+                        Color.fromARGB(255, 24, 32, 33),
+                        Color.fromARGB(255, 24, 32, 33)
+                      ], stops: [
+                        0,
+                        1
+                      ], begin: Alignment.bottomRight, end: Alignment.topLeft)),
         child: SizedBox(
           width: double.infinity,
           child: Row(
@@ -56,11 +54,20 @@ class SettingsPageState extends State<SettingsPage> {
               ),
               Switch(
                   value: s,
-                  onChanged: (ss) {
-                    setState(() {
-                      if (ss == true) {
-                      } else {}
-                    });
+                  onChanged: (ss) async {
+                    print(ss);
+
+                    if (ss == true) {
+                      setState(() {
+                        Brightness.dark;
+                        s = ss;
+                      });
+                    } else {
+                      setState(() {
+                        ThemeMode.values;
+                        s = ss;
+                      });
+                    }
                   })
             ],
           ),

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:chat_app/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chat_app/controllers/saved_message.dart';
 import 'package:chat_app/utils/respuestas.dart';
@@ -18,26 +20,19 @@ import 'package:chat_app/classifiers/intent_classifier.dart';
 import 'package:chat_app/classifiers/entity_classifier.dart';
 
 class Chat extends StatefulWidget {
-  const Chat({super.key});
+  bool night;
+  Chat(this.night, {super.key}) {
+    print(night);
+  }
 
   @override
   State<Chat> createState() => _ChatState();
 }
 
-dynamic js = {};
-
-Future<dynamic> loadConfig() async {
-  final contents = await rootBundle.loadString(
-    'assets/config.json',
-  );
-
-// decode our json
-  final json = jsonDecode(contents);
-  return json;
-}
-
 class _ChatState extends State<Chat> {
+  bool firstTime = false;
   late VideoPlayerController _controllerv;
+  late VideoPlayerController _controllerv2;
   int init = 0;
   late Respuesta _responseGenerator;
   late IntentClassifier _intentClassifier;
@@ -52,11 +47,19 @@ class _ChatState extends State<Chat> {
   @override
   void initState() {
     super.initState();
+
     _controllerv = VideoPlayerController.asset('assets/video.mp4')
       ..initialize().then((_) {
         setState(() {});
         _controllerv.play();
         _controllerv.setLooping(true);
+      });
+
+    _controllerv2 = VideoPlayerController.asset('assets/video2.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+        _controllerv2.play();
+        _controllerv2.setLooping(true);
       });
 
     _intentClassifier = IntentClassifier();
@@ -68,6 +71,7 @@ class _ChatState extends State<Chat> {
   void dispose() {
     super.dispose();
     _controllerv.dispose();
+    _controllerv2.dispose();
   }
 
   setText(String t) {
@@ -90,9 +94,19 @@ class _ChatState extends State<Chat> {
   }
 
   Future<void> getMessages() async {
-    js = await loadConfig();
+    getTime();
     var printing = await saveMessageController.getItems();
     savedMessages = printing;
+  }
+
+  getTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('first_time') == false &&
+        (prefs.getBool('first_time')) != null) {
+      firstTime = false;
+    } else {
+      firstTime = true;
+    }
   }
 
   refresh() {
@@ -151,7 +165,7 @@ class _ChatState extends State<Chat> {
       body: Container(
         //padding: EdgeInsets.only(top: 10),
         decoration: BoxDecoration(
-            gradient: js['night'] == false
+            gradient: night == false
                 ? const LinearGradient(
                     colors: [Color(0xff77ddf2), Color(0xff77f7aa)],
                     stops: [0, 1],
@@ -181,7 +195,9 @@ class _ChatState extends State<Chat> {
                           0,
                           "m");
                     }
-                    if (js['tutorialTim'] == true) {
+                    if (firstTime == true) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+
                       return BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                         child: AlertDialog(
@@ -190,16 +206,27 @@ class _ChatState extends State<Chat> {
                                   BorderRadius.all(Radius.circular(32.0))),
                           content: SizedBox(
                             width: 300,
-                            height: 500,
+                            height: 460,
                             child: PageView.builder(
                               controller: _pcontroller,
                               itemCount: 3,
                               itemBuilder: (context, index) {
+                                if (index == 0) {
+                                  _controllerv.play();
+                                  _controllerv.setLooping(true);
+                                }
+                                if (index == 1) {
+                                  _controllerv2.play();
+                                  _controllerv2.setLooping(true);
+                                }
                                 return (Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  //mainAxisAlignment:
+                                  //  MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
+                                      margin: index == 2
+                                          ? EdgeInsets.only(bottom: 0)
+                                          : EdgeInsets.only(bottom: 20),
                                       decoration: const BoxDecoration(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(20))),
@@ -212,30 +239,71 @@ class _ChatState extends State<Chat> {
                                             ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(16),
-                                                child:
-                                                    VideoPlayer(_controllerv))
+                                                child: index == 1
+                                                    ? VideoPlayer(_controllerv2)
+                                                    : index == 0
+                                                        ? VideoPlayer(
+                                                            _controllerv)
+                                                        : Container(
+                                                            child: Image.asset(
+                                                            'assets/timmy.png',
+                                                            width: 200,
+                                                          )))
                                           ],
                                         ),
                                       ),
                                     ),
-                                    const Text(
-                                      "Crea recordatorios y tareas escribiendo en el chat",
-                                      textAlign: TextAlign.center,
+                                    Container(
+                                      margin: EdgeInsets.only(bottom: 20),
+                                      child: Text(
+                                        index == 0
+                                            ? "Crea recordatorios y tareas escribiendo en el chat."
+                                            : index == 1
+                                                ? "Gestiona tu calendario con los diferentes widgets."
+                                                : "Si tienes cualquier duda pregunta a Timmy y te responderá sin problema!",
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.w500),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10))),
-                                            backgroundColor:
-                                                Theme.of(context).primaryColor),
-                                        onPressed: () {
-                                          _pcontroller.animateToPage(index + 1,
-                                              duration:
-                                                  Duration(milliseconds: 500),
-                                              curve: Curves.ease);
-                                        },
-                                        child: Text("Siguiente")),
+                                    Container(
+                                      margin: EdgeInsets.only(bottom: 20),
+                                      child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10))),
+                                              backgroundColor: Theme.of(context)
+                                                  .primaryColor),
+                                          onPressed: index == 2
+                                              ? () async {
+                                                  SharedPreferences prefs =
+                                                      await SharedPreferences
+                                                          .getInstance();
+                                                  setState(() {
+                                                    firstTime = false;
+                                                    prefs.setBool(
+                                                        'first_time', false);
+                                                  });
+                                                }
+                                              : () {
+                                                  _pcontroller.animateToPage(
+                                                      index + 1,
+                                                      duration: Duration(
+                                                          milliseconds: 500),
+                                                      curve: Curves.ease);
+                                                },
+                                          child: Container(
+                                              padding: EdgeInsets.all(12),
+                                              child: index == 2
+                                                  ? Text(
+                                                      "Finalizar",
+                                                    )
+                                                  : Text("Siguiente"))),
+                                    ),
                                     Align(
                                       alignment: Alignment.bottomCenter,
                                       child: Row(
@@ -280,66 +348,79 @@ class _ChatState extends State<Chat> {
                         ),
                       );
                     } else {
-                      return ListView.builder(
-                          reverse: true,
-                          controller: _controller,
-                          itemCount: savedMessages.asMap().keys.toList().length,
-                          itemBuilder: (BuildContext context, int index) {
-                            var keys = savedMessages.asMap().keys.toList();
-                            final reversedIndex =
-                                savedMessages.asMap().keys.toList().length -
-                                    1 -
-                                    index;
-                            if (savedMessages[keys[reversedIndex]]['type'] ==
-                                'm') {
-                              return SavedMessageWidget(
-                                savedMessages[keys[reversedIndex]]['user'],
-                                savedMessages[keys[reversedIndex]]['message'],
-                              );
-                            } else if (savedMessages[keys[reversedIndex]]
-                                    ['type'] ==
-                                'w') {
-                              return ReminderWidget(
+                      _controllerv.pause();
+                      _controllerv2.pause();
+
+                      return Align(
+                        alignment: Alignment.topCenter,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: BouncingScrollPhysics(),
+                            reverse: true,
+                            controller: _controller,
+                            itemCount:
+                                savedMessages.asMap().keys.toList().length,
+                            itemBuilder: (BuildContext context, int index) {
+                              var keys = savedMessages.asMap().keys.toList();
+                              final reversedIndex =
+                                  savedMessages.asMap().keys.toList().length -
+                                      1 -
+                                      index;
+                              if (savedMessages[keys[reversedIndex]]['type'] ==
+                                  'm') {
+                                return SavedMessageWidget(
+                                  savedMessages[keys[reversedIndex]]['user'],
+                                  savedMessages[keys[reversedIndex]]['message'],
+                                );
+                              } else if (savedMessages[keys[reversedIndex]]
+                                      ['type'] ==
+                                  'w') {
+                                return ReminderWidget(
+                                    savedMessages[keys[reversedIndex]]
+                                        ['message'],
+                                    savedMessages[keys[reversedIndex]]['id'],
+                                    refresh);
+                              } else if (savedMessages[keys[reversedIndex]]
+                                      ['type'] ==
+                                  'c') {
+                                return Calendario(
+                                    savedMessages[keys[reversedIndex]]
+                                        ['message'],
+                                    savedMessages[keys[reversedIndex]]['id'],
+                                    refresh);
+                              } else if (savedMessages[keys[reversedIndex]]
+                                      ['type'] ==
+                                  'e') {
+                                return EditWidget(
+                                    savedMessages[keys[reversedIndex]]
+                                        ['message'],
+                                    savedMessages[keys[reversedIndex]]['id'],
+                                    refresh);
+                              } else if (savedMessages[keys[reversedIndex]]
+                                      ['type'] ==
+                                  'd') {
+                                return DeleteWidget(
+                                    savedMessages[keys[reversedIndex]]
+                                        ['message'],
+                                    savedMessages[keys[reversedIndex]]['id'],
+                                    refresh);
+                              } else if (savedMessages[keys[reversedIndex]]
+                                      ['type'] ==
+                                  'i') {
+                                return DayWidget(
                                   savedMessages[keys[reversedIndex]]['message'],
                                   savedMessages[keys[reversedIndex]]['id'],
-                                  refresh);
-                            } else if (savedMessages[keys[reversedIndex]]
-                                    ['type'] ==
-                                'c') {
-                              return Calendario(
-                                  savedMessages[keys[reversedIndex]]['message'],
-                                  savedMessages[keys[reversedIndex]]['id'],
-                                  refresh);
-                            } else if (savedMessages[keys[reversedIndex]]
-                                    ['type'] ==
-                                'e') {
-                              return EditWidget(
-                                  savedMessages[keys[reversedIndex]]['message'],
-                                  savedMessages[keys[reversedIndex]]['id'],
-                                  refresh);
-                            } else if (savedMessages[keys[reversedIndex]]
-                                    ['type'] ==
-                                'd') {
-                              return DeleteWidget(
-                                  savedMessages[keys[reversedIndex]]['message'],
-                                  savedMessages[keys[reversedIndex]]['id'],
-                                  refresh);
-                            } else if (savedMessages[keys[reversedIndex]]
-                                    ['type'] ==
-                                'i') {
-                              return DayWidget(
-                                savedMessages[keys[reversedIndex]]['message'],
-                                savedMessages[keys[reversedIndex]]['id'],
-                              );
-                            } else if (savedMessages[keys[reversedIndex]]
-                                    ['type'] ==
-                                'we') {
-                              return (Week(savedMessages[keys[reversedIndex]]
-                                  ['message']));
-                            } else {
-                              return const Text("Error");
-                            }
-                          });
+                                );
+                              } else if (savedMessages[keys[reversedIndex]]
+                                      ['type'] ==
+                                  'we') {
+                                return (Week(savedMessages[keys[reversedIndex]]
+                                    ['message']));
+                              } else {
+                                return const Text("Error");
+                              }
+                            }),
+                      );
                     }
                   }
                 },
@@ -376,6 +457,7 @@ class _ChatState extends State<Chat> {
                       Expanded(
                         flex: 4,
                         child: TextField(
+                          enabled: !firstTime == true,
                           controller: messageController,
                           onEditingComplete: sendMessage,
                           decoration: InputDecoration(

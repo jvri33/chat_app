@@ -3,59 +3,67 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:shared_preferences/shared_preferences.dart';
 // ignore: depend_on_referenced_packages
 import 'package:timezone/data/latest.dart' as tz;
 import 'dart:convert';
 
-dynamic js = {};
-
-Future<dynamic> loadConfig() async {
-  final contents = await rootBundle.loadString(
-    'assets/config.json',
-  );
-
-// decode our json
-  final json = jsonDecode(contents);
-  return json;
-}
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  js = await loadConfig();
 
   tz.initializeTimeZones();
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+bool night = false;
+
+ThemeData _dark = ThemeData(
+    primaryColor: const Color.fromARGB(255, 82, 220, 186),
+    colorScheme: ColorScheme.fromSwatch().copyWith(
+      secondary: const Color.fromARGB(255, 56, 75, 78),
+      tertiary: const Color.fromARGB(255, 56, 75, 78), // Your accent color
+    ),
+    appBarTheme: const AppBarTheme(
+        backgroundColor: Color.fromARGB(255, 56, 75, 78),
+        foregroundColor: Color.fromARGB(255, 82, 220, 186)));
+
+ThemeData _light = ThemeData(
+    primaryColor: const Color.fromARGB(255, 0, 115, 99),
+    colorScheme: ColorScheme.fromSwatch().copyWith(
+      secondary: const Color.fromARGB(255, 187, 247, 223),
+      tertiary: const Color.fromARGB(255, 255, 255, 255), // Your accent color
+    ),
+    appBarTheme: const AppBarTheme(
+        backgroundColor: Color.fromARGB(255, 187, 247, 223),
+        foregroundColor: Color.fromARGB(255, 0, 115, 99)));
+
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  seteNight() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (night == false) {
+      night = true;
+      prefs.setBool('night', true);
+    } else {
+      night = false;
+      prefs.setBool('night', false);
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
-      theme: ThemeData(
-          primaryColor: js['night'] == false
-              ? const Color.fromARGB(255, 0, 115, 99)
-              : const Color.fromARGB(255, 82, 220, 186),
-          colorScheme: ColorScheme.fromSwatch().copyWith(
-            secondary: js['night'] == false
-                ? const Color.fromARGB(255, 187, 247, 223)
-                : const Color.fromARGB(255, 56, 75, 78),
-            tertiary: js['night'] == false
-                ? const Color.fromARGB(255, 255, 255, 255)
-                : const Color.fromARGB(255, 56, 75, 78), // Your accent color
-          ),
-          appBarTheme: AppBarTheme(
-              backgroundColor: js['night'] == false
-                  ? const Color.fromARGB(255, 187, 247, 223)
-                  : const Color.fromARGB(255, 56, 75, 78),
-              foregroundColor: js['night'] == false
-                  ? const Color.fromARGB(255, 0, 115, 99)
-                  : const Color.fromARGB(255, 82, 220, 186))),
+      theme: night ? _dark : _light,
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(js['night']),
+      home: HomeScreen(seteNight, night),
     );
   }
 }

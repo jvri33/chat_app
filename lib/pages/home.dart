@@ -1,3 +1,4 @@
+import 'package:chat_app/main.dart';
 import 'package:chat_app/pages/vivy.dart';
 import 'package:flutter/material.dart';
 import '../widgets/widgets.dart';
@@ -7,8 +8,9 @@ import '../controllers/notification_service.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
+  Function seteNight;
   bool night;
-  HomeScreen(this.night, {super.key});
+  HomeScreen(this.seteNight, this.night, {super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -26,13 +28,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        /* actions: [
+        actions: [
           IconButton(
               onPressed: () {
-                nextScreen(context, SettingsPage(widget.night));
+                widget.seteNight();
               },
               icon: const Icon(Icons.settings))
-        ],*/
+        ],
         title: const Text(
           "Chub",
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 24),
@@ -43,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
         height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
-            gradient: widget.night == false
+            gradient: night == false
                 ? const LinearGradient(
                     colors: [Color(0xff77ddf2), Color(0xff77f7aa)],
                     stops: [0, 1],
@@ -88,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       child: ElevatedButton(
-                        onPressed: (() => nextScreen(context, const Chat())),
+                        onPressed: (() => nextScreen(context, Chat(night))),
                         style: ElevatedButton.styleFrom(
                           shadowColor: Colors.black,
 
@@ -162,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Theme.of(context).colorScheme.tertiary),
                       ),
                       child: ElevatedButton(
-                        onPressed: (() => nextScreen(context, const Vivy())),
+                        onPressed: (() => nextScreen(context, Vivy(night))),
                         style: ElevatedButton.styleFrom(
                           shadowColor: Colors.black,
 

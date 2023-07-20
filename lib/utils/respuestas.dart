@@ -1,5 +1,6 @@
 import 'package:chat_app/utils/extractor.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/reminder.dart';
 import 'package:chat_app/controllers/saved_message.dart';
 
@@ -143,6 +144,13 @@ class Respuesta {
           ret2 = "CALENDAR/${t[i][0]}";
         }
       }
+    }
+
+    if (i3 == "ayuda" || i3 == "Ayuda") {
+      SharedPreferences s = await SharedPreferences.getInstance();
+      s.setBool("first_time", true);
+      print("ayuda");
+      ret2 = "Ayuda";
     }
 
     //print(i2.isNotEmpty);

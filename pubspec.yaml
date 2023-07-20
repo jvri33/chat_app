@@ -51,6 +51,7 @@ dependencies:
       ref: eccf995
   camera: ^0.10.5+2
   video_player: ^2.7.0
+  shared_preferences: ^2.2.0
     
 
 
@@ -94,8 +95,8 @@ flutter:
       - assets/logo_verde.png
       - assets/vivy.png
       - assets/timmy.png
-      - assets/config.json
       - assets/video.mp4
+      - assets/video2.mp4
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

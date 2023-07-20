@@ -1,4 +1,5 @@
 import 'package:chat_app/controllers/vivy_saved_message.dart';
+import 'package:chat_app/main.dart';
 import 'package:chat_app/utils/respuestas_vivy.dart';
 import 'package:chat_app/widgets/Speech.dart';
 
@@ -13,7 +14,8 @@ import 'package:chat_app/classifiers/intent_classifier.dart';
 import 'package:chat_app/classifiers/entity_classifier.dart';
 
 class Vivy extends StatefulWidget {
-  const Vivy({super.key});
+  bool night;
+  Vivy(this.night, {super.key});
 
   @override
   State<Vivy> createState() => _VivyState();
@@ -117,13 +119,20 @@ class _VivyState extends State<Vivy> {
       ),
       body: Container(
         //padding: EdgeInsets.only(top: 10),
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-          colors: [Color(0xff77ddf2), Color(0xff77f7aa)],
-          stops: [0, 1],
-          begin: Alignment.bottomRight,
-          end: Alignment.topLeft,
-        )),
+        decoration: BoxDecoration(
+            gradient: night == false
+                ? const LinearGradient(
+                    colors: [Color(0xff77ddf2), Color(0xff77f7aa)],
+                    stops: [0, 1],
+                    begin: Alignment.bottomRight,
+                    end: Alignment.topLeft)
+                : const LinearGradient(colors: [
+                    Color.fromARGB(255, 24, 32, 33),
+                    Color.fromARGB(255, 24, 32, 33)
+                  ], stops: [
+                    0,
+                    1
+                  ], begin: Alignment.bottomRight, end: Alignment.topLeft)),
         child: Column(
           children: [
             Expanded(
