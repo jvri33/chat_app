@@ -201,12 +201,15 @@ class _ChatState extends State<Chat> {
                       return BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                         child: AlertDialog(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.tertiary,
                           shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(32.0))),
-                          content: SizedBox(
+                          content: Container(
                             width: 300,
-                            height: 460,
+                            height: 520,
+                            //color: Theme.of(context).colorScheme.tertiary,
                             child: PageView.builder(
                               controller: _pcontroller,
                               itemCount: 3,
@@ -247,7 +250,7 @@ class _ChatState extends State<Chat> {
                                                         : Container(
                                                             child: Image.asset(
                                                             'assets/timmy.png',
-                                                            width: 200,
+                                                            width: 220,
                                                           )))
                                           ],
                                         ),
@@ -301,8 +304,20 @@ class _ChatState extends State<Chat> {
                                               child: index == 2
                                                   ? Text(
                                                       "Finalizar",
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary,
+                                                      ),
                                                     )
-                                                  : Text("Siguiente"))),
+                                                  : Text(
+                                                      "Siguiente",
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary,
+                                                      ),
+                                                    ))),
                                     ),
                                     Align(
                                       alignment: Alignment.bottomCenter,

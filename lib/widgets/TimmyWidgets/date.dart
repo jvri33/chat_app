@@ -40,6 +40,8 @@ class DateWidget extends StatelessWidget {
                     filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                     child: Theme(
                         data: Theme.of(context).copyWith(
+                            dialogBackgroundColor:
+                                Theme.of(context).colorScheme.tertiary,
                             colorScheme: ColorScheme.light(
                                 primary: Theme.of(context).primaryColor,
                                 onPrimary:

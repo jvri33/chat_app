@@ -10,7 +10,8 @@ import 'dart:convert';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  night = prefs.getBool('night')!;
   tz.initializeTimeZones();
   runApp(const MyApp());
 }
