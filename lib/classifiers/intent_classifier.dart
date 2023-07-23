@@ -6,8 +6,8 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 class IntentClassifier {
   //assets
 
-  final _modelFile = 'modelo_intents.tflite';
-  final _vocabFile = 'vocabulario_intents.json';
+  final _modelFile = 'assets/modelo_intents.tflite';
+  final _vocabFile = 'assets/vocabulario_intents.json';
 
   //parametros
 
@@ -27,7 +27,7 @@ class IntentClassifier {
   }
 
   void _loadDictionary() async {
-    final vocab = await rootBundle.loadString('assets/$_vocabFile');
+    final vocab = await rootBundle.loadString(_vocabFile);
     Map<String, int> jsonMap = Map<String, int>.from(jsonDecode(vocab));
 
     _dict = jsonMap;

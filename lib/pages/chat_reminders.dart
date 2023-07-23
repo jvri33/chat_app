@@ -20,6 +20,7 @@ import 'package:chat_app/classifiers/intent_classifier.dart';
 import 'package:chat_app/classifiers/entity_classifier.dart';
 
 class Chat extends StatefulWidget {
+  bool updaterem = false;
   bool night;
   Chat(this.night, {super.key}) {
     print(night);
@@ -30,6 +31,9 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
+  late int updateid;
+  late String updatemess;
+
   bool firstTime = false;
   late VideoPlayerController _controllerv;
   late VideoPlayerController _controllerv2;
@@ -78,6 +82,13 @@ class _ChatState extends State<Chat> {
     messageController.text = t;
   }
 
+  void dontSendMessage(id, mess) {
+    widget.updaterem = true;
+    updateid = id;
+    updatemess = mess;
+    setState(() {});
+  }
+
   calendarButton() {
     messageController.text = "Calendario";
     sendMessage();
@@ -114,21 +125,24 @@ class _ChatState extends State<Chat> {
   }
 
   void sendMessage() async {
-    if (messageController.text != "") {
-      if (messageController.text.isNotEmpty) {
-        intentPrediction = _intentClassifier.classify(messageController.text);
-        if (intentPrediction == "") {
-          intentPrediction = "No se ha entendido";
-          //prediction = "";
+    print(widget.updaterem);
+    if (widget.updaterem == false) {
+      if (messageController.text != "") {
+        if (messageController.text.isNotEmpty) {
+          intentPrediction = _intentClassifier.classify(messageController.text);
+          if (intentPrediction == "") {
+            intentPrediction = "No se ha entendido";
+            //prediction = "";
+          }
+
+          saveMessageController.createItem(messageController.text, 1, "m");
+
+          await _responseGenerator.getResponse(
+            intentPrediction,
+            _entityClassifier.classify(messageController.text),
+            messageController.text,
+          );
         }
-
-        saveMessageController.createItem(messageController.text, 1, "m");
-
-        await _responseGenerator.getResponse(
-          intentPrediction,
-          _entityClassifier.classify(messageController.text),
-          messageController.text,
-        );
       }
     }
 
@@ -196,8 +210,6 @@ class _ChatState extends State<Chat> {
                           "m");
                     }
                     if (firstTime == true) {
-                      FocusManager.instance.primaryFocus?.unfocus();
-
                       return BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                         child: AlertDialog(
@@ -207,8 +219,8 @@ class _ChatState extends State<Chat> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(32.0))),
                           content: Container(
-                            width: 300,
-                            height: 520,
+                            //width: 300,
+                            height: MediaQuery.of(context).size.height * 0.6,
                             //color: Theme.of(context).colorScheme.tertiary,
                             child: PageView.builder(
                               controller: _pcontroller,
@@ -394,7 +406,8 @@ class _ChatState extends State<Chat> {
                                     savedMessages[keys[reversedIndex]]
                                         ['message'],
                                     savedMessages[keys[reversedIndex]]['id'],
-                                    refresh);
+                                    refresh,
+                                    dontSendMessage);
                               } else if (savedMessages[keys[reversedIndex]]
                                       ['type'] ==
                                   'c') {
@@ -410,7 +423,8 @@ class _ChatState extends State<Chat> {
                                     savedMessages[keys[reversedIndex]]
                                         ['message'],
                                     savedMessages[keys[reversedIndex]]['id'],
-                                    refresh);
+                                    refresh,
+                                    dontSendMessage);
                               } else if (savedMessages[keys[reversedIndex]]
                                       ['type'] ==
                                   'd') {
@@ -482,13 +496,42 @@ class _ChatState extends State<Chat> {
                             contentPadding: const EdgeInsets.only(
                                 top: 20, bottom: 20, left: 10, right: 10),
                             border: InputBorder.none,
-                            hintText: 'Escriba un mensaje...',
+                            hintText: widget.updaterem == false
+                                ? 'Escriba un mensaje...'
+                                : "Escribe la descripción...",
                           ),
                         ),
                       ),
                       IconButton(
                           color: Theme.of(context).primaryColor,
-                          onPressed: sendMessage,
+                          onPressed: widget.updaterem == true
+                              ? () async {
+                                  SavedMessage s = SavedMessage();
+
+                                  List<String> ss = updatemess.split("/");
+                                  if (ss.length == 6) {
+                                    ss[0] = messageController.text;
+                                  } else {
+                                    ss[6] = messageController.text;
+                                  }
+                                  print(ss);
+                                  String messSt = ss.join("/");
+
+                                  print(messSt);
+                                  if (ss.length == 6) {
+                                    await s.updateMessage(
+                                        messSt, updateid, "w");
+                                  } else {
+                                    await s.updateMessage(
+                                        messSt, updateid, "e");
+                                  }
+
+                                  messageController.clear();
+                                  widget.updaterem = false;
+
+                                  setState(() {});
+                                }
+                              : sendMessage,
                           icon: const Icon(Icons.send))
                     ],
                   ),

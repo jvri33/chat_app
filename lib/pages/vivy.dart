@@ -1,11 +1,15 @@
 import 'package:chat_app/controllers/vivy_saved_message.dart';
 import 'package:chat_app/main.dart';
+import 'package:chat_app/pages/home.dart';
 import 'package:chat_app/utils/respuestas_vivy.dart';
 import 'package:chat_app/widgets/Speech.dart';
+import 'package:chat_app/widgets/VivyWidgets/scanbutton.dart';
 
 import 'package:chat_app/widgets/VivyWidgets/qr.dart';
 
+import 'package:camera/camera.dart';
 import 'package:chat_app/widgets/saved_message_widget.dart';
+import 'package:chat_app/widgets/widgets.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,9 +17,12 @@ import 'package:flutter/services.dart';
 import 'package:chat_app/classifiers/intent_classifier.dart';
 import 'package:chat_app/classifiers/entity_classifier.dart';
 
+late CameraDescription camera;
+
 class Vivy extends StatefulWidget {
+  Function sete;
   bool night;
-  Vivy(this.night, {super.key});
+  Vivy(this.night, this.sete, {super.key});
 
   @override
   State<Vivy> createState() => _VivyState();
@@ -61,6 +68,15 @@ class _VivyState extends State<Vivy> {
   }
 
   Future<void> getMessages() async {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    // Obtain a list of the available cameras on the device.
+    final cameras = await availableCameras();
+
+    // Get a specific camera from the list of available cameras.
+    final firstCamera = cameras.first;
+    camera = firstCamera;
+
     var printing = await saveMessageController.getItems();
     savedMessages = printing;
   }
@@ -98,12 +114,9 @@ class _VivyState extends State<Vivy> {
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor:
-              Theme.of(context).colorScheme.secondary, // <-- SEE HERE
-          statusBarIconBrightness:
-              Brightness.dark, //<-- For Android SEE HERE (dark icons)
-          statusBarBrightness:
-              Brightness.light, //<-- For iOS SEE HERE (dark icons)
+          statusBarColor: Theme.of(context).colorScheme.secondary,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
         ),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         title: Row(
@@ -115,7 +128,11 @@ class _VivyState extends State<Vivy> {
           ],
         ),
         centerTitle: true,
-        leading: const BackButton(),
+        leading: BackButton(
+          onPressed: () {
+            nextScreen(context, HomeScreen(widget.sete, widget.night));
+          },
+        ),
       ),
       body: Container(
         //padding: EdgeInsets.only(top: 10),
@@ -156,6 +173,14 @@ class _VivyState extends State<Vivy> {
                                   index;
 
                           if (savedMessages[keys[reversedIndex]]['type'] ==
+                              'pdf') {
+                            return (ScanButton(
+                                camera,
+                                savedMessages[keys[reversedIndex]]['message'],
+                                savedMessages[keys[reversedIndex]]['id'],
+                                widget.sete));
+                          } else if (savedMessages[keys[reversedIndex]]
+                                  ['type'] ==
                               'm') {
                             return SavedMessageWidget(
                               savedMessages[keys[reversedIndex]]['user'],
@@ -167,10 +192,6 @@ class _VivyState extends State<Vivy> {
                             return QrWidget(
                                 savedMessages[keys[reversedIndex]]['message'],
                                 savedMessages[keys[reversedIndex]]['id']);
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'pdf') {
-                            return const Text("fdf");
                           } else {
                             return const Text("Error");
                           }

@@ -10,12 +10,15 @@ import '../../controllers/reminder.dart';
 // ignore: must_be_immutable
 class ReminderWidget extends StatefulWidget {
   final Function() notifyParent;
+  final Function(int i, String s) dontsend;
+
   String response = "Se ha creado el siguiente borrador de recordatorio";
 
   String message;
   final int id;
   bool state = false;
-  ReminderWidget(this.message, this.id, this.notifyParent, {super.key}) {
+  ReminderWidget(this.message, this.id, this.notifyParent, this.dontsend,
+      {super.key}) {
     //print(message);
     if (message == "Se ha creado el recordatorio correctamente") {
       state = true;
@@ -137,18 +140,30 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                 Container(
                                   margin:
                                       const EdgeInsets.only(right: 8, top: 8),
-                                  child: Row(children: [
-                                    SizedBox(
-                                      width: 230,
-                                      child: Text("Nombre: ${variables[0]}",
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .tertiary)),
-                                    )
-                                  ]),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        child: Text("Nombre: ${variables[0]}",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary)),
+                                      ),
+                                      IconButton(
+                                          onPressed: () {
+                                            widget.dontsend(
+                                                widget.id, widget.message);
+                                          },
+                                          icon: Icon(
+                                            Icons.edit_outlined,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary,
+                                          ))
+                                    ],
+                                  ),
                                 ),
                                 Align(
                                     alignment: Alignment.bottomRight,

@@ -23,6 +23,8 @@ class RespuestaVivy {
     }
 
     if (i3 == "pdf") {
+      print("entra en pdf");
+      ret2 = "pdf";
       dig = "pdf";
     }
 
