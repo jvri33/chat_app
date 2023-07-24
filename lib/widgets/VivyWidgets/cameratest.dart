@@ -26,7 +26,7 @@ class _CameraTestState extends State<CameraTest> {
 
     _controller = CameraController(
       widget.camera,
-      ResolutionPreset.medium,
+      ResolutionPreset.veryHigh,
     );
 
     _initializeControllerFuture = _controller.initialize();
@@ -41,8 +41,9 @@ class _CameraTestState extends State<CameraTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Align(
-        alignment: Alignment.bottomCenter,
+        alignment: Alignment.center,
         child: SizedBox(
           width: double.infinity,
           child: FutureBuilder<void>(
@@ -102,10 +103,12 @@ class DisplayPictureScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: Crop(
+            baseColor: Colors.black,
             interactive: false,
             fixArea: false,
             aspectRatio: null,
@@ -128,64 +131,3 @@ class DisplayPictureScreen extends StatelessWidget {
     );
   }
 }
-
-img.Image imageTransform(image) {
-  img.Image? image2 = img.decodeImage(image);
-  image2 = img.grayscale(image2!);
-
-  int ventana = 24;
-  double constanteC = 0.25;
-
-  for (var x = 0; x < image2.width; x++) {
-    for (var y = 0; y < image2.height; y++) {
-      final pixel = image2.getPixel(x, y);
-      num ventanaSuma = 0;
-      int ventanaContador = 0;
-
-      // Obtener la suma de intensidades de la ventana local
-      for (var i = -ventana ~/ 2; i <= ventana ~/ 2; i++) {
-        for (var j = -ventana ~/ 2; j <= ventana ~/ 2; j++) {
-          if (x + i >= 0 &&
-              x + i < image2.width &&
-              y + j >= 0 &&
-              y + j < image2.height) {
-            ventanaSuma += img.getLuminance(image2.getPixel(x + i, y + j));
-            ventanaContador++;
-          }
-        }
-      }
-
-      // Calcular el umbral local como el promedio de la ventana
-      double umbralLocal = ventanaSuma / ventanaContador * (1 - constanteC);
-
-      // Aplicar el umbral
-      if (pixel.luminance <= umbralLocal) {
-        image2.setPixel(x, y, img.ColorInt8.rgb(0, 0, 0)); // Black
-      } else {
-        image2.setPixel(x, y, img.ColorInt8.rgb(255, 255, 255)); // White
-      }
-    }
-  }
-  print("finalizado");
-  return image2;
-}
-/*
-class DisplayCropped extends StatelessWidget {
-  final Uint8List image;
-  late img.Image thresholded;
-
-  DisplayCropped({super.key, required this.image});
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: imageTransform(),
-        builder: (BuildContext context, snapshot) {
-          if (thresholded.isNotEmpty) {
-            return Image.memory(img.encodePng(thresholded));
-          } else {
-            return CircularProgressIndicator();
-          }
-        });
-  }
-}*/

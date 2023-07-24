@@ -1,13 +1,17 @@
 import 'dart:typed_data';
 import 'dart:io';
+import 'dart:ui';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:image/image.dart' as img;
 import 'package:chat_app/controllers/vivy_saved_message.dart';
 import 'package:flutter/material.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:pdf/pdf.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../widgets.dart';
 import 'package:chat_app/widgets/VivyWidgets/cameratest.dart';
 
@@ -39,18 +43,18 @@ class _ScanButtonState extends State<ScanButton> {
 
   Future<void> recibirFoto(Uint8List i) async {
     VivySavedMessage v = VivySavedMessage();
-    await v.updateMessage("Imagen Recibida", widget.id, "pdf");
+    await v.updateMessage("Estoy procesando tu imagen", widget.id, "pdf");
 
-    widget.message = "Imagen recibida";
+    widget.message = "Estoy procesando tu imagen";
 
     variables = widget.message.split("|");
 
     Uint8List imageInUnit8List = i;
     // final result = await ImageGallerySaver.saveImage(i);
-    //print("try1");
-    //print(result);
+
     final tempDir = await getTemporaryDirectory();
-    File file = await File('${tempDir.path}/pdf${widget.id}.png').create();
+    File file =
+        await File('/storage/emulated/0/Download/pdf${widget.id}.png').create();
     file.writeAsBytesSync(imageInUnit8List);
   }
 
@@ -58,24 +62,25 @@ class _ScanButtonState extends State<ScanButton> {
     if (widget.cargado == false) {
       variables = widget.message.split("|");
 
-      print("entra");
       final tempDir = await getTemporaryDirectory();
-      var image =
-          await File('${tempDir.path}/pdf${widget.id}.png').readAsBytes();
+      var image = await File('/storage/emulated/0/Download/pdf${widget.id}.png')
+          .readAsBytes();
       widget.im = await compute<Uint8List, img.Image>(imageTransform, image);
       widget.cargado = true;
 
       Uint8List s = img.encodePng(widget.im);
       //final result = await ImageGallerySaver.saveImage(s);
 
-      File file = await File('${tempDir.path}/pdf${widget.id}.png').create();
+      File file = await File('/storage/emulated/0/Download/pdf${widget.id}.png')
+          .create();
       file.writeAsBytesSync(s);
 
       VivySavedMessage v = VivySavedMessage();
 
-      var url = '${tempDir.path}/pdf${widget.id}.png';
-
-      await v.updateMessage("Imagen procesada|$url|true", widget.id, "pdf");
+      widget.path = '/storage/emulated/0/Download/pdf${widget.id}.png';
+      widget.message = "Imagen procesada";
+      await v.updateMessage(
+          "Imagen procesada|${widget.path}|true", widget.id, "pdf");
       variables = widget.message.split("|");
       setState(() {});
     }
@@ -85,8 +90,8 @@ class _ScanButtonState extends State<ScanButton> {
     img.Image? image2 = img.decodeImage(li);
     image2 = img.grayscale(image2!);
 
-    int ventana = 24;
-    double constanteC = 0.35;
+    int ventana = 16;
+    double constanteC = 0.25;
 
     for (var x = 0; x < image2.width; x++) {
       for (var y = 0; y < image2.height; y++) {
@@ -143,15 +148,16 @@ class _ScanButtonState extends State<ScanButton> {
                   bottomLeft: Radius.circular(0)),
             ),
             color: Theme.of(context).primaryColor,
-            child: widget.message != "Imagen Recibida" &&
+            child: widget.message != "Estoy procesando tu imagen" &&
                     variables[0] != "Imagen procesada"
                 ? TextButton(
                     onPressed: (() => nextScreen(context,
                         CameraTest(widget.camera, recibirFoto, widget.sete))),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(variables[0],
+                      padding: const EdgeInsets.all(8),
+                      child: Text("Pulsa para escanear una imagen",
                           style: TextStyle(
+                              decoration: TextDecoration.underline,
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                               color: Theme.of(context).colorScheme.tertiary)),
@@ -170,13 +176,161 @@ class _ScanButtonState extends State<ScanButton> {
                       FutureBuilder(
                           future: onfuture(),
                           builder: (BuildContext builder, snapshot) {
-                            print(widget.cargado);
-                            if (widget.cargado && widget.path == "") {
-                              return Image.memory(img.encodePng(widget.im));
-                            } else if (widget.path != "") {
-                              return Image.file(File(widget.path));
+                            if (widget.cargado && widget.path != "") {
+                              return Container(
+                                  padding: const EdgeInsets.only(
+                                      left: 12, right: 12, bottom: 12),
+                                  child: ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(12),
+                                          bottomRight: Radius.circular(12),
+                                          topRight: Radius.circular(12),
+                                          bottomLeft: Radius.circular(0)),
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            showGeneralDialog(
+                                              pageBuilder: (context, animation,
+                                                  secondaryAnimation) {
+                                                return Container();
+                                              },
+                                              context: context,
+                                              transitionBuilder:
+                                                  (BuildContext context, a1, a2,
+                                                      w) {
+                                                final curvedAnimation =
+                                                    CurvedAnimation(
+                                                        parent: a1,
+                                                        curve: Curves
+                                                            .fastOutSlowIn); // Ajusta la curva de animación aquí
+                                                return BackdropFilter(
+                                                  filter: ImageFilter.blur(
+                                                      sigmaX: 2, sigmaY: 2),
+                                                  child: ScaleTransition(
+                                                    scale: Tween<double>(
+                                                            begin: 0.5,
+                                                            end: 1.0)
+                                                        .animate(
+                                                            curvedAnimation),
+                                                    child: AlertDialog(
+                                                      shape:
+                                                          const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(16.0),
+                                                        ),
+                                                      ),
+                                                      title: Text(
+                                                        'Guardar PDF',
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w800),
+                                                      ),
+                                                      content: Image.file(
+                                                          File(widget.path)),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          child: Text(
+                                                              'Guardar PDF',
+                                                              style: TextStyle(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .primaryColor,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  fontSize:
+                                                                      16)),
+                                                          onPressed: () async {
+                                                            await Permission
+                                                                .manageExternalStorage
+                                                                .request();
+                                                            final pdf =
+                                                                pw.Document();
+                                                            final image =
+                                                                pw.MemoryImage(
+                                                              File(widget.path)
+                                                                  .readAsBytesSync(),
+                                                            );
+
+                                                            pdf.addPage(pw.Page(
+                                                                build: (pw
+                                                                        .Context
+                                                                    context) {
+                                                              return pw
+                                                                  .FullPage(
+                                                                ignoreMargins:
+                                                                    true,
+                                                                child: pw.Image(
+                                                                    image),
+                                                              ); // Center
+                                                            }));
+
+                                                            File file = File(
+                                                                '/storage/emulated/0/Download/example.pdf');
+                                                            await file
+                                                                .writeAsBytes(
+                                                                    await pdf
+                                                                        .save());
+
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+
+                                                            Fluttertoast.showToast(
+                                                                msg:
+                                                                    "Se ha guardado el pdf en descargas",
+                                                                toastLength: Toast
+                                                                    .LENGTH_SHORT,
+                                                                gravity:
+                                                                    ToastGravity
+                                                                        .CENTER,
+                                                                timeInSecForIosWeb:
+                                                                    1,
+                                                                backgroundColor:
+                                                                    Colors.red,
+                                                                textColor:
+                                                                    Colors
+                                                                        .white,
+                                                                fontSize: 16.0);
+                                                          },
+                                                        ),
+                                                        TextButton(
+                                                          child: const Text(
+                                                              'Cancelar',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  fontSize:
+                                                                      16)),
+                                                          onPressed: () async {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child:
+                                              Image.file(File(widget.path)))));
                             } else {
-                              return CircularProgressIndicator();
+                              return Container(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                child: CircularProgressIndicator(
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                ),
+                              );
                             }
                           })
                     ],

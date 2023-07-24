@@ -74,26 +74,31 @@ class _QrWidgetState extends State<QrWidget> {
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(variables[1].toString(),
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary)),
-                                Icon(
-                                  Icons.touch_app,
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                )
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(12),
+                                          bottomRight: Radius.circular(12),
+                                          topRight: Radius.circular(12),
+                                          bottomLeft: Radius.circular(0))),
+                                  padding: EdgeInsets.all(10),
+                                  width: 200,
+                                  child: Text(variables[1].toString(),
+                                      style: TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              Theme.of(context).primaryColor)),
+                                ),
                               ],
                             ),
                           ],
                         ),
-                      ) /*Text(variables[1].toString(),
-                        style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).colorScheme.tertiary))*/
+                      )
                     : TextButton(
                         style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:chat_app/main.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chat_app/controllers/saved_message.dart';
@@ -87,6 +88,14 @@ class _ChatState extends State<Chat> {
     updateid = id;
     updatemess = mess;
     setState(() {});
+    Fluttertoast.showToast(
+        msg: "Introduce la descripción",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 
   calendarButton() {
@@ -240,8 +249,8 @@ class _ChatState extends State<Chat> {
                                   children: [
                                     Container(
                                       margin: index == 2
-                                          ? EdgeInsets.only(bottom: 0)
-                                          : EdgeInsets.only(bottom: 20),
+                                          ? const EdgeInsets.only(bottom: 0)
+                                          : const EdgeInsets.only(bottom: 20),
                                       decoration: const BoxDecoration(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(20))),
@@ -259,17 +268,16 @@ class _ChatState extends State<Chat> {
                                                     : index == 0
                                                         ? VideoPlayer(
                                                             _controllerv)
-                                                        : Container(
-                                                            child: Image.asset(
+                                                        : Image.asset(
                                                             'assets/timmy.png',
                                                             width: 220,
-                                                          )))
+                                                          ))
                                           ],
                                         ),
                                       ),
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 20),
+                                      margin: const EdgeInsets.only(bottom: 20),
                                       child: Text(
                                         index == 0
                                             ? "Crea recordatorios y tareas escribiendo en el chat."
@@ -287,10 +295,12 @@ class _ChatState extends State<Chat> {
                                       margin: EdgeInsets.only(bottom: 20),
                                       child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(10))),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  10))),
                                               backgroundColor: Theme.of(context)
                                                   .primaryColor),
                                           onPressed: index == 2
@@ -307,7 +317,7 @@ class _ChatState extends State<Chat> {
                                               : () {
                                                   _pcontroller.animateToPage(
                                                       index + 1,
-                                                      duration: Duration(
+                                                      duration: const Duration(
                                                           milliseconds: 500),
                                                       curve: Curves.ease);
                                                 },
@@ -382,7 +392,7 @@ class _ChatState extends State<Chat> {
                         alignment: Alignment.topCenter,
                         child: ListView.builder(
                             shrinkWrap: true,
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             reverse: true,
                             controller: _controller,
                             itemCount:
@@ -506,30 +516,44 @@ class _ChatState extends State<Chat> {
                           color: Theme.of(context).primaryColor,
                           onPressed: widget.updaterem == true
                               ? () async {
-                                  SavedMessage s = SavedMessage();
+                                  if (messageController.text.isNotEmpty) {
+                                    SavedMessage s = SavedMessage();
 
-                                  List<String> ss = updatemess.split("/");
-                                  if (ss.length == 6) {
-                                    ss[0] = messageController.text;
+                                    List<String> ss = updatemess.split("/");
+                                    if (ss.length == 6) {
+                                      ss[0] = messageController.text;
+                                    } else {
+                                      ss[6] = messageController.text;
+                                    }
+                                    print(ss);
+                                    String messSt = ss.join("/");
+
+                                    print(messSt);
+                                    if (ss.length == 6) {
+                                      await s.updateMessage(
+                                          messSt, updateid, "w");
+                                    } else {
+                                      await s.updateMessage(
+                                          messSt, updateid, "e");
+                                    }
+
+                                    messageController.clear();
+                                    widget.updaterem = false;
+
+                                    setState(() {});
+
+                                    Fluttertoast.showToast(
+                                        msg: "Descripción actualizada",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
                                   } else {
-                                    ss[6] = messageController.text;
+                                    widget.updaterem = false;
+                                    setState(() {});
                                   }
-                                  print(ss);
-                                  String messSt = ss.join("/");
-
-                                  print(messSt);
-                                  if (ss.length == 6) {
-                                    await s.updateMessage(
-                                        messSt, updateid, "w");
-                                  } else {
-                                    await s.updateMessage(
-                                        messSt, updateid, "e");
-                                  }
-
-                                  messageController.clear();
-                                  widget.updaterem = false;
-
-                                  setState(() {});
                                 }
                               : sendMessage,
                           icon: const Icon(Icons.send))
