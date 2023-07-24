@@ -34,8 +34,6 @@ class TimeWidget extends StatelessWidget {
                     filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                     child: Theme(
                         data: Theme.of(context).copyWith(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.tertiary,
                             primaryColor:
                                 Theme.of(context).colorScheme.tertiary,
                             cardColor: Theme.of(context).colorScheme.tertiary,
@@ -43,10 +41,14 @@ class TimeWidget extends StatelessWidget {
                             dialogBackgroundColor:
                                 Theme.of(context).colorScheme.tertiary,
                             colorScheme: ColorScheme.light(
-                                primary: Theme.of(context).primaryColor,
-                                onPrimary:
-                                    Theme.of(context).colorScheme.tertiary,
-                                onSurface: Theme.of(context).primaryColor)),
+                                    primary: Theme.of(context).primaryColor,
+                                    onPrimary:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    onSurface: Theme.of(context).primaryColor)
+                                .copyWith(
+                                    background: Theme.of(context)
+                                        .colorScheme
+                                        .tertiary)),
                         child: child!),
                   );
                 },

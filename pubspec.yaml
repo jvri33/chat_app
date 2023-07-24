@@ -38,7 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   url_launcher: ^6.1.12
   tflite_flutter: ^0.10.1
-  flutter_local_notifications: ^14.1.1
+  flutter_local_notifications: ^15.1.0+1
   sqflite:
   speech_to_text: ^6.3.0
   flutter_localizations:

@@ -19,6 +19,7 @@ import 'package:chat_app/classifiers/entity_classifier.dart';
 
 late CameraDescription camera;
 
+// ignore: must_be_immutable
 class Vivy extends StatefulWidget {
   Function sete;
   bool night;

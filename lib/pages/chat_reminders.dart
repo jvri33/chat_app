@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:ui';
 import 'package:chat_app/main.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,12 +19,11 @@ import 'package:chat_app/widgets/Speech.dart';
 import 'package:chat_app/classifiers/intent_classifier.dart';
 import 'package:chat_app/classifiers/entity_classifier.dart';
 
+// ignore: must_be_immutable
 class Chat extends StatefulWidget {
   bool updaterem = false;
   bool night;
-  Chat(this.night, {super.key}) {
-    print(night);
-  }
+  Chat(this.night, {super.key});
 
   @override
   State<Chat> createState() => _ChatState();
@@ -134,7 +132,6 @@ class _ChatState extends State<Chat> {
   }
 
   void sendMessage() async {
-    print(widget.updaterem);
     if (widget.updaterem == false) {
       if (messageController.text != "") {
         if (messageController.text.isNotEmpty) {
@@ -227,10 +224,8 @@ class _ChatState extends State<Chat> {
                           shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(32.0))),
-                          content: Container(
-                            //width: 300,
+                          content: SizedBox(
                             height: MediaQuery.of(context).size.height * 0.6,
-                            //color: Theme.of(context).colorScheme.tertiary,
                             child: PageView.builder(
                               controller: _pcontroller,
                               itemCount: 3,
@@ -292,7 +287,7 @@ class _ChatState extends State<Chat> {
                                       ),
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 20),
+                                      margin: const EdgeInsets.only(bottom: 20),
                                       child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               shape:
@@ -322,7 +317,7 @@ class _ChatState extends State<Chat> {
                                                       curve: Curves.ease);
                                                 },
                                           child: Container(
-                                              padding: EdgeInsets.all(12),
+                                              padding: const EdgeInsets.all(12),
                                               child: index == 2
                                                   ? Text(
                                                       "Finalizar",
@@ -525,10 +520,9 @@ class _ChatState extends State<Chat> {
                                     } else {
                                       ss[6] = messageController.text;
                                     }
-                                    print(ss);
+
                                     String messSt = ss.join("/");
 
-                                    print(messSt);
                                     if (ss.length == 6) {
                                       await s.updateMessage(
                                           messSt, updateid, "w");

@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   @override
   void initState() {
     super.initState();
@@ -34,12 +34,11 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                print("object");
                 widget.seteNight();
               },
               icon: night == true
-                  ? Icon(Icons.dark_mode_outlined)
-                  : Icon(Icons.light_mode_outlined))
+                  ? const Icon(Icons.dark_mode_outlined)
+                  : const Icon(Icons.light_mode_outlined))
         ],
         title: const Text(
           "Chub",
@@ -82,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Flexible(
                         flex: 0,
                         child: Container(
-                          margin: EdgeInsets.only(top: 65),
+                          margin: const EdgeInsets.only(top: 65),
                           child: IconButton(
                               onPressed: null,
                               icon: Icon(
@@ -135,11 +134,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 65),
+                        margin: const EdgeInsets.only(top: 65),
                         child: IconButton(
                             onPressed: () {
                               _pageController.nextPage(
-                                  duration: Duration(milliseconds: 300),
+                                  duration: const Duration(milliseconds: 300),
                                   curve: Curves.easeIn);
                             },
                             icon: Icon(
@@ -185,83 +184,80 @@ class _HomeScreenState extends State<HomeScreen> {
 
               Column(
                 children: [
-                  Container(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.only(top: 65),
-                            child: IconButton(
-                                onPressed: () {
-                                  _pageController.previousPage(
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.easeIn);
-                                },
-                                icon: Icon(
-                                  Icons.arrow_back_ios,
-                                  weight: 50,
-                                  size: 50,
-                                  color: Theme.of(context).primaryColor,
-                                )),
-                          ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 65),
+                          child: IconButton(
+                              onPressed: () {
+                                _pageController.previousPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeIn);
+                              },
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                weight: 50,
+                                size: 50,
+                                color: Theme.of(context).primaryColor,
+                              )),
                         ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                            margin: const EdgeInsets.only(top: 80),
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 2,
-                                  blurRadius: 1,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                  width: 20,
-                                  color:
-                                      Theme.of(context).colorScheme.tertiary),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 80),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 1,
+                                offset: const Offset(
+                                    0, 3), // changes position of shadow
+                              ),
+                            ],
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                width: 20,
+                                color: Theme.of(context).colorScheme.tertiary),
+                          ),
+                          child: ElevatedButton(
+                            onPressed: (() => nextScreen(
+                                context, Vivy(night, widget.seteNight))),
+                            style: ElevatedButton.styleFrom(
+                              shadowColor: Colors.black,
+
+                              shape: const CircleBorder(),
+
+                              backgroundColor:
+                                  const Color(0xff77f7aa), // <-- Button color
+                              foregroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .tertiary, // <-- Splash color
                             ),
-                            child: ElevatedButton(
-                              onPressed: (() => nextScreen(
-                                  context, Vivy(night, widget.seteNight))),
-                              style: ElevatedButton.styleFrom(
-                                shadowColor: Colors.black,
-
-                                shape: const CircleBorder(),
-
-                                backgroundColor:
-                                    const Color(0xff77f7aa), // <-- Button color
-                                foregroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .tertiary, // <-- Splash color
-                              ),
-                              child: Image.asset(
-                                'assets/vivy.png',
-                                width: 180,
-                              ),
+                            child: Image.asset(
+                              'assets/vivy.png',
+                              width: 180,
                             ),
                           ),
                         ),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.only(top: 65),
-                            child: IconButton(
-                                onPressed: null,
-                                icon: Icon(
-                                  Icons.arrow_forward_ios,
-                                  weight: 50,
-                                  size: 0,
-                                  color: Theme.of(context).primaryColor,
-                                )),
-                          ),
-                        )
-                      ],
-                    ),
+                      ),
+                      Flexible(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 65),
+                          child: IconButton(
+                              onPressed: null,
+                              icon: Icon(
+                                Icons.arrow_forward_ios,
+                                weight: 50,
+                                size: 0,
+                                color: Theme.of(context).primaryColor,
+                              )),
+                        ),
+                      )
+                    ],
                   ),
                   Container(
                       padding: const EdgeInsets.symmetric(vertical: 20),

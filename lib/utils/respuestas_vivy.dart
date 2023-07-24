@@ -1,4 +1,3 @@
-import '../controllers/reminder.dart';
 import 'package:chat_app/controllers/vivy_saved_message.dart';
 
 class RespuestaVivy {
@@ -9,9 +8,9 @@ class RespuestaVivy {
     //i2 = entities
     //i3 = message
 
-    Reminder delete = Reminder();
+    //  Reminder delete = Reminder();
 
-    //delete.deleteall();
+//    delete.deleteall();
 
     String ret2 = "";
     String dig = "m";
@@ -23,7 +22,6 @@ class RespuestaVivy {
     }
 
     if (i3 == "pdf") {
-      print("entra en pdf");
       ret2 = "pdf";
       dig = "pdf";
     }

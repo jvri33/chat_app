@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage({super.key});
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => SettingsPageState();
@@ -55,8 +54,6 @@ class SettingsPageState extends State<SettingsPage> {
               Switch(
                   value: s,
                   onChanged: (ss) async {
-                    print(ss);
-
                     if (ss == true) {
                       setState(() {
                         Brightness.dark;
