@@ -1,11 +1,11 @@
 import 'dart:typed_data';
-import 'package:image/image.dart' as img;
 import 'package:crop_your_image/crop_your_image.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import '../../pages/vivy.dart';
 import '../widgets.dart';
 
+// ignore: must_be_immutable
 class CameraTest extends StatefulWidget {
   final Function sete;
   final CameraDescription camera;
@@ -78,6 +78,7 @@ class _CameraTestState extends State<CameraTest> {
                     image: bytes, sete: widget.sete, funcion: widget.f),
               ),
             );
+            // ignore: empty_catches
           } catch (e) {}
         },
         child: Icon(
@@ -89,6 +90,7 @@ class _CameraTestState extends State<CameraTest> {
   }
 }
 
+// ignore: must_be_immutable
 class DisplayPictureScreen extends StatelessWidget {
   Function sete;
   final Uint8List image;
@@ -117,6 +119,7 @@ class DisplayPictureScreen extends StatelessWidget {
             controller: _controllercc,
             onCropped: (image) async {
               await funcion(image);
+              // ignore: use_build_context_synchronously
               nextScreen(context, Vivy(false, sete));
               //imageTransform(image);
             }),

@@ -1,16 +1,15 @@
-import 'dart:typed_data';
 import 'dart:io';
 import 'dart:ui';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:camera/camera.dart';
+
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
+
+// ignore: depend_on_referenced_packages
 import 'package:image/image.dart' as img;
 import 'package:chat_app/controllers/vivy_saved_message.dart';
 import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'package:permission_handler/permission_handler.dart';
 import '../widgets.dart';
 import 'package:chat_app/widgets/VivyWidgets/cameratest.dart';
@@ -18,6 +17,7 @@ import 'package:chat_app/widgets/VivyWidgets/cameratest.dart';
 // ignore: must_be_immutable
 class ScanButton extends StatefulWidget {
   bool cargado = false;
+  // ignore: prefer_typing_uninitialized_variables
   final camera;
   Function sete;
   String message;
@@ -52,7 +52,6 @@ class _ScanButtonState extends State<ScanButton> {
     Uint8List imageInUnit8List = i;
     // final result = await ImageGallerySaver.saveImage(i);
 
-    final tempDir = await getTemporaryDirectory();
     File file =
         await File('/storage/emulated/0/Download/pdf${widget.id}.png').create();
     file.writeAsBytesSync(imageInUnit8List);
@@ -62,7 +61,6 @@ class _ScanButtonState extends State<ScanButton> {
     if (widget.cargado == false) {
       variables = widget.message.split("|");
 
-      final tempDir = await getTemporaryDirectory();
       var image = await File('/storage/emulated/0/Download/pdf${widget.id}.png')
           .readAsBytes();
       widget.im = await compute<Uint8List, img.Image>(imageTransform, image);
@@ -276,6 +274,7 @@ class _ScanButtonState extends State<ScanButton> {
                                                                     await pdf
                                                                         .save());
 
+                                                            // ignore: use_build_context_synchronously
                                                             Navigator.of(
                                                                     context)
                                                                 .pop();

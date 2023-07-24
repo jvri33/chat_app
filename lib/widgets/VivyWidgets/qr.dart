@@ -79,12 +79,12 @@ class _QrWidgetState extends State<QrWidget> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .tertiary,
-                                      borderRadius: BorderRadius.only(
+                                      borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(12),
                                           bottomRight: Radius.circular(12),
                                           topRight: Radius.circular(12),
                                           bottomLeft: Radius.circular(0))),
-                                  padding: EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(10),
                                   width: 200,
                                   child: Text(variables[1].toString(),
                                       style: TextStyle(
@@ -120,8 +120,9 @@ class _QrWidgetState extends State<QrWidget> {
                                 });
                               });
                         },
-                        child: Text("Haz click para escanear el código",
+                        child: Text("Haz click para escanear el código QR",
                             style: TextStyle(
+                                decoration: TextDecoration.underline,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                                 color:

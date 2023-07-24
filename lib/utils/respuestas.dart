@@ -1,7 +1,7 @@
 import 'package:chat_app/utils/extractor.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../controllers/reminder.dart';
+
 import 'package:chat_app/controllers/saved_message.dart';
 
 class Respuesta {
@@ -12,7 +12,7 @@ class Respuesta {
     //i2 = entities
     //i3 = message
 
-    Reminder delete = Reminder();
+    //Reminder delete = Reminder();
 
     //delete.deleteall();
 
@@ -31,7 +31,7 @@ class Respuesta {
 
     if (i1 == "DAY1") {
       List<String> str = (Extractor(i2).fecha()).toString().split(" ");
-      List<String> str2 = (Extractor(i2).hora()).toString().split(" ");
+
       if ("$i2" == "[]") {
         ret2 = "DAY/NULL";
       } else {
@@ -71,7 +71,6 @@ class Respuesta {
       }
     }
     if (i1 == "REMINDER1") {
-      print(i2);
       dig = "w";
       bool horario = false;
       //MIRAMOS SI TIENE ENTIDADES
@@ -149,7 +148,7 @@ class Respuesta {
     if (i3 == "ayuda" || i3 == "Ayuda") {
       SharedPreferences s = await SharedPreferences.getInstance();
       s.setBool("first_time", true);
-      print("ayuda");
+
       ret2 = "Ayuda";
     }
 

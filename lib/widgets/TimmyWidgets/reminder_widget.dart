@@ -138,11 +138,11 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                   ),
                                 ),
                                 Container(
-                                  margin:
-                                      const EdgeInsets.only(right: 8, top: 8),
+                                  margin: const EdgeInsets.only(top: 8),
                                   child: Row(
                                     children: [
                                       SizedBox(
+                                        width: 190,
                                         child: Text("Nombre: ${variables[0]}",
                                             style: TextStyle(
                                                 fontSize: 12,

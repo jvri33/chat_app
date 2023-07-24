@@ -17,6 +17,8 @@ import 'package:flutter/services.dart';
 import 'package:chat_app/classifiers/intent_classifier.dart';
 import 'package:chat_app/classifiers/entity_classifier.dart';
 
+import 'package:chat_app/widgets/VivyWidgets/popmenu.dart';
+
 late CameraDescription camera;
 
 // ignore: must_be_immutable
@@ -54,12 +56,12 @@ class _VivyState extends State<Vivy> {
   }
 
   calendarButton() {
-    messageController.text = "Calendario";
+    messageController.text = "qr";
     sendMessage();
   }
 
   addButton() {
-    messageController.text = "Recordatorio";
+    messageController.text = "pdf";
     sendMessage();
   }
 
@@ -114,6 +116,7 @@ class _VivyState extends State<Vivy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [PopMenu(calendarButton, addButton, helpButton)],
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Theme.of(context).colorScheme.secondary,
           statusBarIconBrightness: Brightness.dark,
@@ -122,10 +125,26 @@ class _VivyState extends State<Vivy> {
         backgroundColor: Theme.of(context).colorScheme.secondary,
         title: Row(
           children: [
-            CircleAvatar(backgroundColor: Theme.of(context).primaryColor),
+            CircleAvatar(
+              radius: 24,
+              backgroundColor: Theme.of(context).primaryColor,
+              child: CircleAvatar(
+                backgroundColor: Theme.of(context).primaryColor,
+                child: Image.asset("assets/vivy.png"),
+              ),
+            ),
             const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: Text("Vivy")),
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Vivy"),
+                    Text(
+                      "Escaneo de imágenes",
+                      style: TextStyle(fontSize: 10),
+                    )
+                  ],
+                )),
           ],
         ),
         centerTitle: true,
@@ -136,7 +155,7 @@ class _VivyState extends State<Vivy> {
         ),
       ),
       body: Container(
-        //padding: EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.only(top: 10),
         decoration: BoxDecoration(
             gradient: night == false
                 ? const LinearGradient(
@@ -162,41 +181,52 @@ class _VivyState extends State<Vivy> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    return ListView.builder(
-                        reverse: true,
-                        controller: _controller,
-                        itemCount: savedMessages.asMap().keys.toList().length,
-                        itemBuilder: (BuildContext context, int index) {
-                          var keys = savedMessages.asMap().keys.toList();
-                          final reversedIndex =
-                              savedMessages.asMap().keys.toList().length -
-                                  1 -
-                                  index;
+                    if (savedMessages.asMap().keys.toList().isEmpty) {
+                      saveMessageController.createItem(
+                          "Hola! Soy Vivy, y estaré encantada de ayudarte a escanear diferentes tipos de imagenes",
+                          0,
+                          "m");
+                    }
+                    return Align(
+                      alignment: Alignment.topCenter,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          reverse: true,
+                          controller: _controller,
+                          itemCount: savedMessages.asMap().keys.toList().length,
+                          itemBuilder: (BuildContext context, int index) {
+                            var keys = savedMessages.asMap().keys.toList();
+                            final reversedIndex =
+                                savedMessages.asMap().keys.toList().length -
+                                    1 -
+                                    index;
 
-                          if (savedMessages[keys[reversedIndex]]['type'] ==
-                              'pdf') {
-                            return (ScanButton(
-                                camera,
+                            if (savedMessages[keys[reversedIndex]]['type'] ==
+                                'pdf') {
+                              return (ScanButton(
+                                  camera,
+                                  savedMessages[keys[reversedIndex]]['message'],
+                                  savedMessages[keys[reversedIndex]]['id'],
+                                  widget.sete));
+                            } else if (savedMessages[keys[reversedIndex]]
+                                    ['type'] ==
+                                'm') {
+                              return SavedMessageWidget(
+                                savedMessages[keys[reversedIndex]]['user'],
                                 savedMessages[keys[reversedIndex]]['message'],
-                                savedMessages[keys[reversedIndex]]['id'],
-                                widget.sete));
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'm') {
-                            return SavedMessageWidget(
-                              savedMessages[keys[reversedIndex]]['user'],
-                              savedMessages[keys[reversedIndex]]['message'],
-                            );
-                          } else if (savedMessages[keys[reversedIndex]]
-                                  ['type'] ==
-                              'qr') {
-                            return QrWidget(
-                                savedMessages[keys[reversedIndex]]['message'],
-                                savedMessages[keys[reversedIndex]]['id']);
-                          } else {
-                            return const Text("Error");
-                          }
-                        });
+                              );
+                            } else if (savedMessages[keys[reversedIndex]]
+                                    ['type'] ==
+                                'qr') {
+                              return QrWidget(
+                                  savedMessages[keys[reversedIndex]]['message'],
+                                  savedMessages[keys[reversedIndex]]['id']);
+                            } else {
+                              return const Text("Error");
+                            }
+                          }),
+                    );
                   }
                 },
               ),

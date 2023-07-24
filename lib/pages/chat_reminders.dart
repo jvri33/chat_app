@@ -173,17 +173,30 @@ class _ChatState extends State<Chat> {
         backgroundColor: Theme.of(context).colorScheme.secondary,
         title: Row(
           children: [
-            CircleAvatar(backgroundColor: Theme.of(context).primaryColor),
+            CircleAvatar(
+              radius: 24,
+              backgroundColor: Theme.of(context).primaryColor,
+              child: CircleAvatar(child: Image.asset("assets/timmy.png")),
+            ),
             const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: Text("Timmy")),
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Timmy"),
+                    Text(
+                      "Tareas y recordatorios",
+                      style: TextStyle(fontSize: 10),
+                    )
+                  ],
+                )),
           ],
         ),
         centerTitle: true,
         leading: const BackButton(),
       ),
       body: Container(
-        //padding: EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.only(top: 10),
         decoration: BoxDecoration(
             gradient: night == false
                 ? const LinearGradient(
