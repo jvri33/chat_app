@@ -43,7 +43,7 @@ class _QrWidgetState extends State<QrWidget> {
           maxWidth: 300.0,
         ),
         child: Card(
-            margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5.0),
+            margin: const EdgeInsets.symmetric(horizontal: 12.0),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(16),
@@ -54,7 +54,7 @@ class _QrWidgetState extends State<QrWidget> {
             color: Theme.of(context).primaryColor,
             child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
                 child: variables[1] != "scan"
                     ? GestureDetector(
                         onTap: () async {

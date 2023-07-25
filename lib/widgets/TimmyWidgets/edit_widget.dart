@@ -134,7 +134,7 @@ class _EditWidgetState extends State<EditWidget> {
                                                 .colorScheme
                                                 .tertiary)),
                                     Container(
-                                      margin: const EdgeInsets.only(left: 20.0),
+                                      margin: const EdgeInsets.only(left: 10.0),
 
                                       //Aquí empieza el contenido
                                       child: Column(
@@ -163,6 +163,41 @@ class _EditWidgetState extends State<EditWidget> {
                                             ),
                                           ),
                                           Container(
+                                            margin:
+                                                const EdgeInsets.only(top: 8),
+                                            child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 200,
+                                                    child: Text(
+                                                        "Nombre: ${variables[6]}",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .tertiary)),
+                                                  ),
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        widget.dontsend(
+                                                            widget.id,
+                                                            widget.message);
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.edit_outlined,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary,
+                                                      ))
+                                                ]),
+                                          ),
+                                          Container(
                                             margin: const EdgeInsets.only(
                                                 right: 12, top: 8),
                                             child: Row(
@@ -176,44 +211,15 @@ class _EditWidgetState extends State<EditWidget> {
                                                     id: widget.id,
                                                     message: widget.message,
                                                     onUpdateSound: updateSound),
-                                                RepeatWidget(
+                                                /*RepeatWidget(
                                                   repeat:
                                                       int.parse(variables[5]),
                                                   id: widget.id,
                                                   message: widget.message,
                                                   onUpdateRepeat: updateRepeat,
-                                                ),
+                                                ),*/
                                               ],
                                             ),
-                                          ),
-                                          Container(
-                                            margin:
-                                                const EdgeInsets.only(top: 8),
-                                            child: Row(children: [
-                                              SizedBox(
-                                                width: 201,
-                                                child: Text(
-                                                    "Nombre: ${variables[6]}",
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .tertiary)),
-                                              ),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    widget.dontsend(widget.id,
-                                                        widget.message);
-                                                  },
-                                                  icon: Icon(
-                                                    Icons.edit_outlined,
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .tertiary,
-                                                  ))
-                                            ]),
                                           ),
                                           Align(
                                               alignment: Alignment.bottomRight,

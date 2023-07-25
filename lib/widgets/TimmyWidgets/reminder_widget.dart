@@ -91,7 +91,7 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                   color:
                                       Theme.of(context).colorScheme.tertiary)),
                           Container(
-                            margin: const EdgeInsets.only(left: 20.0),
+                            margin: const EdgeInsets.only(left: 10.0),
                             child: Column(
                               children: [
                                 Container(
@@ -117,6 +117,40 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                   ),
                                 ),
                                 Container(
+                                  margin: const EdgeInsets.only(top: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: 200,
+                                        child: Text("Nombre: ${variables[0]}",
+                                            softWrap: true,
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary)),
+                                      ),
+                                      Container(
+                                        // margin: EdgeInsets.only(left: 10),
+                                        child: IconButton(
+                                            onPressed: () {
+                                              widget.dontsend(
+                                                  widget.id, widget.message);
+                                            },
+                                            icon: Icon(
+                                              Icons.edit_outlined,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary,
+                                            )),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
                                   margin:
                                       const EdgeInsets.only(right: 17, top: 8),
                                   child: Row(
@@ -128,40 +162,12 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                           id: widget.id,
                                           message: widget.message,
                                           onUpdateSound: updateSound),
-                                      RepeatWidget(
+                                      /*RepeatWidget(
                                         repeat: int.parse(variables[3]),
                                         id: widget.id,
                                         message: widget.message,
                                         onUpdateRepeat: updateRepeat,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(top: 8),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 190,
-                                        child: Text("Nombre: ${variables[0]}",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .tertiary)),
-                                      ),
-                                      IconButton(
-                                          onPressed: () {
-                                            widget.dontsend(
-                                                widget.id, widget.message);
-                                          },
-                                          icon: Icon(
-                                            Icons.edit_outlined,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .tertiary,
-                                          ))
+                                      ),*/
                                     ],
                                   ),
                                 ),
