@@ -153,7 +153,8 @@ class Week extends StatelessWidget {
                                     if (recordatorios[index].isNotEmpty)
                                       Align(
                                           alignment: Alignment.centerLeft,
-                                          child: Text(dias[index],
+                                          child: Text(
+                                              "${dias[index]}, ${recordatorios[index].toString().split("-")[2].split(",")[0]}",
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w800,
@@ -169,7 +170,10 @@ class Week extends StatelessWidget {
                                         },
                                       ),
                                     ),
-                                    if (index >= startl && index != 6)
+                                    if (index >= startl &&
+                                        index != 6 &&
+                                        recordatorios[index].isNotEmpty &&
+                                        (recordatorios[index + 1].isNotEmpty))
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 8),

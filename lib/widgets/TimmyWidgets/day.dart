@@ -129,7 +129,7 @@ class DayWidget extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
-                                "Hola! Esto es lo que tienes programado durante el día de hoy:",
+                                "Hola! Esto es lo que tienes programado durante este día:",
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,

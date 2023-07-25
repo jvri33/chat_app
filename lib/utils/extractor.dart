@@ -48,6 +48,12 @@ class Extractor {
         }
       }
     }
+
+    if (ret.hour > 24 || ret.minute > 59) {
+      ret = TimeOfDay(
+          hour: DateTime.now().hour, minute: DateTime.now().minute + 1);
+    }
+
     if (times.isEmpty) {
       ret = TimeOfDay(
           hour: DateTime.now().hour, minute: DateTime.now().minute + 1);
@@ -127,6 +133,10 @@ class Extractor {
     int year = DateTime.now().year;
     DateTime time = DateTime.now();
     DateTime date = DateTime(year, month, day, time.hour, time.minute);
+
+    if (day != date.day) {
+      date = DateTime.now();
+    }
 
     return date;
   }

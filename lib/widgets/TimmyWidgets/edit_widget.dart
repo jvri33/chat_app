@@ -107,7 +107,7 @@ class _EditWidgetState extends State<EditWidget> {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(
                     minWidth: 75.0,
-                    maxWidth: 320.0,
+                    maxWidth: 325.0,
                   ),
                   child: Card(
                       margin: const EdgeInsets.symmetric(
@@ -164,7 +164,7 @@ class _EditWidgetState extends State<EditWidget> {
                                           ),
                                           Container(
                                             margin: const EdgeInsets.only(
-                                                right: 17, top: 8),
+                                                right: 12, top: 8),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -187,10 +187,11 @@ class _EditWidgetState extends State<EditWidget> {
                                             ),
                                           ),
                                           Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 8, top: 8),
+                                            margin:
+                                                const EdgeInsets.only(top: 8),
                                             child: Row(children: [
                                               SizedBox(
+                                                width: 201,
                                                 child: Text(
                                                     "Nombre: ${variables[6]}",
                                                     style: TextStyle(

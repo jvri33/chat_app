@@ -320,6 +320,35 @@ nextweek = [
 
 
 ]
+qr = ["qr",
+"escanear qr",
+"quiero escanear un qr",
+"me gustaria escanear un qr",
+"puedes escanear un qr",
+"escanea un qr",
+"tengo un qr, lo escaneas?",
+"scan qr",
+"que hay en este qr",
+"saca un qr",
+"que hay en este qr",
+"puedes escanear un qr",
+"ayudame a escanear un qr",
+]
+pdf = ["quiero escanear una foto",
+"escanear foto",
+"quiero escanear un pdf",
+"quiero pasar esta foto a pdf",
+"me gustaria escanear una foto y pasarla a pdf",
+"pdf",
+"escanear pdf",
+"puedes escanear una imagen",
+"imagen a pdf",
+"escanear imagen",
+"quiero escanear un doumento",
+"escanear una foto",
+"puedes escanear de un dibujo",
+]
+
 intents = []
 labels = []
 
@@ -354,6 +383,15 @@ for i in range(len(thisweek)):
 for i in range(len(nextweek)):
     intents.append(nextweek[i])
     labels.append("NEXTWEEK00")
+
+for i in range(len(qr)):
+    intents.append(qr[i])
+    labels.append("QR00")
+    
+for i in range(len(pdf)):
+    intents.append(pdf[i])
+    labels.append("PDF00")    
+
 
 #print(intents,labels)
 
@@ -395,7 +433,7 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(128, activation='relu'),
     tf.keras.layers.Dense(128, activation='relu'),
     tf.keras.layers.Dropout(0.5),
-    tf.keras.layers.Dense(8, activation='softmax')
+    tf.keras.layers.Dense(10, activation='softmax')
 ])
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])

@@ -12,6 +12,8 @@ class Respuesta {
     //i2 = entities
     //i3 = message
 
+    print(i2);
+
     //Reminder delete = Reminder();
 
     //delete.deleteall();
@@ -71,6 +73,7 @@ class Respuesta {
       }
     }
     if (i1 == "REMINDER1") {
+      bool hoy = false;
       dig = "w";
       bool horario = false;
       //MIRAMOS SI TIENE ENTIDADES
@@ -81,6 +84,15 @@ class Respuesta {
           }
         }
 
+        if (i2 != "[]") {
+          for (int i = 0; i < i2.length; i++) {
+            print(i2[i]);
+            if (i2[i][0] == "hoy") {
+              print(i2[i]);
+              hoy = true;
+            }
+          }
+        }
         List<String> str = (Extractor(i2).fecha()).toString().split(" ");
 
         TimeOfDay str2 = (Extractor(i2).hora());
@@ -94,12 +106,19 @@ class Respuesta {
         if (str2.hour < 10) {
           hour = "0${str2.hour}";
         }
-
+        if (int.parse(hour) > 23 ||
+            int.parse(hour) < 1 ||
+            int.parse(minute) > 59 ||
+            int.parse(minute) < 0) {
+          hour = d.hour.toString();
+          minute = d.minute.toString();
+        }
         d = DateTime.parse("${str[0]} $hour:$minute:00");
+        print(d);
 
         DateTime compare = DateTime.now();
         //rint(time);
-        if (d.isBefore(compare)) {
+        if (d.isBefore(compare) && !hoy) {
           DateTime doce =
               DateTime(d.year, d.month, d.day, d.hour + 12, d.minute);
 
@@ -120,7 +139,14 @@ class Respuesta {
             }
           }
         }
+        if (d.isBefore(compare)) {
+          dig = "m";
+          ret2 = "No se pueden crear recordatorios en el pasado";
 
+          await saveMessageController.createItem(ret2.toString(), 0, dig);
+          //await f();
+          return ret2.toString();
+        }
         //int reminderId = await reminder.createItem(i3, d, 0, 0, "", "");
 
         //print(reminderId);

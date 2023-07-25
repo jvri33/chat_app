@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     1
                   ], begin: Alignment.bottomRight, end: Alignment.topLeft)),
         child: SizedBox(
-          // change your height based on preference
+          
 
           width: double.infinity,
           child: PageView(

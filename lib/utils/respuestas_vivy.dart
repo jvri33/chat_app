@@ -17,13 +17,13 @@ class RespuestaVivy {
     String ret2 = "";
     String dig = "m";
     VivySavedMessage saveMessageController = VivySavedMessage();
-
-    if (i3 == "qr") {
+    print(i1);
+    if (i1 == "QR00") {
       ret2 = "QR/scan";
       dig = "qr";
     }
 
-    if (i3 == "pdf") {
+    if (i1 == "PDF00") {
       ret2 = "pdf";
       dig = "pdf";
     }
