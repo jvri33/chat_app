@@ -11,7 +11,6 @@ class Classifier {
 
   //parametros
 
-  //final int _sentenceLen = 30;
   late Map<String, int> _dict;
 
   late Interpreter _interpreter;
@@ -31,7 +30,6 @@ class Classifier {
     Map<String, int> jsonMap = Map<String, int>.from(jsonDecode(vocab));
 
     _dict = jsonMap;
-    //print(_dict);
   }
 
   List classify(txt) {
@@ -70,6 +68,8 @@ class Classifier {
 
       resultados.add(output[0]);
     }
+    print(resultados);
+
     //{'o': 1, 'time': 2, 'day': 3, 'month': 4, 'menos': 5}
     List<String> labels = ["O", "TIME", "DAY", "MONTH", "HORARIO", "MENOS"];
 

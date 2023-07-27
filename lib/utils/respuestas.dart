@@ -11,7 +11,7 @@ class Respuesta {
     //i1 = Intent
     //i2 = entities
     //i3 = message
-
+    print(i1);
     print(i2);
 
     //Reminder delete = Reminder();
@@ -175,7 +175,12 @@ class Respuesta {
       SharedPreferences s = await SharedPreferences.getInstance();
       s.setBool("first_time", true);
 
-      ret2 = "Ayuda";
+      ret2 = "Tienes más dudas sobre mi funcionamiento?";
+    }
+
+    if (i1 == "FUNCTION0") {
+      ret2 =
+          "Mi función es ayudarte a gestionar tu agenda,creando y gestionando tus recordatorios y tareas";
     }
 
     //print(i2.isNotEmpty);

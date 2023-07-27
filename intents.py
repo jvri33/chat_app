@@ -79,6 +79,17 @@ create_reminder = [
 "pon recordatorio el sabado",
 ]
 calendar = [
+    "dime todo lo que tenga programado para septiembre",
+    "enseñame todo lo que tengo programado para mayo"
+    "enseñame todo lo que tengo programado para junio",
+    "me puedes enseñar todo lo que tengo programado para junio",
+    "que tuve el pasado mes de enero",
+    "que tuve en febrero",
+    "enseñame lo que tuve en enero",
+    "enseña lo que tengo programado en mayo",
+    "que tuve en junio",
+    "que tuve el mes de junio",
+    "que tengo en agosto",
     "quiero ver el calendario",
     "calendario",
     "muestrame el calendario",
@@ -103,6 +114,8 @@ calendar = [
     "tareas calendario",
 ]
 function = ["que eres capaz de hacer",
+            "explicame para que sirves",
+            "explicame exactamente que es lo que haces"
 "que haces",
 "que puedes hacer",
 "para que sirves",
@@ -131,7 +144,10 @@ function = ["que eres capaz de hacer",
 "ayudame",
 "tutorial",
 "dime que haces"]
-edit01 = ["editar recordatorio",
+edit01 = [
+"modifica el recordatorio de mañana por favor",
+"quiero editar el recordatorio de hoy",
+"editar recordatorio",
 "quiero editar un recordatorio",
 "editar alarma",
 "editar aviso",
@@ -277,6 +293,18 @@ day01 = ["tengo algo hoy",
 
 ]
 thisweek = [
+    "que tengo esta semana entonces?",
+    "que tengo esta semana",
+    "dime todo lo que tengo programado esta semana",
+    "que hay esta semana",
+    "dime todo lo que tengo esta semana",
+    "que tengo durante esta semana",
+    "que tareas tengo esta semana",
+    "dime todos los recordatorios que tenga esta semana",
+    "puedes decirmme todas las tareas que tengo esta semana",
+"dime las tareas que tengo durante la semana",
+"dime los recordatorios que tengo esta semana",
+"dime las tareas que tenga esta semana",
 "esta semana",
 "que tengo esta semana",
 "que cosas tengo esta semana",
@@ -295,6 +323,7 @@ thisweek = [
 "tengo cosas que hacer esta semana",
 ]
 nextweek = [
+"semana que viene",
 "la semana que viene",
 "que tengo la proxima semana",
 "dime lo que tengo la semana que viene",
@@ -334,7 +363,14 @@ qr = ["qr",
 "puedes escanear un qr",
 "ayudame a escanear un qr",
 ]
-pdf = ["quiero escanear una foto",
+pdf = [
+    "tengo un documento que me gustaría escanear",
+    "podrías escanear un documento que tengo",
+    "quiero escanear un docuemtno que tengo",
+"quiero escanear una foto",
+"me gustaría escanear un documento que tengo",
+"escanear documento por favor",
+"tengo un documento para escanear",
 "escanear foto",
 "quiero escanear un pdf",
 "quiero pasar esta foto a pdf",
@@ -347,6 +383,8 @@ pdf = ["quiero escanear una foto",
 "quiero escanear un doumento",
 "escanear una foto",
 "puedes escanear de un dibujo",
+"quiero escanear una imagen y pasarla a pdf",
+"tengo un documento que me gustaría escanear"
 ]
 
 intents = []

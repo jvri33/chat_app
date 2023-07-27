@@ -113,11 +113,13 @@ class Week extends StatelessWidget {
                           vertical: 16.0, horizontal: 16),
                       margin: const EdgeInsets.only(right: 8, top: 12, left: 4),
                       child: cantidad == 0
-                          ? const SizedBox(
+                          ? SizedBox(
                               width: 220,
                               child: Text(
                                 "No tienes nada todavía.",
-                                style: TextStyle(fontWeight: FontWeight.w500),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context).primaryColor),
                               ))
                           : Column(
                               children:

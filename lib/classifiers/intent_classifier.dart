@@ -11,7 +11,6 @@ class IntentClassifier {
 
   //parametros
 
-  //final int _sentenceLen = 30;
   late Map<String, int> _dict;
 
   late Interpreter _interpreter;
@@ -31,7 +30,6 @@ class IntentClassifier {
     Map<String, int> jsonMap = Map<String, int>.from(jsonDecode(vocab));
 
     _dict = jsonMap;
-    //print(_dict);
   }
 
   String classify(txt) {
@@ -43,22 +41,21 @@ class IntentClassifier {
       [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     ];
     _interpreter.run(input, output);
-
 //{'reminder01': 1, 'day01': 2, 'edit01': 3, 'delete01': 4, 'function00': 5, 'calendar00': 6, 'nextweek00': 7, 'thisweek00': 8, 'qr00': 9, 'pdf00': 10}
     List<String> labels = [
       "REMINDER1",
       "DAY1",
       "EDIT1",
       "DELETE1",
-      "FUNCTION0",
       "CALENDAR0",
-      "NEXTWEEK0",
+      "FUNCTION0",
       "THISWEEK0",
-      "QR00",
-      "PDF00"
+      "NEXTWEEK0",
+      "PDF00",
+      "QR00"
     ];
     String ret = "";
-    //print(output);
+    print(output);
     for (int k = 0; k < output.length; k++) {
       for (int i = 0; i < output[k].length; i++) {
         if (output[k][i] > 0.9) {
@@ -66,7 +63,8 @@ class IntentClassifier {
         }
       }
     }
-    //print("ret: $ret");
+    print("ret: $ret");
+
     return ret;
   }
 

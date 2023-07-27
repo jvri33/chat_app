@@ -88,36 +88,33 @@ class _ScanButtonState extends State<ScanButton> {
     img.Image? image2 = img.decodeImage(li);
     image2 = img.grayscale(image2!);
 
-    int ventana = 16;
-    double constanteC = 0.25;
+    int size = 16;
+    double cons = 0.25;
 
-    for (var x = 0; x < image2.width; x++) {
-      for (var y = 0; y < image2.height; y++) {
+    for (int x = 0; x < image2.width; x++) {
+      for (int y = 0; y < image2.height; y++) {
         final pixel = image2.getPixel(x, y);
-        num ventanaSuma = 0;
-        int ventanaContador = 0;
+        num sum = 0;
+        int cont = 0;
 
-        // Obtener la suma de intensidades de la ventana local
-        for (var i = -ventana ~/ 2; i <= ventana ~/ 2; i++) {
-          for (var j = -ventana ~/ 2; j <= ventana ~/ 2; j++) {
+        for (var i = -size ~/ 2; i <= size ~/ 2; i++) {
+          for (var j = -size ~/ 2; j <= size ~/ 2; j++) {
             if (x + i >= 0 &&
                 x + i < image2.width &&
                 y + j >= 0 &&
                 y + j < image2.height) {
-              ventanaSuma += img.getLuminance(image2.getPixel(x + i, y + j));
-              ventanaContador++;
+              sum += img.getLuminance(image2.getPixel(x + i, y + j));
+              cont++;
             }
           }
         }
 
-        // Calcular el umbral local como el promedio de la ventana
-        double umbralLocal = ventanaSuma / ventanaContador * (1 - constanteC);
+        double thresh = sum / cont * (1 - cons);
 
-        // Aplicar el umbral
-        if (pixel.luminance <= umbralLocal) {
-          image2.setPixel(x, y, img.ColorInt8.rgb(0, 0, 0)); // Black
+        if (pixel.luminance <= thresh) {
+          image2.setPixel(x, y, img.ColorInt8.rgb(0, 0, 0));
         } else {
-          image2.setPixel(x, y, img.ColorInt8.rgb(255, 255, 255)); // White
+          image2.setPixel(x, y, img.ColorInt8.rgb(255, 255, 255));
         }
       }
     }
